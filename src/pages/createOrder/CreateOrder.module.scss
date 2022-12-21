@@ -1,0 +1,142 @@
+@use "../../styles/constants.scss";
+
+.createOrder {
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .header__info {
+            display: flex;
+            align-items: center;
+            font-size: 21px;
+
+            p {
+                font-weight: 600;
+            }
+        }
+
+        .header__actions {
+            .actions__close {
+                width: 31px;
+                height: 31px;
+                position: relative;
+                cursor: pointer;
+
+                &:hover {
+
+                    &::before,
+                    &::after {
+                        background-color: constants.$warning;
+                    }
+                }
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 14.5px;
+                    left: 0px;
+                    width: 100%;
+                    height: 2px;
+                    background-color: constants.$grey;
+                    transform: rotate(-45deg);
+                    transition: ease .25s;
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 14px;
+                    left: 0px;
+                    width: 100%;
+                    height: 2px;
+                    background-color: constants.$grey;
+                    transform: rotate(45deg);
+                    transition: ease .25s;
+                }
+            }
+        }
+    }
+
+    &__body {
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+
+            .row {
+                display: flex;
+                gap: 40px;
+            }
+
+            &__content {
+                flex: 1 1 50%;
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                background-color: constants.$white;
+                padding: 20px;
+                border-radius: 15px;
+                box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+                .content__title {
+                    font-size: 21px;
+                    font-weight: 600;
+                }
+
+                .clientInfo {
+                    flex: 1 1 50%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .additionalInfo {
+                    flex: 1 1 50%;
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+
+                .techInfo {
+                    display: flex;
+                    flex-wrap: wrap;
+                    position: relative;
+                    padding-bottom: 1px;
+                    margin: 0px -25px -10px -25px;
+
+                    .input__section {
+                        flex: 1 1 40%;
+                        padding: 0px 25px 10px 25px;
+
+                        p {}
+                    }
+                }
+
+                .input__section {
+                    display: flex;
+                    gap: 8px;
+                    flex-direction: column;
+
+                    p {}
+                }
+            }
+
+            .button {
+                width: 100%;
+                height: 35px;
+            }
+        }
+    }
+}

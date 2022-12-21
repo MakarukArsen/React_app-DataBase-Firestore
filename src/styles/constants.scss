@@ -1,0 +1,58 @@
+@font-face {
+    font-family: 'Gotham Pro';
+    src: url('../fonts/GothamPro-Bold.eot');
+    src: local('Gotham Pro Bold'), local('../fonts/GothamPro-Bold'),
+        url('../fonts/GothamPro-Bold.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/GothamPro-Bold.woff') format('woff'),
+        url('../fonts/GothamPro-Bold.ttf') format('truetype');
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham Pro';
+    src: url('../fonts/GothamPro-Medium.eot');
+    src: local('Gotham Pro Medium'), local('../fonts/GothamPro-Medium'),
+        url('../fonts/GothamPro-Medium.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/GothamPro-Medium.woff') format('woff'),
+        url('../fonts/GothamPro-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham Pro';
+    src: url('../fonts/GothamPro.eot');
+    src: local('Gotham Pro'), local('../fonts/GothamPro'),
+        url('../fonts/GothamPro.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/GothamPro.woff') format('woff'),
+        url('../fonts/GothamPro.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Gotham Pro';
+    src: url('../fonts/GothamPro-Light.eot');
+    src: local('Gotham Pro Light'), local('../fonts/GothamPro-Light'),
+        url('../fonts/GothamPro-Light.eot?#iefix') format('embedded-opentype'),
+        url('../fonts/GothamPro-Light.woff') format('woff'),
+        url('../fonts/GothamPro-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&display=swap');
+
+
+$Manrope: "Manrope";
+// Colors
+$white: #FFF;
+$background: #f8f9fd;
+$black: #333333;
+$black2: #171717;
+$grey: #606060;
+$light-grey : #e9e9e9;
+$blue: #1749B3;
+$light-blue: #4B84FD;
+$warning: #ff1e1e;

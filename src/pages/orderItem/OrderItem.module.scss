@@ -1,0 +1,162 @@
+@use "../../styles/constants.scss";
+
+.order {
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    &__header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .header__info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 21px;
+
+            .orderId {
+                font-weight: 700;
+            }
+
+            .orderPrice {
+                color: constants.$grey;
+                font-weight: 600;
+            }
+        }
+
+        .header__actions {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .actions__edit {
+                width: 25px;
+                height: 25px;
+                fill: constants.$grey;
+                cursor: pointer;
+                transition: ease .25s;
+
+                &:hover {
+                    fill: constants.$black2;
+                }
+            }
+
+            .actions__close {
+                width: 31px;
+                height: 31px;
+                position: relative;
+                cursor: pointer;
+
+                &:hover {
+
+                    &::before,
+                    &::after {
+                        background-color: constants.$warning;
+                    }
+                }
+
+                &::before {
+                    content: "";
+                    position: absolute;
+                    top: 14.5px;
+                    left: 0px;
+                    width: 100%;
+                    height: 2px;
+                    background-color: constants.$grey;
+                    transform: rotate(-45deg);
+                    transition: ease .25s;
+                }
+
+                &::after {
+                    content: "";
+                    position: absolute;
+                    bottom: 14px;
+                    left: 0px;
+                    width: 100%;
+                    height: 2px;
+                    background-color: constants.$grey;
+                    transform: rotate(45deg);
+                    transition: ease .25s;
+                }
+            }
+        }
+    }
+
+    .editMode {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        &__title {
+            font-size: 28px;
+            flex: 1 1 100%;
+        }
+
+        &__buttons {
+            flex: 0 1 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 50px;
+        }
+
+        &__button {
+            flex: 0 0 120px;
+            height: 35px;
+        }
+    }
+
+    &__info {
+        display: flex;
+        justify-content: space-around;
+        gap: 100px;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .order__column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+
+            .order__title {}
+
+            .orderInfo__content {}
+
+            .order__row {
+                padding: 16px;
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid constants.$grey;
+                width: 400px;
+
+                .orderInfo__title {
+                    color: constants.$grey;
+                    flex: 0 0 50%;
+                    font-size: 16px;
+                }
+
+                .orderInfo__text {
+                    flex: 0 0 50%;
+                    display: flex;
+                    justify-content: center;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}

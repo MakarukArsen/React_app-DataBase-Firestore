@@ -1,15 +1,13 @@
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
-import { addOrder } from "../../store/sllices/ordersSlice";
 import classes from "./OrderItem.module.scss";
 import EditIcon from "../../components/icons/EditIcon";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
-
+import { format } from "date-fns";
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
@@ -95,6 +93,7 @@ const OrderItem = () => {
 
             orderInfo: {
                 orderDate: order.orderInfo.orderDate,
+                orderUpdatedDate: format(new Date(), "H:mm dd.MM.yyy"),
                 orderStatus: order.orderInfo.orderStatus,
                 orderType: orderType.value || "-",
                 orderAccepted: orderAccepted.value || "-",

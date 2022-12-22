@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./Order.module.scss";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase";
-import { getDocs, collection, query } from "firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
@@ -40,7 +40,8 @@ const Order = () => {
         return filteredOrders;
     };
 
-    if (search.value) filterOrders();
+    const filteredOrders = filterOrders();
+
     const openOrderPage = (fireBaseId) => {
         navigate(`order/${fireBaseId}`);
     };
@@ -65,6 +66,7 @@ const Order = () => {
                         <thead className={classes.table__header}>
                             <tr className={classes.table__row}>
                                 <th className={classes.table__item}>Замовлення</th>
+                                <th className={classes.table__item}>Оновлено</th>
                                 <th className={classes.table__item}>Статус</th>
                                 <th className={classes.table__item}>Клієнт</th>
                                 <th className={classes.table__item}>Прийняв замовлення</th>
@@ -80,14 +82,15 @@ const Order = () => {
                         </thead>
                         <tbody className={classes.table__body}>
                             {orders.length ? (
-                                filterOrders().length ? (
-                                    filterOrders().map((order) => {
+                                filteredOrders.length ? (
+                                    filteredOrders.map((order) => {
                                         const { clientInfo, orderInfo, deviceInfo } = order;
                                         return (
                                             <tr onClick={() => openOrderPage(order.fireBaseId)} key={v4()} className={classes.table__row}>
                                                 <td className={classes.table__item}>
-                                                    #{order.id} <br /> {orderInfo.orderDate}
+                                                    <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                                 </td>
+                                                <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td>
                                                 <td className={classes.table__item + " " + classes.nowrap}>
                                                     <StatusDropDown order={order}></StatusDropDown>
                                                 </td>

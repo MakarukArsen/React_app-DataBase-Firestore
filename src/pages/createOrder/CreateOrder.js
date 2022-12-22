@@ -13,6 +13,7 @@ import CreateOrderModal from "../../components/modals/create-order-modal/CreateO
 import { Link } from "react-router-dom";
 
 const CreateOrder = () => {
+    const [modalActive, setModalActive] = useState(false);
     // client info
     const clientName = useInput("");
     const clientPhone = useInput("");
@@ -78,7 +79,8 @@ const CreateOrder = () => {
             },
 
             orderInfo: {
-                orderDate: format(new Date(), "dd.MM.yyy"),
+                orderDate: format(new Date(), "H:mm dd.MM.yyy"),
+                orderUpdatedDate: "-",
                 orderStatus: "До діагностики",
                 orderType: orderType.value || "-",
                 orderAccepted: orderAccepted.value || "-",
@@ -86,26 +88,33 @@ const CreateOrder = () => {
                 orderDeadline: orderDeadline.value || "-",
             },
         };
-
         await getDocs(collection(db, "orders"))
             .then((res) => {
                 orderData.id = res.size + 1;
             })
             .catch((err) => console.log(err));
 
-        await addDoc(collection(db, "orders"), orderData)
-            .then((res) => {
-                dispatch(addOrder(orderData));
-            })
-            .catch((err) => console.log(err));
-
+        await addDoc(collection(db, "orders"), orderData);
+        // .then((res) => {
+        //     dispatch(addOrder(orderData));
+        // })
+        // .catch((err) => console.log(err));
+        const clientData = {
+            fireBaseId: "",
+            clientName: clientName.value || "-",
+            clientPhone: clientPhone.value || "-",
+            clientEmail: clientEmail.value || "-",
+            clientAddress: clientAddress.value || "-",
+        };
+        await addDoc(collection(db, "clients"), clientData);
         clearInputs();
+        setModalActive(true);
     };
 
     return (
         <div className={classes.createOrder}>
-            <Modal>
-                <CreateOrderModal />
+            <Modal modalActive={modalActive} onClose={() => setModalActive(false)}>
+                <CreateOrderModal onClose={() => setModalActive(false)} />
             </Modal>
             <div className="container">
                 <div className={classes.createOrder__content}>

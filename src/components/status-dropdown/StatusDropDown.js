@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import { doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
@@ -15,7 +16,7 @@ const StatusDropDown = ({ order }) => {
         setActive(false);
         setChosenOption(status);
         const docRef = doc(db, "orders", order.fireBaseId);
-        await updateDoc(docRef, { "orderInfo.orderStatus": status });
+        await updateDoc(docRef, { "orderInfo.orderStatus": status, "orderInfo.orderUpdatedDate": format(new Date(), "H:mm dd.MM.yyy") });
     };
     return (
         <div className={classes.dropdown} onMouseLeave={() => setActive(false)}>

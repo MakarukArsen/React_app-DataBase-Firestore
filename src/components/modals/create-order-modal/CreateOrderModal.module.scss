@@ -1,1 +1,24 @@
 @use "../../../styles/constants.scss";
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 80px;
+
+    .title {
+        text-align: center;
+        font-size: 28px;
+    }
+
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 50px;
+    }
+
+    .button {
+        flex: 0 0 180px;
+        height: 50px;
+    }
+}

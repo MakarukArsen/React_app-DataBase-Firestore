@@ -1,0 +1,75 @@
+@use "../../styles/constants.scss";
+
+.clients {
+    padding: 5px 20px 0px 20px;
+
+    &__content {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+
+        .actions__search {
+            flex: 0 0 50%;
+            height: 45px;
+        }
+
+        .actions__buttons {
+            flex: 1 1 50%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+
+            .button {
+                width: 120px;
+                height: 35px;
+            }
+        }
+    }
+
+    &__body {
+        overflow-x: scroll;
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+
+            &__header {}
+
+            &__body {
+                .table__row:hover {
+                    background-color: constants.$light-grey;
+                }
+            }
+
+            &__row {
+                border-bottom: 1px solid constants.$grey;
+
+            }
+
+            &__item {
+                text-align: left;
+                line-height: 1.25;
+                padding: 10px 0px;
+
+                &:not(:first-child) {
+                    padding: 10px 16px;
+                }
+
+                span {
+                    font-weight: 600;
+                }
+            }
+
+            .nowrap {
+                white-space: nowrap;
+            }
+        }
+    }
+
+
+}

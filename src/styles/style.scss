@@ -21,13 +21,16 @@ body,
 
 }
 
-#root {}
+#root {
+    overflow-x: hidden;
+}
 
 .wrapper {
     min-height: 100%;
     display: flex;
     flex-direction: column;
     position: relative;
+
 }
 
 .header {}
@@ -35,14 +38,15 @@ body,
 .main {
     flex: 1 1 auto;
     margin-top: 84px;
-    padding: 0px 0px 20px 100px;
-    overflow-x: hidden;
+    padding: 0px 0px 0px 100px;
+
 }
 
 .footer {}
 
 .footer {
-    z-index: 1;
+    z-index: 100;
+    background-color: white;
 }
 
 .container {

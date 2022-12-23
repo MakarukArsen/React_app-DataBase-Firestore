@@ -1,6 +1,7 @@
 @use "../../styles/constants.scss";
 
 .createOrder {
+    overflow: hidden;
 
     &__content {
         display: flex;

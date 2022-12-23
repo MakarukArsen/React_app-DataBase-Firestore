@@ -4,7 +4,7 @@ import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { db } from "../../firebase";
-import { getDocs, addDoc, collection } from "firebase/firestore";
+import { getDocs, addDoc, collection, query, where } from "firebase/firestore";
 import { useDispatch } from "react-redux";
 import { addOrder } from "../../store/sllices/ordersSlice";
 import { format } from "date-fns";
@@ -88,6 +88,7 @@ const CreateOrder = () => {
                 orderDeadline: orderDeadline.value || "-",
             },
         };
+
         await getDocs(collection(db, "orders"))
             .then((res) => {
                 orderData.id = res.size + 1;
@@ -95,10 +96,7 @@ const CreateOrder = () => {
             .catch((err) => console.log(err));
 
         await addDoc(collection(db, "orders"), orderData);
-        // .then((res) => {
-        //     dispatch(addOrder(orderData));
-        // })
-        // .catch((err) => console.log(err));
+
         const clientData = {
             fireBaseId: "",
             clientName: clientName.value || "-",
@@ -106,7 +104,14 @@ const CreateOrder = () => {
             clientEmail: clientEmail.value || "-",
             clientAddress: clientAddress.value || "-",
         };
-        await addDoc(collection(db, "clients"), clientData);
+        const docRef = collection(db, "clients");
+        const q = query(docRef, where("clientPhone", "==", clientData.clientPhone));
+        const querySnapshot = await getDocs(q);
+        const clients = querySnapshot.docs.map((doc) => doc.data());
+
+        if (!clients.length) {
+            await addDoc(docRef, clientData);
+        }
         clearInputs();
         setModalActive(true);
     };

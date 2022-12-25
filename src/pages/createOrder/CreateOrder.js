@@ -6,11 +6,12 @@ import Button from "../../components/UI/button/Button";
 import { db } from "../../firebase";
 import { getDocs, addDoc, collection, query, where } from "firebase/firestore";
 import { useDispatch } from "react-redux";
-import { addOrder } from "../../store/sllices/ordersSlice";
 import { format } from "date-fns";
 import Modal from "../../components/modals/Modal";
 import CreateOrderModal from "../../components/modals/create-order-modal/CreateOrderModal";
 import { Link } from "react-router-dom";
+import Select from "../../components/UI/select/Select";
+import useSelect from "../../hooks/useSelect";
 
 const CreateOrder = () => {
     const [modalActive, setModalActive] = useState(false);
@@ -30,7 +31,7 @@ const CreateOrder = () => {
     const devicePassword = useInput("");
     // additional info
 
-    const orderType = useInput("");
+    const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
     const orderAccepted = useInput("");
     const orderExecutor = useInput("");
     const orderDeadline = useInput("");
@@ -42,6 +43,7 @@ const CreateOrder = () => {
         clientPhone.clear();
         clientEmail.clear();
         clientAddress.clear();
+
         deviceType.clear();
         deviceProducer.clear();
         deviceModel.clear();
@@ -50,7 +52,7 @@ const CreateOrder = () => {
         deviceImeiSn.clear();
         deviceAccessories.clear();
         devicePassword.clear();
-        orderType.clear();
+
         orderAccepted.clear();
         orderExecutor.clear();
         orderDeadline.clear();
@@ -163,7 +165,8 @@ const CreateOrder = () => {
                                     <p className={classes.content__title}>Додаткова інформація</p>
                                     <div className={classes.additionalInfo}>
                                         <div className={classes.input__section}>
-                                            <p>Тип замовлення</p> <Input {...orderType} />
+                                            <p>Тип замовлення</p>
+                                            <Select {...orderType} />
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Прийняв замовлення</p> <Input {...orderAccepted} />

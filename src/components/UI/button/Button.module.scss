@@ -93,6 +93,17 @@
     transition: all .25s ease;
 }
 
+.buttonText {
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 130%;
+    transition: all .25s ease;
+}
+
+.active {
+    background-color: constants.$grey;
+}
+
 .disabled {
     background-color: constants.$grey;
     cursor: auto;
@@ -114,11 +125,4 @@
             color: constants.$white;
         }
     }
-}
-
-.buttonText {
-    font-weight: 700;
-    font-size: 17px;
-    line-height: 130%;
-    transition: all .25s ease;
 }

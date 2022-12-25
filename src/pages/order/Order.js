@@ -2,43 +2,72 @@ import React, { useEffect, useState } from "react";
 import classes from "./Order.module.scss";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase";
-import { getDocs, collection } from "firebase/firestore";
+import { getDocs, collection, query, where } from "firebase/firestore";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Button from "../../components/UI/button/Button";
 import Search from "../../components/UI/search/Search";
 import useInput from "../../hooks/useInput";
+import { async } from "@firebase/util";
 const Order = () => {
     const [orders, setOrders] = useState([]);
+    const [orderType, setOrderType] = useState("all");
 
     const navigate = useNavigate();
     const search = useInput("");
 
     useEffect(() => {
-        const fetchData = async () => {
-            const ordersRef = collection(db, "orders");
-            const snapshots = await getDocs(ordersRef);
-            const ordersData = snapshots.docs.map((doc) => {
-                const data = doc.data();
-                data.fireBaseId = doc.id;
-                return data;
-            });
-            ordersData.sort((a, b) => {
-                return b.id - a.id;
-            });
-            setOrders(ordersData);
-        };
-        fetchData();
-    }, []);
+        if (orderType === "all") getOrders();
+        if (orderType === "repair") getRepairOrders();
+        if (orderType === "dataRecovery") getDataRecoveryOrders();
+    }, [orderType]);
 
-    const filterOrders = () => {
+    const getOrders = async () => {
+        const ordersRef = collection(db, "orders");
+        const snapshots = await getDocs(ordersRef);
+        const ordersData = snapshots.docs.map((doc) => {
+            const data = doc.data();
+            data.fireBaseId = doc.id;
+            return data;
+        });
+        ordersData.sort((a, b) => {
+            return b.id - a.id;
+        });
+        setOrders(ordersData);
+    };
+
+    const getRepairOrders = async () => {
+        const ordersRef = collection(db, "orders");
+        const q = query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"));
+        const querySnapshot = await getDocs(q);
+        const ordersRepair = querySnapshot.docs.map((doc) => {
+            const data = doc.data();
+            data.fireBaseId = doc.id;
+            return data;
+        });
+        setOrders(ordersRepair);
+    };
+
+    const getDataRecoveryOrders = async () => {
+        const ordersRef = collection(db, "orders");
+        const q = query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"));
+        const querySnapshot = await getDocs(q);
+        const ordersDataRecovery = querySnapshot.docs.map((doc) => {
+            const data = doc.data();
+            data.fireBaseId = doc.id;
+            return data;
+        });
+        setOrders(ordersDataRecovery);
+    };
+
+    function filterOrders() {
         const filteredOrders = orders.filter((item) => {
             const clientInfo = Object.values(item.clientInfo).join("");
             if (clientInfo.toLowerCase().includes(search.value.toLowerCase())) return item;
         });
         return filteredOrders;
-    };
+    }
 
     const filteredOrders = filterOrders();
 
@@ -50,14 +79,33 @@ const Order = () => {
         <div className={classes.order}>
             <div className={classes.order__content}>
                 <div className={classes.order__actions}>
-                    <div className={classes.actions__search}>
-                        <Search {...search} />
-                    </div>
-                    <div className={classes.actions__buttons}>
-                        <div className={classes.button}>
-                            <Link to="order/create-order">
-                                <Button color="blue">Create order</Button>
-                            </Link>
+                    <div className={classes.container}>
+                        <div className={classes.orderActions}>
+                            <div className={classes.actions__search}>
+                                <Search {...search} />
+                            </div>
+                            <div className={classes.actions__buttons}>
+                                <div className={classes.button}>
+                                    <Button active={orderType === "all"} onClick={() => setOrderType("all")} color="black">
+                                        Всі
+                                    </Button>
+                                </div>
+                                <div className={classes.button}>
+                                    <Button active={orderType === "repair"} onClick={() => setOrderType("repair")} color="black">
+                                        Ремонт
+                                    </Button>
+                                </div>
+                                <div className={classes.button}>
+                                    <Button active={orderType === "dataRecovery"} onClick={() => setOrderType("dataRecovery")} color="black">
+                                        Відновлення данних
+                                    </Button>
+                                </div>
+                                <div className={classes.button}>
+                                    <Link to="order/create-order">
+                                        <Button color="blue">Create order</Button>
+                                    </Link>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

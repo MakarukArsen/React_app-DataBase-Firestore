@@ -9,8 +9,8 @@ const Layout = () => {
             <header className="header">
                 <Header />
             </header>
-            <Navbar />
             <main className="main">
+                <Navbar />
                 <Outlet />
             </main>
             <footer className="footer">footer</footer>

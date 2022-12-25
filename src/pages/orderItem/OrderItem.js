@@ -27,7 +27,7 @@ const OrderItem = () => {
     const deviceAccessories = useInput("");
     const devicePassword = useInput("");
     // additional info
-    const orderType = useInput("");
+    // const orderType = useInput("");
     const orderAccepted = useInput("");
     const orderExecutor = useInput("");
     const orderDeadline = useInput("");
@@ -40,7 +40,7 @@ const OrderItem = () => {
             const docRef = doc(db, "orders", firebaseId);
             const snapshot = await getDoc(docRef);
             const data = snapshot.data();
-            // data.fireBaseId = firebaseId;
+
             setOrder(data);
             setInputValues(data);
         };
@@ -61,7 +61,7 @@ const OrderItem = () => {
             deviceAccessories.setValue(data.deviceInfo.deviceAccessories === "-" ? "" : data.deviceInfo.deviceAccessories);
             devicePassword.setValue(data.deviceInfo.devicePassword === "-" ? "" : data.deviceInfo.devicePassword);
 
-            orderType.setValue(data.orderInfo.orderType === "-" ? "" : data.orderInfo.orderType);
+            // orderType.setValue(data.orderInfo.orderType === "-" ? "" : data.orderInfo.orderType);
             orderAccepted.setValue(data.orderInfo.orderAccepted === "-" ? "" : data.orderInfo.orderAccepted);
             orderExecutor.setValue(data.orderInfo.orderExecutor === "-" ? "" : data.orderInfo.orderExecutor);
             orderDeadline.setValue(data.orderInfo.orderDeadline === "-" ? "" : data.orderInfo.orderDeadline);
@@ -95,7 +95,7 @@ const OrderItem = () => {
                 orderDate: order.orderInfo.orderDate,
                 orderUpdatedDate: format(new Date(), "H:mm dd.MM.yyy"),
                 orderStatus: order.orderInfo.orderStatus,
-                orderType: orderType.value || "-",
+                orderType: order.orderInfo.orderType,
                 orderAccepted: orderAccepted.value || "-",
                 orderExecutor: orderExecutor.value || "-",
                 orderDeadline: orderDeadline.value || "-",
@@ -239,7 +239,7 @@ const OrderItem = () => {
                                     </div>
                                     <div className={classes.order__row}>
                                         <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
-                                        {editMode ? <Input {...orderType} /> : <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>}
+                                        <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
                                     </div>
                                     <div className={classes.order__row}>
                                         <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>

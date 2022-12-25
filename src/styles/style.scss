@@ -18,7 +18,7 @@ body,
     letter-spacing: .1em;
     color: constants.$black2;
     background-color: constants.$background;
-
+    overflow-x: hidden;
 }
 
 #root {}
@@ -28,7 +28,6 @@ body,
     display: flex;
     flex-direction: column;
     position: relative;
-    overflow-x: hidden;
 }
 
 .header {}

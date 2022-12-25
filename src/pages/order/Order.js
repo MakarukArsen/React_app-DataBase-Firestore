@@ -9,7 +9,6 @@ import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Button from "../../components/UI/button/Button";
 import Search from "../../components/UI/search/Search";
 import useInput from "../../hooks/useInput";
-import { async } from "@firebase/util";
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [orderType, setOrderType] = useState("all");

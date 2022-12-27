@@ -10,6 +10,7 @@ const Modal = ({ children, modalActive, onClose }) => {
         modalActive ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
         return () => {
             modalRootElement.removeChild(element);
+            document.body.style.overflow = "auto";
         };
     }, [modalActive]);
 

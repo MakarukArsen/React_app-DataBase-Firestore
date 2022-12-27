@@ -78,7 +78,7 @@ const Order = () => {
         <div className={classes.order}>
             <div className={classes.order__content}>
                 <div className={classes.order__actions}>
-                    <div className={classes.container}>
+                    <div className="container">
                         <div className={classes.orderActions}>
                             <div className={classes.actions__search}>
                                 <Search {...search} />

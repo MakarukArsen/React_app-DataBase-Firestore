@@ -7,11 +7,11 @@ const Modal = ({ children, modalActive, onClose }) => {
 
     useEffect(() => {
         modalRootElement.appendChild(element);
-
+        modalActive ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
         return () => {
             modalRootElement.removeChild(element);
         };
-    }, []);
+    }, [modalActive]);
 
     if (modalActive) {
         return createPortal(

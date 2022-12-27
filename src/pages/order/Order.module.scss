@@ -11,14 +11,10 @@
 
     &__actions {
 
-        .container {
-            max-width: 1240px;
-            margin: 0 auto;
-        }
-
         .orderActions {
             display: flex;
             align-items: center;
+            gap: 15px;
 
             .actions__search {
                 flex: 0 0 50%;

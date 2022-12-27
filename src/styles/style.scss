@@ -18,10 +18,11 @@ body,
     letter-spacing: .1em;
     color: constants.$black2;
     background-color: constants.$background;
-    overflow-x: hidden;
 }
 
-#root {}
+body {
+    overflow-x: hidden;
+}
 
 .wrapper {
     min-height: 100%;
@@ -35,7 +36,6 @@ body,
 .main {
     flex: 1 1 auto;
     margin-top: 84px;
-    // padding: 0px 0px 0px 75px;
 }
 
 .footer {}

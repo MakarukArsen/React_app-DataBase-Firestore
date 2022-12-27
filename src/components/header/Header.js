@@ -48,7 +48,7 @@ const Header = () => {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="*" className={classes.navigate__link}>
+                            <NavLink to="/" className={classes.navigate__link}>
                                 <div className={classes.navigate__icon}>
                                     <StorageIcon />
                                 </div>

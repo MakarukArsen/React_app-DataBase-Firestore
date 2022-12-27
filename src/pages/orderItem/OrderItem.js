@@ -112,158 +112,203 @@ const OrderItem = () => {
         <div className={classes.order}>
             <div className="container">
                 {Object.keys(order).length ? (
-                    <div className={classes.order__content}>
-                        <div className={classes.order__header}>
-                            <div className={classes.header__info}>
-                                <p className={classes.orderId}>Замовлення #{order.id}</p>
-                                <p className={classes.orderPrice}>0,00 PLN</p>
+                    <div className={classes.order__body}>
+                        <div className={classes.order__history}>
+                            <h2 className={classes.history__title}>History</h2>
+                            <div className={classes.history__input}>
+                                <Input />
                             </div>
-                            <div className={classes.header__actions}>
-                                <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
-                                    <EditIcon />
-                                </div>
-                                <Link to="/">
-                                    <div className={classes.actions__close}>
-                                        <span></span>
-                                    </div>
-                                </Link>
+                            <div className={classes.history__comments}>
+                                {order.history?.reverse()?.map((item) => {
+                                    return (
+                                        <div className={classes.comment}>
+                                            <p className={classes.message}>{item.message}</p>
+                                            <p className={classes.date}>{item.date}</p>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
-                        {editMode ? (
-                            <div className={classes.editMode}>
-                                <h2 className={classes.editMode__title}>Режим редагування</h2>
-                                <div className={classes.editMode__buttons}>
-                                    <div className={classes.editMode__button}>
-                                        <Button onClick={() => setEditMode(false)} color="red">
-                                            Cancel
-                                        </Button>
+                        <div className={classes.order__content}>
+                            <div className={classes.order__header}>
+                                <div className={classes.header__info}>
+                                    <div className={classes.header__column}>
+                                        <p className={classes.orderId}>Замовлення #{order.id}</p>
+                                        <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
                                     </div>
-                                    <div className={classes.editMode__button}>
-                                        <Button onClick={handleSumbit} color="blue">
-                                            Submit
-                                        </Button>
+                                    <p className={classes.orderPrice}>0,00 PLN</p>
+                                </div>
+                                <div className={classes.header__actions}>
+                                    <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
+                                        <EditIcon />
                                     </div>
+                                    <Link to="/">
+                                        <div className={classes.actions__close}>
+                                            <span></span>
+                                        </div>
+                                    </Link>
                                 </div>
                             </div>
-                        ) : (
-                            ""
-                        )}
-                        <div className={classes.order__info}>
-                            <div className={classes.order__column}>
-                                <h2 className={classes.order__title}>Інформація</h2>
-                                <div className={classes.orderInfo__content}>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
-                                        {editMode ? <Input {...deviceType} /> : <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Виробник</h3>
-                                        {editMode ? (
-                                            <Input {...deviceProducer} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Модель</h3>
-                                        {editMode ? <Input {...deviceModel} /> : <p className={classes.orderInfo__text}>{deviceInfo.deviceModel}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Технічний стан</h3>
-                                        {editMode ? <Input {...deviceState} /> : <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Несправність</h3>
-                                        {editMode ? (
-                                            <Input {...deviceBreakage} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{deviceInfo.deviceBreakage}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>IMEI / SN</h3>
-                                        {editMode ? (
-                                            <Input {...deviceImeiSn} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{deviceInfo.deviceImeiSn}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Аксесуари</h3>
-                                        {editMode ? (
-                                            <Input {...deviceAccessories} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{deviceInfo.deviceAccessories}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Пароль</h3>
-                                        {editMode ? (
-                                            <Input {...devicePassword} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{deviceInfo.devicePassword}</p>
-                                        )}
+                            {editMode ? (
+                                <div className={classes.editMode}>
+                                    <h2 className={classes.editMode__title}>Режим редагування</h2>
+                                    <div className={classes.editMode__buttons}>
+                                        <div className={classes.editMode__button}>
+                                            <Button onClick={() => setEditMode(false)} color="red">
+                                                Cancel
+                                            </Button>
+                                        </div>
+                                        <div className={classes.editMode__button}>
+                                            <Button onClick={handleSumbit} color="blue">
+                                                Submit
+                                            </Button>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={classes.order__column}>
-                                <h2 className={classes.orderInfo__title}>Клієнт</h2>
-                                <div className={classes.orderInfo__content}>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Ім'я</h3>
-                                        {editMode ? <Input {...clientName} /> : <p className={classes.orderInfo__text}>{clientInfo.clientName}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Телефон</h3>
-                                        {editMode ? <Input {...clientPhone} /> : <p className={classes.orderInfo__text}>{clientInfo.clientPhone}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Пошта</h3>
-                                        {editMode ? <Input {...clientEmail} /> : <p className={classes.orderInfo__text}>{clientInfo.clientEmail}</p>}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Адреса</h3>
-                                        {editMode ? (
-                                            <Input {...clientAddress} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{clientInfo.clientAddress}</p>
-                                        )}
+                            ) : (
+                                ""
+                            )}
+                            <div className={classes.order__info}>
+                                <div className={classes.order__column}>
+                                    <h2 className={classes.order__title}>Інформація</h2>
+                                    <div className={classes.orderInfo__content}>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
+                                            {editMode ? (
+                                                <Input {...deviceType} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Виробник</h3>
+                                            {editMode ? (
+                                                <Input {...deviceProducer} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Модель</h3>
+                                            {editMode ? (
+                                                <Input {...deviceModel} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceModel}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Технічний стан</h3>
+                                            {editMode ? (
+                                                <Input {...deviceState} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Несправність</h3>
+                                            {editMode ? (
+                                                <Input {...deviceBreakage} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceBreakage}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>IMEI / SN</h3>
+                                            {editMode ? (
+                                                <Input {...deviceImeiSn} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceImeiSn}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Аксесуари</h3>
+                                            {editMode ? (
+                                                <Input {...deviceAccessories} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.deviceAccessories}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Пароль</h3>
+                                            {editMode ? (
+                                                <Input {...devicePassword} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{deviceInfo.devicePassword}</p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
+                                <div className={classes.order__column}>
+                                    <h2 className={classes.orderInfo__title}>Клієнт</h2>
+                                    <div className={classes.orderInfo__content}>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Ім'я</h3>
+                                            {editMode ? (
+                                                <Input {...clientName} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{clientInfo.clientName}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Телефон</h3>
+                                            {editMode ? (
+                                                <Input {...clientPhone} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{clientInfo.clientPhone}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Пошта</h3>
+                                            {editMode ? (
+                                                <Input {...clientEmail} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{clientInfo.clientEmail}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Адреса</h3>
+                                            {editMode ? (
+                                                <Input {...clientAddress} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{clientInfo.clientAddress}</p>
+                                            )}
+                                        </div>
+                                    </div>
 
-                                <h2 className={classes.orderInfo__title}>Додаткова інформація</h2>
-                                <div className={classes.orderInfo__content}>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Статус</h3>
-                                        <p className={classes.orderInfo__text}>{orderInfo.orderStatus}</p>
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
-                                        <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
-                                        {editMode ? (
-                                            <Input {...orderAccepted} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
-                                        {editMode ? (
-                                            <Input {...orderExecutor} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{orderInfo.orderExecutor}</p>
-                                        )}
-                                    </div>
-                                    <div className={classes.order__row}>
-                                        <h3 className={classes.orderInfo__title}>Термін виконання</h3>
-                                        {editMode ? (
-                                            <Input {...orderDeadline} />
-                                        ) : (
-                                            <p className={classes.orderInfo__text}>{orderInfo.orderDeadline}</p>
-                                        )}
+                                    <h2 className={classes.orderInfo__title}>Додаткова інформація</h2>
+                                    <div className={classes.orderInfo__content}>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Статус</h3>
+                                            <p className={classes.orderInfo__text}>{orderInfo.orderStatus}</p>
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
+                                            <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
+                                            {editMode ? (
+                                                <Input {...orderAccepted} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
+                                            {editMode ? (
+                                                <Input {...orderExecutor} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{orderInfo.orderExecutor}</p>
+                                            )}
+                                        </div>
+                                        <div className={classes.order__row}>
+                                            <h3 className={classes.orderInfo__title}>Термін виконання</h3>
+                                            {editMode ? (
+                                                <Input {...orderDeadline} />
+                                            ) : (
+                                                <p className={classes.orderInfo__text}>{orderInfo.orderDeadline}</p>
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>

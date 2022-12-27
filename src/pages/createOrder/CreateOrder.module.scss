@@ -131,6 +131,14 @@
                     flex-direction: column;
 
                     p {}
+
+                    span {
+                        color: constants.$warning;
+                    }
+
+                    .error {
+                        font-size: 14px;
+                    }
                 }
             }
 

@@ -1,5 +1,5 @@
 import { format } from "date-fns";
-import { doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../../firebase";
 import classes from "./StatusDropDown.module.scss";
@@ -17,6 +17,7 @@ const StatusDropDown = ({ order }) => {
         setChosenOption(status);
         const docRef = doc(db, "orders", order.fireBaseId);
         await updateDoc(docRef, { "orderInfo.orderStatus": status, "orderInfo.orderUpdatedDate": format(new Date(), "H:mm dd.MM.yyy") });
+        await updateDoc(docRef, { history: arrayUnion({ date: format(new Date(), " H:mm .MM.yy"), message: `Оновлено статус: ${status}` }) });
     };
     return (
         <div className={classes.dropdown} onMouseLeave={() => setActive(false)}>

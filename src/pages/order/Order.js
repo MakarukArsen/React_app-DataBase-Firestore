@@ -113,18 +113,18 @@ const Order = () => {
                         <thead className={classes.table__header}>
                             <tr className={classes.table__row}>
                                 <th className={classes.table__item}>Замовлення</th>
-                                <th className={classes.table__item}>Оновлено</th>
+                                {/* <th className={classes.table__item}>Оновлено</th> */}
                                 <th className={classes.table__item}>Статус</th>
                                 <th className={classes.table__item}>Клієнт</th>
-                                <th className={classes.table__item}>Прийняв замовлення</th>
-                                <th className={classes.table__item}>Виконав замовлення</th>
+                                {/* <th className={classes.table__item}>Прийняв замовлення</th> */}
+                                {/* <th className={classes.table__item}>Виконав замовлення</th> */}
                                 <th className={classes.table__item}>Вартість PLN</th>
                                 <th className={classes.table__item}>Тип</th>
                                 <th className={classes.table__item}>Виробник</th>
                                 <th className={classes.table__item}>Модель</th>
-                                <th className={classes.table__item}>Стан</th>
-                                <th className={classes.table__item}>Несправність</th>
-                                <th className={classes.table__item + " " + classes.nowrap}>IMEI / SN</th>
+                                {/* <th className={classes.table__item}>Стан</th> */}
+                                {/* <th className={classes.table__item}>Несправність</th> */}
+                                {/* <th className={classes.table__item + " " + classes.nowrap}>IMEI / SN</th> */}
                             </tr>
                         </thead>
                         <tbody className={classes.table__body}>
@@ -137,7 +137,7 @@ const Order = () => {
                                                 <td className={classes.table__item}>
                                                     <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                                 </td>
-                                                <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td>
+                                                {/* <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td> */}
                                                 <td className={classes.table__item + " " + classes.nowrap}>
                                                     <StatusDropDown order={order}></StatusDropDown>
                                                 </td>
@@ -146,15 +146,15 @@ const Order = () => {
                                                     <br />
                                                     {clientInfo.clientPhone}
                                                 </td>
-                                                <td className={classes.table__item}>{orderInfo.orderAccepted}</td>
-                                                <td className={classes.table__item}>{orderInfo.orderExecutor}</td>
+                                                {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
+                                                {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
                                                 <td className={classes.table__item}>600,00</td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceType}</td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceModel}</td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceState}</td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceBreakage}</td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceImeiSn}</td>
+                                                {/* <td className={classes.table__item}>{deviceInfo.deviceState}</td> */}
+                                                {/* <td className={classes.table__item}>{deviceInfo.deviceBreakage}</td> */}
+                                                {/* <td className={classes.table__item}>{deviceInfo.deviceImeiSn}</td> */}
                                             </tr>
                                         );
                                     })

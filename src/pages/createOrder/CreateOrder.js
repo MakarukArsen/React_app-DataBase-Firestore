@@ -16,8 +16,8 @@ import useSelect from "../../hooks/useSelect";
 const CreateOrder = () => {
     const [modalActive, setModalActive] = useState(false);
     // client info
-    const clientName = useInput("");
-    const clientPhone = useInput("");
+    const clientName = useInput("", { isEmpty: true, minLength: 2 });
+    const clientPhone = useInput("", { isEmpty: true, length: 10 });
     const clientEmail = useInput("");
     const clientAddress = useInput("");
     // tech info
@@ -62,6 +62,12 @@ const CreateOrder = () => {
         const orderData = {
             id: "",
             fireBaseId: "",
+            history: [
+                {
+                    date: format(new Date(), " H:mm .MM.yy"),
+                    message: "Призначений статус До діагностики",
+                },
+            ],
             clientInfo: {
                 clientName: clientName.value || "-",
                 clientPhone: clientPhone.value || "-",
@@ -145,19 +151,28 @@ const CreateOrder = () => {
                                     <div className={classes.clientInfo}>
                                         <div className={classes.input__section}>
                                             <p>Ім'я</p>
-                                            <Input {...clientName} />
+                                            <Input
+                                                value={clientName.value}
+                                                onChange={(e) => clientName.onChange(e)}
+                                                onBlur={(e) => clientName.onBlur(e)}
+                                            />
+                                            {clientName.isDirty && clientName.isEmpty ? <p className={classes.error}>Поле не може бути пусте</p> : ""}
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Телефон</p>
-                                            <Input {...clientPhone} />
+                                            <Input
+                                                value={clientPhone.value}
+                                                onChange={(e) => clientPhone.onChange(e)}
+                                                onBlur={(e) => clientPhone.onBlur(e)}
+                                            />
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Пошта</p>
-                                            <Input {...clientEmail} />
+                                            <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Адреса</p>
-                                            <Input {...clientAddress} />
+                                            <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
                                         </div>
                                     </div>
                                 </div>
@@ -169,13 +184,15 @@ const CreateOrder = () => {
                                             <Select {...orderType} />
                                         </div>
                                         <div className={classes.input__section}>
-                                            <p>Прийняв замовлення</p> <Input {...orderAccepted} />
+                                            <p>Прийняв замовлення</p>{" "}
+                                            <Input value={orderAccepted.value} onChange={(e) => orderAccepted.onChange(e)} />
                                         </div>
                                         <div className={classes.input__section}>
-                                            <p>Виконавець замовлення</p> <Input {...orderExecutor} />
+                                            <p>Виконавець замовлення</p>{" "}
+                                            <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
                                         </div>
                                         <div className={classes.input__section}>
-                                            <p>Термін виконання</p> <Input {...orderDeadline} />
+                                            <p>Термін виконання</p> <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
                                         </div>
                                     </div>
                                 </div>
@@ -185,28 +202,28 @@ const CreateOrder = () => {
                                 <p className={classes.content__title}>Технічна інформація</p>
                                 <div className={classes.techInfo}>
                                     <div className={classes.input__section}>
-                                        <p>Тип девайса</p> <Input {...deviceType} />
+                                        <p>Тип девайса</p> <Input value={deviceType.value} onChange={(e) => deviceType.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Виробник</p> <Input {...deviceProducer} />
+                                        <p>Виробник</p> <Input value={deviceProducer.value} onChange={(e) => deviceProducer.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Модель</p> <Input {...deviceModel} />
+                                        <p>Модель</p> <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Стан пристрою</p> <Input {...deviceState} />
+                                        <p>Стан пристрою</p> <Input value={deviceState.value} onChange={(e) => deviceState.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Несправність</p> <Input {...deviceBreakage} />
+                                        <p>Несправність</p> <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>IMEI / SN</p> <Input {...deviceImeiSn} />
+                                        <p>IMEI / SN</p> <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Аксесуари</p> <Input {...deviceAccessories} />
+                                        <p>Аксесуари</p> <Input value={deviceAccessories.value} onChange={(e) => deviceAccessories.onChange(e)} />
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Пароль</p> <Input {...devicePassword} />
+                                        <p>Пароль</p> <Input value={devicePassword.value} onChange={(e) => devicePassword.onChange(e)} />
                                     </div>
                                 </div>
                             </div>

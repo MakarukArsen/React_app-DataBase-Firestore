@@ -1,8 +1,47 @@
 @use "../../styles/constants.scss";
 
 .order {
+    &__body {
+        display: flex;
+        gap: 20px;
+    }
+
+    &__history {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 0 0 30%;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .history__title {}
+
+        .history__input {}
+
+        .history__comments {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .comment {
+                padding: 5px;
+                background-color: constants.$light-grey;
+                border-radius: 10px;
+                font-size: 14px;
+
+                .message {}
+
+                .date {
+                    font-size: 13px;
+                }
+            }
+        }
+    }
 
     &__content {
+        flex: 1 1 auto;
         display: flex;
         flex-direction: column;
         gap: 20px;
@@ -19,13 +58,20 @@
 
         .header__info {
             display: flex;
-            align-items: center;
+
             gap: 30px;
             font-size: 21px;
 
-            .orderId {
-                font-weight: 700;
+            .header__column {
+                .orderId {
+                    font-weight: 700;
+                }
+
+                .orderDate {
+                    font-size: 18px;
+                }
             }
+
 
             .orderPrice {
                 color: constants.$grey;
@@ -122,7 +168,7 @@
     &__info {
         display: flex;
         justify-content: space-around;
-        gap: 100px;
+        gap: 30px;
         background-color: constants.$white;
         padding: 15px;
         border-radius: 15px;
@@ -142,7 +188,7 @@
                 display: flex;
                 align-items: center;
                 border-bottom: 1px solid constants.$grey;
-                width: 400px;
+                width: 350px;
 
                 .orderInfo__title {
                     color: constants.$grey;

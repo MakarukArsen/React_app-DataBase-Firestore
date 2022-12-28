@@ -1,0 +1,25 @@
+@use "../../../styles/constants.scss";
+
+.modal {
+    width: 350px;
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.input {
+    height: 50px;
+    width: 100%;
+}
+
+.button {
+    height: 40px;
+    width: 100%;
+}
+
+.error {
+    color: constants.$warning;
+}

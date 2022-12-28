@@ -39,7 +39,7 @@ const Clients = () => {
             <div className={classes.clients__content}>
                 <div className={classes.clients__actions}>
                     <div className={classes.actions__search}>
-                        <Search {...search} />
+                        <Search value={search.value} onChange={(e) => search.onChange(e)} />
                     </div>
                     <div className={classes.actions__buttons}>
                         <div className={classes.button}>

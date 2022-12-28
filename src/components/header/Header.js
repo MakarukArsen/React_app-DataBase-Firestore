@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import classes from "./Header.module.scss";
 import { NavLink } from "react-router-dom";
 import TasksIcon from "../icons/TasksIcon";
@@ -6,9 +6,15 @@ import OrdersIcon from "../icons/OrdersIcon";
 import PaymentsIcon from "../icons/PaymentsIcon";
 import ClientsIcon from "../icons/ClientsIcon";
 import StorageIcon from "../icons/StorageIcon";
+import Modal from "../modals/Modal";
+import AuthModal from "../modals/auth-modal/AuthModal";
 const Header = () => {
+    const [isModalActive, setModalActive] = useState(false);
     return (
         <div className={classes.header}>
+            <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
+                <AuthModal onClose={() => setModalActive(false)} />
+            </Modal>
             <div className="container">
                 <div className={classes.header__content}>
                     <ul className={classes.navigate}>
@@ -56,7 +62,7 @@ const Header = () => {
                         </li>
                     </ul>
                     <div className={classes.header__actions}>
-                        <div className={classes.header__account}>
+                        <div onClick={() => setModalActive(true)} className={classes.header__account}>
                             <img src={require("../../assets/acc.jpg")} alt="*" />
                             <p>Account</p>
                         </div>

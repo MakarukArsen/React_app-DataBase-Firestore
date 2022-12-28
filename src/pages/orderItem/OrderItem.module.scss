@@ -33,8 +33,14 @@
 
                 .message {}
 
-                .date {
-                    font-size: 13px;
+                .submessage {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .date {}
+
+                    .author {}
                 }
             }
         }

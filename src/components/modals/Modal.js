@@ -2,19 +2,19 @@ import React, { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import classes from "./Modal.module.scss";
 const modalRootElement = document.querySelector("#modal");
-const Modal = ({ children, modalActive, onClose }) => {
+const Modal = ({ children, isModalActive, onClose }) => {
     const element = useMemo(() => document.createElement("div"), []);
 
     useEffect(() => {
         modalRootElement.appendChild(element);
-        modalActive ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
+        isModalActive ? (document.body.style.overflow = "hidden") : (document.body.style.overflow = "auto");
         return () => {
             modalRootElement.removeChild(element);
             document.body.style.overflow = "auto";
         };
-    }, [modalActive]);
+    }, [isModalActive]);
 
-    if (modalActive) {
+    if (isModalActive) {
         return createPortal(
             <>
                 <div onClick={onClose} className={classes.modal__background}></div>

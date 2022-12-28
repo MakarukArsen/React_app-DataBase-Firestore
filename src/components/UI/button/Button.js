@@ -1,6 +1,6 @@
 import React from "react";
 import classes from "./Button.module.scss";
-const Button = ({ children, color, ...props }) => {
+const Button = ({ children, color, active, ...props }) => {
     return (
         <button
             {...props}

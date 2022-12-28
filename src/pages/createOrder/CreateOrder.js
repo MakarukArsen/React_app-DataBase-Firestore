@@ -14,7 +14,7 @@ import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
 
 const CreateOrder = () => {
-    const [modalActive, setModalActive] = useState(false);
+    const [isModalActive, setModalActive] = useState(false);
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
     const clientPhone = useInput("", { isEmpty: true, length: 10 });
@@ -66,6 +66,7 @@ const CreateOrder = () => {
                 {
                     date: format(new Date(), " H:mm .MM.yy"),
                     message: "Призначений статус До діагностики",
+                    author: orderAccepted.value || "-",
                 },
             ],
             clientInfo: {
@@ -126,7 +127,7 @@ const CreateOrder = () => {
 
     return (
         <div className={classes.createOrder}>
-            <Modal modalActive={modalActive} onClose={() => setModalActive(false)}>
+            <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
                 <CreateOrderModal onClose={() => setModalActive(false)} />
             </Modal>
             <div className="container">

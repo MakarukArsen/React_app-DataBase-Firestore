@@ -8,6 +8,7 @@ import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { format } from "date-fns";
+import { v4 } from "uuid";
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
@@ -121,9 +122,12 @@ const OrderItem = () => {
                             <div className={classes.history__comments}>
                                 {order.history?.reverse()?.map((item) => {
                                     return (
-                                        <div className={classes.comment}>
+                                        <div key={v4()} className={classes.comment}>
                                             <p className={classes.message}>{item.message}</p>
-                                            <p className={classes.date}>{item.date}</p>
+                                            <div className={classes.submessage}>
+                                                <p className={classes.date}>{item.date}</p>
+                                                <p className={classes.author}>{item.author}</p>
+                                            </div>
                                         </div>
                                     );
                                 })}

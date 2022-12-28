@@ -14,7 +14,7 @@ const Order = () => {
     const [orderType, setOrderType] = useState("all");
 
     const navigate = useNavigate();
-    const search = useInput("");
+    const search = useInput("", {});
 
     useEffect(() => {
         if (orderType === "all") getOrders();
@@ -81,7 +81,7 @@ const Order = () => {
                     <div className="container">
                         <div className={classes.orderActions}>
                             <div className={classes.actions__search}>
-                                <Search {...search} />
+                                <Search value={search.value} onChange={(e) => search.onChange(e)} />
                             </div>
                             <div className={classes.actions__buttons}>
                                 <div className={classes.button}>

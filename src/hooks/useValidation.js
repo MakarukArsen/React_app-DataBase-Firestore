@@ -1,12 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 const useValidation = (value, validations) => {
     const [isEmpty, setEmpty] = useState(true);
     const [minLengthError, setMinLengthError] = useState(false);
     const [lengthError, setLengthError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [inputValid, setInputValid] = useState(false);
     useEffect(() => {
         for (const validation in validations) {
             switch (validation) {
+                case "email":
+                    const re =
+                        /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                    !re.test(value) ? setEmailError(true) : setEmailError(false);
+                    break;
                 case "minLength":
                     value.length < validations[validation] ? setMinLengthError(true) : setMinLengthError(false);
                     break;
@@ -19,11 +26,17 @@ const useValidation = (value, validations) => {
             }
         }
     }, [value]);
-
+    useEffect(() => {
+        if (minLengthError || lengthError || emailError) {
+            setInputValid(false);
+        } else setInputValid(true);
+    }, [minLengthError, lengthError, emailError]);
     return {
         isEmpty,
         lengthError,
         minLengthError,
+        emailError,
+        inputValid,
     };
 };
 

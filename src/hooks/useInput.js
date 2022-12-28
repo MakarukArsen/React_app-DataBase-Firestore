@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import useValidation from "./useValidation";
 
 const useInput = (initialValue, validations) => {
@@ -10,7 +10,7 @@ const useInput = (initialValue, validations) => {
         setValue(e.target.value);
     };
 
-    const onBlur = (e) => {
+    const onBlur = () => {
         setDirty(true);
     };
 

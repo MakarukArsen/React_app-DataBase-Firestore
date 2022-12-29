@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
@@ -9,15 +9,18 @@ import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { format } from "date-fns";
 import { v4 } from "uuid";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
+    const [userName, setUserName] = useState("");
 
     // client info
     const clientName = useInput("");
     const clientPhone = useInput("");
     const clientEmail = useInput("");
     const clientAddress = useInput("");
+
     // tech info
     const deviceType = useInput("");
     const deviceProducer = useInput("");
@@ -27,53 +30,63 @@ const OrderItem = () => {
     const deviceImeiSn = useInput("");
     const deviceAccessories = useInput("");
     const devicePassword = useInput("");
+
     // additional info
-    // const orderType = useInput("");
-    const orderAccepted = useInput("");
     const orderExecutor = useInput("");
     const orderDeadline = useInput("");
+
+    // history
+    const comment = useInput("");
 
     const match = useParams();
     const firebaseId = match.id;
 
+    const auth = getAuth();
     useEffect(() => {
-        const getOrder = async () => {
-            const docRef = doc(db, "orders", firebaseId);
-            const snapshot = await getDoc(docRef);
-            const data = snapshot.data();
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName);
+            }
+        });
+    }, [auth.currentUser]);
 
-            setOrder(data);
-            setInputValues(data);
-        };
+    useEffect(() => {
         getOrder();
-
-        const setInputValues = (data) => {
-            clientName.setValue(data.clientInfo.clientName === "-" ? "" : data.clientInfo.clientName);
-            clientPhone.setValue(data.clientInfo.clientPhone === "-" ? "" : data.clientInfo.clientPhone);
-            clientEmail.setValue(data.clientInfo.clientEmail === "-" ? "" : data.clientInfo.clientEmail);
-            clientAddress.setValue(data.clientInfo.clientAddress === "-" ? "" : data.clientInfo.clientAddress);
-
-            deviceType.setValue(data.deviceInfo.deviceType === "-" ? "" : data.deviceInfo.deviceType);
-            deviceProducer.setValue(data.deviceInfo.deviceProducer === "-" ? "" : data.deviceInfo.deviceProducer);
-            deviceModel.setValue(data.deviceInfo.deviceModel === "-" ? "" : data.deviceInfo.deviceModel);
-            deviceState.setValue(data.deviceInfo.deviceState === "-" ? "" : data.deviceInfo.deviceState);
-            deviceBreakage.setValue(data.deviceInfo.deviceBreakage === "-" ? "" : data.deviceInfo.deviceBreakage);
-            deviceImeiSn.setValue(data.deviceInfo.deviceImeiSn === "-" ? "" : data.deviceInfo.deviceImeiSn);
-            deviceAccessories.setValue(data.deviceInfo.deviceAccessories === "-" ? "" : data.deviceInfo.deviceAccessories);
-            devicePassword.setValue(data.deviceInfo.devicePassword === "-" ? "" : data.deviceInfo.devicePassword);
-
-            // orderType.setValue(data.orderInfo.orderType === "-" ? "" : data.orderInfo.orderType);
-            orderAccepted.setValue(data.orderInfo.orderAccepted === "-" ? "" : data.orderInfo.orderAccepted);
-            orderExecutor.setValue(data.orderInfo.orderExecutor === "-" ? "" : data.orderInfo.orderExecutor);
-            orderDeadline.setValue(data.orderInfo.orderDeadline === "-" ? "" : data.orderInfo.orderDeadline);
-        };
     }, [editMode]);
 
+    const getOrder = async () => {
+        const docRef = doc(db, "orders", firebaseId);
+        const snapshot = await getDoc(docRef);
+        const data = snapshot.data();
+
+        setOrder(data);
+        setInputValues(data);
+    };
+
+    const setInputValues = (data) => {
+        clientName.setValue(data.clientInfo.clientName === "-" ? "" : data.clientInfo.clientName);
+        clientPhone.setValue(data.clientInfo.clientPhone === "-" ? "" : data.clientInfo.clientPhone);
+        clientEmail.setValue(data.clientInfo.clientEmail === "-" ? "" : data.clientInfo.clientEmail);
+        clientAddress.setValue(data.clientInfo.clientAddress === "-" ? "" : data.clientInfo.clientAddress);
+
+        deviceType.setValue(data.deviceInfo.deviceType === "-" ? "" : data.deviceInfo.deviceType);
+        deviceProducer.setValue(data.deviceInfo.deviceProducer === "-" ? "" : data.deviceInfo.deviceProducer);
+        deviceModel.setValue(data.deviceInfo.deviceModel === "-" ? "" : data.deviceInfo.deviceModel);
+        deviceState.setValue(data.deviceInfo.deviceState === "-" ? "" : data.deviceInfo.deviceState);
+        deviceBreakage.setValue(data.deviceInfo.deviceBreakage === "-" ? "" : data.deviceInfo.deviceBreakage);
+        deviceImeiSn.setValue(data.deviceInfo.deviceImeiSn === "-" ? "" : data.deviceInfo.deviceImeiSn);
+        deviceAccessories.setValue(data.deviceInfo.deviceAccessories === "-" ? "" : data.deviceInfo.deviceAccessories);
+        devicePassword.setValue(data.deviceInfo.devicePassword === "-" ? "" : data.deviceInfo.devicePassword);
+
+        orderExecutor.setValue(data.orderInfo.orderExecutor === "-" ? "" : data.orderInfo.orderExecutor);
+        orderDeadline.setValue(data.orderInfo.orderDeadline === "-" ? "" : data.orderInfo.orderDeadline);
+    };
     const handleSumbit = async (e) => {
         e.preventDefault();
         const orderData = {
             id: order.id,
             fireBaseId: "",
+            history: order.history,
             clientInfo: {
                 clientName: clientName.value || "-",
                 clientPhone: clientPhone.value || "-",
@@ -97,7 +110,7 @@ const OrderItem = () => {
                 orderUpdatedDate: format(new Date(), "H:mm dd.MM.yyy"),
                 orderStatus: order.orderInfo.orderStatus,
                 orderType: order.orderInfo.orderType,
-                orderAccepted: orderAccepted.value || "-",
+                orderAccepted: order.orderInfo.orderAccepted,
                 orderExecutor: orderExecutor.value || "-",
                 orderDeadline: orderDeadline.value || "-",
             },
@@ -106,8 +119,20 @@ const OrderItem = () => {
         await setDoc(docRef, orderData);
         setEditMode(false);
     };
-
-    const { deviceInfo, clientInfo, orderInfo } = order;
+    const createComment = async () => {
+        const docRef = doc(db, "orders", firebaseId);
+        await updateDoc(docRef, {
+            history: arrayUnion({
+                techDate: Date.now(),
+                date: format(new Date(), " H:mm .MM.yy"),
+                message: `Коментар: ${comment.value}`,
+                author: userName,
+            }),
+        });
+        comment.setValue("");
+        getOrder();
+    };
+    const { deviceInfo, clientInfo, orderInfo, history } = order;
 
     return (
         <div className={classes.order}>
@@ -117,20 +142,27 @@ const OrderItem = () => {
                         <div className={classes.order__history}>
                             <h2 className={classes.history__title}>History</h2>
                             <div className={classes.history__input}>
-                                <Input />
+                                <Input placeholder="Leave a comment..." value={comment.value} onChange={(e) => comment.onChange(e)} />
+                                <div className={classes.history__submitComment}>
+                                    <Button onClick={createComment} color="blue">
+                                        Submit
+                                    </Button>
+                                </div>
                             </div>
                             <div className={classes.history__comments}>
-                                {order.history?.reverse()?.map((item) => {
-                                    return (
-                                        <div key={v4()} className={classes.comment}>
-                                            <p className={classes.message}>{item.message}</p>
-                                            <div className={classes.submessage}>
-                                                <p className={classes.date}>{item.date}</p>
-                                                <p className={classes.author}>{item.author}</p>
+                                {history
+                                    .sort((a, b) => b.techDate - a.techDate)
+                                    ?.map((item) => {
+                                        return (
+                                            <div key={v4()} className={classes.comment}>
+                                                <p className={classes.message}>{item.message}</p>
+                                                <div className={classes.submessage}>
+                                                    <p className={classes.date}>{item.date}</p>
+                                                    <p className={classes.author}>{item.author}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    );
-                                })}
+                                        );
+                                    })}
                             </div>
                         </div>
                         <div className={classes.order__content}>
@@ -291,11 +323,7 @@ const OrderItem = () => {
                                         </div>
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
-                                            {editMode ? (
-                                                <Input {...orderAccepted} />
-                                            ) : (
-                                                <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
-                                            )}
+                                            <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
                                         </div>
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>

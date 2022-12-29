@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./CreateOrder.module.scss";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
@@ -12,15 +12,19 @@ import CreateOrderModal from "../../components/modals/create-order-modal/CreateO
 import { Link } from "react-router-dom";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 
 const CreateOrder = () => {
     const [isModalActive, setModalActive] = useState(false);
+    const [userName, setUserName] = useState("");
+
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
     const clientPhone = useInput("", { isEmpty: true, length: 10 });
     const clientEmail = useInput("");
     const clientAddress = useInput("");
     // tech info
+
     const deviceType = useInput("");
     const deviceProducer = useInput("");
     const deviceModel = useInput("");
@@ -32,11 +36,11 @@ const CreateOrder = () => {
     // additional info
 
     const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
-    const orderAccepted = useInput("");
     const orderExecutor = useInput("");
     const orderDeadline = useInput("");
 
     const dispatch = useDispatch();
+    const auth = getAuth();
 
     const clearInputs = () => {
         clientName.clear();
@@ -53,10 +57,18 @@ const CreateOrder = () => {
         deviceAccessories.clear();
         devicePassword.clear();
 
-        orderAccepted.clear();
         orderExecutor.clear();
         orderDeadline.clear();
     };
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName);
+            }
+        });
+    }, [auth.currentUser]);
+
     const handleSumbit = async (e) => {
         e.preventDefault();
         const orderData = {
@@ -64,9 +76,10 @@ const CreateOrder = () => {
             fireBaseId: "",
             history: [
                 {
-                    date: format(new Date(), " H:mm .MM.yy"),
-                    message: "Призначений статус До діагностики",
-                    author: orderAccepted.value || "-",
+                    techDate: Date.now(),
+                    date: format(new Date(), " H:mm dd.MM.yy"),
+                    message: "Замовлення створене",
+                    author: userName,
                 },
             ],
             clientInfo: {
@@ -92,7 +105,7 @@ const CreateOrder = () => {
                 orderUpdatedDate: "-",
                 orderStatus: "До діагностики",
                 orderType: orderType.value || "-",
-                orderAccepted: orderAccepted.value || "-",
+                orderAccepted: userName,
                 orderExecutor: orderExecutor.value || "-",
                 orderDeadline: orderDeadline.value || "-",
             },
@@ -184,10 +197,7 @@ const CreateOrder = () => {
                                             <p>Тип замовлення</p>
                                             <Select {...orderType} />
                                         </div>
-                                        <div className={classes.input__section}>
-                                            <p>Прийняв замовлення</p>{" "}
-                                            <Input value={orderAccepted.value} onChange={(e) => orderAccepted.onChange(e)} />
-                                        </div>
+
                                         <div className={classes.input__section}>
                                             <p>Виконавець замовлення</p>{" "}
                                             <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />

@@ -1,11 +1,23 @@
 import { format } from "date-fns";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { arrayUnion, doc, updateDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import classes from "./StatusDropDown.module.scss";
 const StatusDropDown = ({ order }) => {
     const [active, setActive] = useState(false);
     const [chosenOption, setChosenOption] = useState(order.orderInfo.orderStatus);
+    const [userName, setUserName] = useState("");
+
+    const auth = getAuth();
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName);
+            }
+        });
+    }, [auth.currentUser]);
+
     const handleClick = (e) => {
         e.stopPropagation();
         setActive(!active);
@@ -17,7 +29,14 @@ const StatusDropDown = ({ order }) => {
         setChosenOption(status);
         const docRef = doc(db, "orders", order.fireBaseId);
         await updateDoc(docRef, { "orderInfo.orderStatus": status, "orderInfo.orderUpdatedDate": format(new Date(), "H:mm dd.MM.yyy") });
-        await updateDoc(docRef, { history: arrayUnion({ date: format(new Date(), " H:mm .MM.yy"), message: `Оновлено статус: ${status}` }) });
+        await updateDoc(docRef, {
+            history: arrayUnion({
+                techDate: Date.now(),
+                date: format(new Date(), " H:mm .MM.yy"),
+                message: `Оновлено статус: ${status}`,
+                author: userName,
+            }),
+        });
     };
     return (
         <div className={classes.dropdown} onMouseLeave={() => setActive(false)}>

@@ -3,10 +3,18 @@ import classes from "./AuthModal.module.scss";
 import useInput from "../../../hooks/useInput";
 import Input from "../../UI/input/Input";
 import Button from "../../UI/button/Button";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 const AuthModal = () => {
     const email = useInput("", { isEmpty: true, email: true });
     const password = useInput("", { isEmpty: true, minLength: 6 });
+
+    const auth = getAuth();
+
+    const handleLogin = async (e) => {
+        e.preventDefault();
+        await signInWithEmailAndPassword(auth, email.value, password.value).then((user) => console.log(user));
+    };
     return (
         <div className={classes.modal}>
             <form className={classes.form}>
@@ -27,7 +35,7 @@ const AuthModal = () => {
                         : ""}
                 </p>
                 <div className={classes.button}>
-                    <Button disabled={!email.inputValid || !password.inputValid} color="blue">
+                    <Button onClick={handleLogin} disabled={!email.inputValid || !password.inputValid} color="blue">
                         login
                     </Button>
                 </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./Header.module.scss";
 import { NavLink } from "react-router-dom";
 import TasksIcon from "../icons/TasksIcon";
@@ -8,8 +8,21 @@ import ClientsIcon from "../icons/ClientsIcon";
 import StorageIcon from "../icons/StorageIcon";
 import Modal from "../modals/Modal";
 import AuthModal from "../modals/auth-modal/AuthModal";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+
 const Header = () => {
     const [isModalActive, setModalActive] = useState(false);
+    const [userName, setUserName] = useState("LogIn");
+
+    const auth = getAuth();
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName);
+            }
+        });
+    }, [auth.currentUser]);
+
     return (
         <div className={classes.header}>
             <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
@@ -64,7 +77,7 @@ const Header = () => {
                     <div className={classes.header__actions}>
                         <div onClick={() => setModalActive(true)} className={classes.header__account}>
                             <img src={require("../../assets/acc.jpg")} alt="*" />
-                            <p>Account</p>
+                            <p>{userName}</p>
                         </div>
                     </div>
                 </div>

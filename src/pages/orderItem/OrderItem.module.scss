@@ -1,12 +1,15 @@
 @use "../../styles/constants.scss";
 
 .order {
+
     &__body {
         display: flex;
         gap: 20px;
+
     }
 
     &__history {
+        max-height: calc(100vh - 84px);
         display: flex;
         flex-direction: column;
         gap: 10px;
@@ -18,12 +21,22 @@
 
         .history__title {}
 
-        .history__input {}
+        .history__input {
+            display: flex;
+            gap: 10px;
+
+            .history__submitComment {
+                flex: 0 0 80px;
+            }
+        }
 
         .history__comments {
+            padding-right: 10px;
+            overflow-y: auto;
             display: flex;
             flex-direction: column;
             gap: 10px;
+            flex: 0 1 auto;
 
             .comment {
                 padding: 5px;

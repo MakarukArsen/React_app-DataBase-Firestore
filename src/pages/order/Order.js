@@ -27,7 +27,7 @@ const Order = () => {
         const snapshots = await getDocs(ordersRef);
         const ordersData = snapshots.docs.map((doc) => {
             const data = doc.data();
-            data.fireBaseId = doc.id;
+            data.firebaseId = doc.id;
             return data;
         });
         ordersData.sort((a, b) => {
@@ -42,7 +42,7 @@ const Order = () => {
         const querySnapshot = await getDocs(q);
         const ordersRepair = querySnapshot.docs.map((doc) => {
             const data = doc.data();
-            data.fireBaseId = doc.id;
+            data.firebaseId = doc.id;
             return data;
         });
         setOrders(ordersRepair);
@@ -54,7 +54,7 @@ const Order = () => {
         const querySnapshot = await getDocs(q);
         const ordersDataRecovery = querySnapshot.docs.map((doc) => {
             const data = doc.data();
-            data.fireBaseId = doc.id;
+            data.firebaseId = doc.id;
             return data;
         });
         setOrders(ordersDataRecovery);
@@ -70,8 +70,8 @@ const Order = () => {
 
     const filteredOrders = filterOrders();
 
-    const openOrderPage = (fireBaseId) => {
-        navigate(`order/${fireBaseId}`);
+    const openOrderPage = (firebaseId) => {
+        navigate(`order/${firebaseId}`);
     };
 
     return (
@@ -133,13 +133,13 @@ const Order = () => {
                                     filteredOrders.map((order) => {
                                         const { clientInfo, orderInfo, deviceInfo } = order;
                                         return (
-                                            <tr onClick={() => openOrderPage(order.fireBaseId)} key={v4()} className={classes.table__row}>
+                                            <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
                                                 <td className={classes.table__item}>
                                                     <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                                 </td>
                                                 {/* <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td> */}
                                                 <td className={classes.table__item + " " + classes.nowrap}>
-                                                    <StatusDropDown order={order}></StatusDropDown>
+                                                    <StatusDropDown firebaseId={order.firebaseId} order={order}></StatusDropDown>
                                                 </td>
                                                 <td className={classes.table__item}>
                                                     {clientInfo.clientName}

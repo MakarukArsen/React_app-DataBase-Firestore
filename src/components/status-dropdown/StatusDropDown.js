@@ -4,7 +4,7 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import classes from "./StatusDropDown.module.scss";
-const StatusDropDown = ({ order }) => {
+const StatusDropDown = ({ order, firebaseId }) => {
     const [active, setActive] = useState(false);
     const [chosenOption, setChosenOption] = useState(order.orderInfo.orderStatus);
     const [userName, setUserName] = useState("");
@@ -27,9 +27,10 @@ const StatusDropDown = ({ order }) => {
         e.stopPropagation();
         setActive(false);
         setChosenOption(status);
-        const docRef = doc(db, "orders", order.fireBaseId);
-        await updateDoc(docRef, { "orderInfo.orderStatus": status, "orderInfo.orderUpdatedDate": format(new Date(), "H:mm dd.MM.yyy") });
+        const docRef = doc(db, "orders", firebaseId);
         await updateDoc(docRef, {
+            "orderInfo.orderStatus": status,
+            "orderInfo.orderUpdatedDate": format(new Date(), "H:mm dd.MM.yyy"),
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), " H:mm .MM.yy"),

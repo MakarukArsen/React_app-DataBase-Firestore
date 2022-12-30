@@ -31,8 +31,8 @@ const CreateOrder = () => {
     const deviceState = useInput("");
     const deviceBreakage = useInput("");
     const deviceImeiSn = useInput("");
-    const deviceAccessories = useInput("");
-    const devicePassword = useInput("");
+    const deviceAccessories = useInput("", { isEmpty: true });
+    const devicePassword = useInput("", { isEmpty: true, minLength: 4 });
     // additional info
 
     const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
@@ -165,28 +165,51 @@ const CreateOrder = () => {
                                     <div className={classes.clientInfo}>
                                         <div className={classes.input__section}>
                                             <p>Ім'я</p>
-                                            <Input
-                                                value={clientName.value}
-                                                onChange={(e) => clientName.onChange(e)}
-                                                onBlur={(e) => clientName.onBlur(e)}
-                                            />
-                                            {clientName.isDirty && clientName.isEmpty ? <p className={classes.error}>Поле не може бути пусте</p> : ""}
+                                            <div className={classes.input}>
+                                                <Input
+                                                    value={clientName.value}
+                                                    onChange={(e) => clientName.onChange(e)}
+                                                    onBlur={(e) => clientName.onBlur(e)}
+                                                />
+                                            </div>
+
+                                            <p className={classes.error}>
+                                                {clientName.isDirty && clientName.isEmpty
+                                                    ? "Поле не може бути пустим"
+                                                    : clientName.isDirty && clientName.minLengthError
+                                                    ? "Мінімальна кількість символів 2"
+                                                    : ""}
+                                            </p>
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Телефон</p>
-                                            <Input
-                                                value={clientPhone.value}
-                                                onChange={(e) => clientPhone.onChange(e)}
-                                                onBlur={(e) => clientPhone.onBlur(e)}
-                                            />
+                                            <div className={classes.input}>
+                                                <Input
+                                                    value={clientPhone.value}
+                                                    onChange={(e) => clientPhone.onChange(e)}
+                                                    onBlur={(e) => clientPhone.onBlur(e)}
+                                                />
+                                            </div>
+
+                                            <p className={classes.error}>
+                                                {clientPhone.isDirty && clientPhone.isEmpty
+                                                    ? "Поле не може бути пустим"
+                                                    : clientPhone.isDirty && clientPhone.lengthError
+                                                    ? "Кількість символів 10"
+                                                    : ""}
+                                            </p>
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Пошта</p>
-                                            <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
+                                            <div className={classes.input}>
+                                                <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
+                                            </div>
                                         </div>
                                         <div className={classes.input__section}>
                                             <p>Адреса</p>
-                                            <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
+                                            <div className={classes.input}>
+                                                <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -199,11 +222,16 @@ const CreateOrder = () => {
                                         </div>
 
                                         <div className={classes.input__section}>
-                                            <p>Виконавець замовлення</p>{" "}
-                                            <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
+                                            <p>Виконавець замовлення</p>
+                                            <div className={classes.input}>
+                                                <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
+                                            </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <p>Термін виконання</p> <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
+                                            <p>Термін виконання</p>
+                                            <div className={classes.input}>
+                                                <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -213,33 +241,79 @@ const CreateOrder = () => {
                                 <p className={classes.content__title}>Технічна інформація</p>
                                 <div className={classes.techInfo}>
                                     <div className={classes.input__section}>
-                                        <p>Тип девайса</p> <Input value={deviceType.value} onChange={(e) => deviceType.onChange(e)} />
+                                        <p>Тип девайса</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceType.value} onChange={(e) => deviceType.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Виробник</p> <Input value={deviceProducer.value} onChange={(e) => deviceProducer.onChange(e)} />
+                                        <p>Виробник</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceProducer.value} onChange={(e) => deviceProducer.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Модель</p> <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
+                                        <p>Модель</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Стан пристрою</p> <Input value={deviceState.value} onChange={(e) => deviceState.onChange(e)} />
+                                        <p>Стан пристрою</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceState.value} onChange={(e) => deviceState.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Несправність</p> <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
+                                        <p>Несправність</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>IMEI / SN</p> <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
+                                        <p>IMEI / SN</p>
+                                        <div className={classes.input}>
+                                            <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
+                                        </div>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Аксесуари</p> <Input value={deviceAccessories.value} onChange={(e) => deviceAccessories.onChange(e)} />
+                                        <p>Аксесуари</p>
+                                        <div className={classes.input}>
+                                            <Input
+                                                value={deviceAccessories.value}
+                                                onChange={(e) => deviceAccessories.onChange(e)}
+                                                onBlur={() => deviceAccessories.onBlur()}
+                                            />
+                                        </div>
+                                        <p className={classes.error}>
+                                            {deviceAccessories.isDirty && deviceAccessories.isEmpty ? "Поле не може бути пустим" : ""}
+                                        </p>
                                     </div>
                                     <div className={classes.input__section}>
-                                        <p>Пароль</p> <Input value={devicePassword.value} onChange={(e) => devicePassword.onChange(e)} />
+                                        <p>Пароль</p>
+                                        <div className={classes.input}>
+                                            <Input
+                                                value={devicePassword.value}
+                                                onChange={(e) => devicePassword.onChange(e)}
+                                                onBlur={() => devicePassword.onBlur()}
+                                            />
+                                        </div>
+                                        <p className={classes.error}>
+                                            {devicePassword.isDirty && devicePassword.isEmpty
+                                                ? "Поле не може бути пустим"
+                                                : devicePassword.isDirty && devicePassword.minLengthError
+                                                ? "Мінімальна кількість символів 4"
+                                                : ""}
+                                        </p>
                                     </div>
                                 </div>
                             </div>
                             <div className={classes.button}>
-                                <Button onClick={handleSumbit} color="blue">
+                                {console.log(clientName.inputValid)}
+                                <Button
+                                    disabled={!clientName.inputValid || !clientPhone.inputValid || !deviceAccessories || !devicePassword}
+                                    onClick={handleSumbit}
+                                    color="blue">
                                     Завершити
                                 </Button>
                             </div>

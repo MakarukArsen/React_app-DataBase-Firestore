@@ -5,11 +5,10 @@
     &__body {
         display: flex;
         gap: 20px;
-
+        max-height: 820px;
     }
 
     &__history {
-        max-height: calc(100vh - 84px);
         display: flex;
         flex-direction: column;
         gap: 10px;

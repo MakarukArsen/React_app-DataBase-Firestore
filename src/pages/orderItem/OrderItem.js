@@ -10,6 +10,7 @@ import Button from "../../components/UI/button/Button";
 import { format } from "date-fns";
 import { v4 } from "uuid";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
@@ -124,7 +125,7 @@ const OrderItem = () => {
         await updateDoc(docRef, {
             history: arrayUnion({
                 techDate: Date.now(),
-                date: format(new Date(), " H:mm .MM.yy"),
+                date: format(new Date(), " H:mm dd.MM.yy"),
                 message: `Коментар: ${comment.value}`,
                 author: userName,
             }),
@@ -211,7 +212,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
                                             {editMode ? (
-                                                <Input {...deviceType} />
+                                                <Input value={deviceType.value} onChange={(e) => deviceType.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>
                                             )}
@@ -219,7 +220,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Виробник</h3>
                                             {editMode ? (
-                                                <Input {...deviceProducer} />
+                                                <Input value={deviceProducer.value} onChange={(e) => deviceProducer.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
                                             )}
@@ -227,7 +228,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Модель</h3>
                                             {editMode ? (
-                                                <Input {...deviceModel} />
+                                                <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceModel}</p>
                                             )}
@@ -235,7 +236,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Технічний стан</h3>
                                             {editMode ? (
-                                                <Input {...deviceState} />
+                                                <Input value={deviceState.value} onChange={(e) => deviceState.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>
                                             )}
@@ -243,7 +244,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Несправність</h3>
                                             {editMode ? (
-                                                <Input {...deviceBreakage} />
+                                                <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceBreakage}</p>
                                             )}
@@ -251,7 +252,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>IMEI / SN</h3>
                                             {editMode ? (
-                                                <Input {...deviceImeiSn} />
+                                                <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceImeiSn}</p>
                                             )}
@@ -259,7 +260,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Аксесуари</h3>
                                             {editMode ? (
-                                                <Input {...deviceAccessories} />
+                                                <Input value={deviceAccessories.value} onChange={(e) => deviceAccessories.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.deviceAccessories}</p>
                                             )}
@@ -267,7 +268,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Пароль</h3>
                                             {editMode ? (
-                                                <Input {...devicePassword} />
+                                                <Input value={devicePassword.value} onChange={(e) => devicePassword.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{deviceInfo.devicePassword}</p>
                                             )}
@@ -280,7 +281,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Ім'я</h3>
                                             {editMode ? (
-                                                <Input {...clientName} />
+                                                <Input value={clientName.value} onChange={(e) => clientName.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{clientInfo.clientName}</p>
                                             )}
@@ -288,7 +289,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Телефон</h3>
                                             {editMode ? (
-                                                <Input {...clientPhone} />
+                                                <Input value={clientPhone.value} onChange={(e) => clientPhone.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{clientInfo.clientPhone}</p>
                                             )}
@@ -296,7 +297,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Пошта</h3>
                                             {editMode ? (
-                                                <Input {...clientEmail} />
+                                                <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{clientInfo.clientEmail}</p>
                                             )}
@@ -304,7 +305,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Адреса</h3>
                                             {editMode ? (
-                                                <Input {...clientAddress} />
+                                                <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{clientInfo.clientAddress}</p>
                                             )}
@@ -315,7 +316,9 @@ const OrderItem = () => {
                                     <div className={classes.orderInfo__content}>
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Статус</h3>
-                                            <p className={classes.orderInfo__text}>{orderInfo.orderStatus}</p>
+                                            <p className={classes.orderInfo__text}>
+                                                <StatusDropDown firebaseId={firebaseId} order={order}></StatusDropDown>
+                                            </p>
                                         </div>
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
@@ -328,7 +331,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
                                             {editMode ? (
-                                                <Input {...orderExecutor} />
+                                                <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{orderInfo.orderExecutor}</p>
                                             )}
@@ -336,7 +339,7 @@ const OrderItem = () => {
                                         <div className={classes.order__row}>
                                             <h3 className={classes.orderInfo__title}>Термін виконання</h3>
                                             {editMode ? (
-                                                <Input {...orderDeadline} />
+                                                <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
                                             ) : (
                                                 <p className={classes.orderInfo__text}>{orderInfo.orderDeadline}</p>
                                             )}

@@ -1,68 +1,11 @@
 @use "../../styles/constants.scss";
 
 .order {
-
     &__body {
         display: flex;
-        gap: 20px;
-        max-height: 820px;
-    }
-
-    &__history {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        flex: 0 0 30%;
-        background-color: constants.$white;
-        padding: 15px;
-        border-radius: 15px;
-        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
-
-        .history__title {}
-
-        .history__input {
-            display: flex;
-            gap: 10px;
-
-            .history__submitComment {
-                flex: 0 0 80px;
-            }
-        }
-
-        .history__comments {
-            padding-right: 10px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            flex: 0 1 auto;
-
-            .comment {
-                padding: 5px;
-                background-color: constants.$light-grey;
-                border-radius: 10px;
-                font-size: 14px;
-
-                .message {}
-
-                .submessage {
-                    display: flex;
-                    align-items: center;
-                    gap: 10px;
-
-                    .date {}
-
-                    .author {}
-                }
-            }
-        }
-    }
-
-    &__content {
-        flex: 1 1 auto;
-        display: flex;
         flex-direction: column;
         gap: 20px;
+
     }
 
     &__header {
@@ -90,7 +33,6 @@
                 }
             }
 
-
             .orderPrice {
                 color: constants.$grey;
                 font-weight: 600;
@@ -100,7 +42,19 @@
         .header__actions {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
+
+            .actions__payment {
+                width: 30px;
+                height: 30px;
+                fill: constants.$grey;
+                cursor: pointer;
+                transition: ease .25s;
+
+                &:hover {
+                    fill: green;
+                }
+            }
 
             .actions__edit {
                 width: 25px;
@@ -155,7 +109,104 @@
         }
     }
 
-    .editMode {
+    &__payment {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .title {
+            font-size: 21px;
+        }
+
+        .content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+
+            .col {
+                display: flex;
+                flex-direction: column;
+                gap: 8px;
+
+                h3 {
+                    font-size: 18px;
+                }
+
+                p {}
+            }
+        }
+    }
+
+    &__content {
+        flex: 1 1 auto;
+        display: flex;
+        gap: 20px;
+    }
+
+    &__history {
+        max-height: calc(100vh - 100px);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        flex: 0 0 30%;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .history__title {}
+
+        .history__input {
+            display: flex;
+            gap: 10px;
+
+            .history__submitComment {
+                flex: 0 0 80px;
+            }
+        }
+
+        .history__comments {
+            padding-right: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 0 1 auto;
+
+            .comment {
+                padding: 5px;
+                background-color: constants.$light-grey;
+                border-radius: 10px;
+                font-size: 14px;
+
+                .message {}
+
+                .submessage {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .date {}
+
+                    .author {}
+                }
+            }
+        }
+    }
+
+    &__column {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        flex: 1 1 auto;
+    }
+
+    &__editMode {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -164,12 +215,12 @@
         border-radius: 15px;
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
 
-        &__title {
+        .title {
             font-size: 28px;
             flex: 1 1 100%;
         }
 
-        &__buttons {
+        .buttons {
             flex: 0 1 100%;
             display: flex;
             align-items: center;
@@ -177,7 +228,7 @@
             gap: 50px;
         }
 
-        &__button {
+        .button {
             flex: 0 0 120px;
             height: 35px;
         }
@@ -191,6 +242,7 @@
         padding: 15px;
         border-radius: 15px;
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+        height: 100%;
 
         .order__column {
             display: flex;

@@ -74,6 +74,7 @@ const CreateOrder = () => {
         const orderData = {
             id: "",
             fireBaseId: "",
+            payment: [],
             history: [
                 {
                     techDate: Date.now(),
@@ -311,7 +312,12 @@ const CreateOrder = () => {
                             <div className={classes.button}>
                                 {console.log(clientName.inputValid)}
                                 <Button
-                                    disabled={!clientName.inputValid || !clientPhone.inputValid || !deviceAccessories || !devicePassword}
+                                    disabled={
+                                        !clientName.inputValid ||
+                                        !clientPhone.inputValid ||
+                                        !deviceAccessories.inputValid ||
+                                        !devicePassword.inputValid
+                                    }
                                     onClick={handleSumbit}
                                     color="blue">
                                     Завершити

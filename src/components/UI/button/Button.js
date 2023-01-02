@@ -1,7 +1,6 @@
 import React from "react";
 import classes from "./Button.module.scss";
 const Button = ({ children, color, ...props }) => {
-    console.log(props);
     return (
         <button
             {...props}

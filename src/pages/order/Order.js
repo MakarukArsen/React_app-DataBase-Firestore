@@ -73,7 +73,7 @@ const Order = () => {
     const openOrderPage = (firebaseId) => {
         navigate(`order/${firebaseId}`);
     };
-
+    console.log("123");
     return (
         <div className={classes.order}>
             <div className={classes.order__content}>

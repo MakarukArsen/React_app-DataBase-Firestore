@@ -60,7 +60,6 @@ const OrderItem = () => {
             const data = doc.data();
             setOrder(data);
             setInputValues(data);
-            console.log("123");
         });
         return () => {
             unsub();
@@ -139,7 +138,6 @@ const OrderItem = () => {
     };
 
     const { deviceInfo, clientInfo, orderInfo, history, payment } = order;
-    console.log(payment);
     return (
         <div className={classes.order}>
             <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
@@ -154,7 +152,14 @@ const OrderItem = () => {
                                     <p className={classes.orderId}>Замовлення #{order.id}</p>
                                     <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
                                 </div>
-                                <p className={classes.orderPrice}>0,00 PLN</p>
+                                <p className={classes.orderPrice}>
+                                    {Object.keys(payment).length
+                                        ? payment.length > 1
+                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
+                                            : payment[0].repairPrice
+                                        : "0.00"}{" "}
+                                    PLN
+                                </p>
                             </div>
                             <div className={classes.header__actions}>
                                 <div onClick={() => setModalActive(true)} className={classes.actions__payment}>

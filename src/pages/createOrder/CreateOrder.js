@@ -310,7 +310,6 @@ const CreateOrder = () => {
                                 </div>
                             </div>
                             <div className={classes.button}>
-                                {console.log(clientName.inputValid)}
                                 <Button
                                     disabled={
                                         !clientName.inputValid ||

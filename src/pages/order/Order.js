@@ -73,7 +73,6 @@ const Order = () => {
     const openOrderPage = (firebaseId) => {
         navigate(`order/${firebaseId}`);
     };
-    console.log("123");
     return (
         <div className={classes.order}>
             <div className={classes.order__content}>
@@ -131,7 +130,7 @@ const Order = () => {
                             {orders.length ? (
                                 filteredOrders.length ? (
                                     filteredOrders.map((order) => {
-                                        const { clientInfo, orderInfo, deviceInfo } = order;
+                                        const { clientInfo, orderInfo, deviceInfo, payment } = order;
                                         return (
                                             <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
                                                 <td className={classes.table__item}>
@@ -148,7 +147,13 @@ const Order = () => {
                                                 </td>
                                                 {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
                                                 {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
-                                                <td className={classes.table__item}>600,00</td>
+                                                <td className={classes.table__item}>
+                                                    {Object.keys(payment).length
+                                                        ? payment.length > 1
+                                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
+                                                            : payment[0].repairPrice
+                                                        : "-"}
+                                                </td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceType}</td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceModel}</td>

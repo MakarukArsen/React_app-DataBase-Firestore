@@ -217,9 +217,9 @@ const OrderItem = () => {
                                         ))}
                                     </div>
                                     <div className={classes.col}>
-                                        <h3>Гарантія</h3>
+                                        <h3>Гарантія дн.</h3>
                                         {payment.map((item) => (
-                                            <p key={v4()}>{item.guarantee} дн.</p>
+                                            <p key={v4()}>{item.guarantee}</p>
                                         ))}
                                     </div>
                                     <div className={classes.col}>

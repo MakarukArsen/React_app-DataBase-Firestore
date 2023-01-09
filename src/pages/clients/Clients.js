@@ -3,10 +3,10 @@ import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import classes from "./Clients.module.scss";
 import { v4 } from "uuid";
-import Search from "../../components/UI/search/Search";
 import { Link } from "react-router-dom";
 import Button from "../../components/UI/button/Button";
 import useInput from "../../hooks/useInput";
+import Search from "../../components/UI/search/Search";
 const Clients = () => {
     const [clients, setClients] = useState([]);
 

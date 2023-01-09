@@ -32,7 +32,7 @@ const PaymentModal = ({ firebaseId, onClose }) => {
                 repairCost: +repairCost.value,
                 repairPrice: +repairPrice.value,
                 paymentType: paymentType,
-                guarantee: guarantee.value,
+                guarantee: guarantee.value || "-",
                 date: format(new Date(), "H:mm dd.MM.yy"),
             }),
             history: arrayUnion({

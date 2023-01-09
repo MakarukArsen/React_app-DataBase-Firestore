@@ -5,7 +5,7 @@ const Button = ({ children, color, ...props }) => {
         <button
             {...props}
             className={`${classes.button} ${color === "white" ? classes.whiteButton : color === "blue" ? classes.blueButton : classes.blackButton} 
-            ${props.disabled && classes.disabled} ${props.active && classes.active}`}>
+            ${props.disabled && classes.disabled} ${props.active === "true" && classes.active}`}>
             <p className={classes.buttonText}>{children}</p>
         </button>
     );

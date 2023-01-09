@@ -7,14 +7,15 @@ import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Button from "../../components/UI/button/Button";
-import Search from "../../components/UI/search/Search";
 import useInput from "../../hooks/useInput";
+import Search from "../../components/UI/search/Search";
+
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [orderType, setOrderType] = useState("all");
 
     const navigate = useNavigate();
-    const search = useInput("", {});
+    const search = useInput("");
 
     useEffect(() => {
         if (orderType === "all") getOrders();
@@ -84,17 +85,20 @@ const Order = () => {
                             </div>
                             <div className={classes.actions__buttons}>
                                 <div className={classes.button}>
-                                    <Button active={orderType === "all"} onClick={() => setOrderType("all")} color="black">
+                                    <Button active={(orderType === "all").toString()} onClick={() => setOrderType("all")} color="black">
                                         Всі
                                     </Button>
                                 </div>
                                 <div className={classes.button}>
-                                    <Button active={orderType === "repair"} onClick={() => setOrderType("repair")} color="black">
+                                    <Button active={(orderType === "repair").toString()} onClick={() => setOrderType("repair")} color="black">
                                         Ремонт
                                     </Button>
                                 </div>
                                 <div className={classes.button}>
-                                    <Button active={orderType === "dataRecovery"} onClick={() => setOrderType("dataRecovery")} color="black">
+                                    <Button
+                                        active={(orderType === "dataRecovery").toString()}
+                                        onClick={() => setOrderType("dataRecovery")}
+                                        color="black">
                                         Відновлення данних
                                     </Button>
                                 </div>
@@ -117,7 +121,7 @@ const Order = () => {
                                 <th className={classes.table__item}>Клієнт</th>
                                 {/* <th className={classes.table__item}>Прийняв замовлення</th> */}
                                 {/* <th className={classes.table__item}>Виконав замовлення</th> */}
-                                <th className={classes.table__item}>Вартість PLN</th>
+                                <th className={classes.table__item}>Вартість</th>
                                 <th className={classes.table__item}>Тип</th>
                                 <th className={classes.table__item}>Виробник</th>
                                 <th className={classes.table__item}>Модель</th>
@@ -150,8 +154,8 @@ const Order = () => {
                                                 <td className={classes.table__item}>
                                                     {Object.keys(payment).length
                                                         ? payment.length > 1
-                                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
-                                                            : payment[0].repairPrice
+                                                            ? `${payment.reduce((acc, value) => acc + value.repairPrice, 0)} PLN`
+                                                            : `${payment[0].repairPrice} PLN`
                                                         : "-"}
                                                 </td>
                                                 <td className={classes.table__item}>{deviceInfo.deviceType}</td>

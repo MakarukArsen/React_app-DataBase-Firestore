@@ -1,6 +1,6 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import { useNavigate, Route, Routes } from "react-router-dom";
+import { useNavigate, Route, Routes, useMatch, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
 import Clients from "./pages/clients/Clients";
 import CreateOrder from "./pages/createOrder/CreateOrder";
@@ -12,12 +12,15 @@ import "./styles/style.scss";
 
 function App() {
     const auth = getAuth();
+    const location = useLocation();
     const navigate = useNavigate();
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             if (!user) {
-                navigate("/login");
+                return navigate("/login");
+            } else if (location.pathname === "/") {
+                navigate("/orders");
             }
         });
     }, [auth.currentUser]);

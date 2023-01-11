@@ -8,7 +8,7 @@ const CreateOrderModal = ({ onClose }) => {
             <h2 className={classes.title}>Замовлення створено</h2>
             <div className={classes.buttons}>
                 <div className={classes.button}>
-                    <Link to="/">
+                    <Link to="/orders">
                         <Button color="black">Перейти до замовлень</Button>
                     </Link>
                 </div>

@@ -15,9 +15,15 @@
     width: 100%;
 }
 
-.button {
-    height: 40px;
-    width: 100%;
+.buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .button {
+        height: 35px;
+        width: 100%;
+    }
 }
 
 .error {

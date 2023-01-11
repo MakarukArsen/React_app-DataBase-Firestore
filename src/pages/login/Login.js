@@ -1,26 +1,24 @@
 import React from "react";
-import classes from "./AuthModal.module.scss";
-import useInput from "../../../hooks/useInput";
-import Input from "../../UI/input/Input";
-import Button from "../../UI/button/Button";
-import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import classes from "./Login.module.scss";
+import useInput from "../../hooks/useInput";
+import Input from "../../components/UI/input/Input";
+import Button from "../../components/UI/button/Button";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate } from "react-router-dom";
 
-const AuthModal = () => {
+const Login = () => {
     const email = useInput("", { isEmpty: true, email: true });
     const password = useInput("", { isEmpty: true, minLength: 6 });
 
     const auth = getAuth();
-
+    const navigate = useNavigate();
     const handleLogin = async (e) => {
         e.preventDefault();
         await signInWithEmailAndPassword(auth, email.value, password.value).then((user) => console.log(user));
-    };
-    const handleLogOut = async (e) => {
-        e.preventDefault();
-        await signOut(auth);
+        navigate("/orders");
     };
     return (
-        <div className={classes.modal}>
+        <div className={classes.login}>
             <form className={classes.form}>
                 <div className={classes.input}>
                     <Input value={email.value} onChange={(e) => email.onChange(e)} onBlur={() => email.onBlur()} placeholder="email" />
@@ -38,21 +36,14 @@ const AuthModal = () => {
                         ? "Пароль повинен має містити хоча б 4 символи"
                         : ""}
                 </p>
-                <div className={classes.buttons}>
-                    <div className={classes.button}>
-                        <Button onClick={handleLogin} disabled={!email.inputValid || !password.inputValid} color="blue">
-                            Login
-                        </Button>
-                    </div>
-                    <div className={classes.button}>
-                        <Button onClick={handleLogOut} color="blue">
-                            Logout
-                        </Button>
-                    </div>
+                <div className={classes.button}>
+                    <Button disabled={!email.inputValid || !password.inputValid} onClick={handleLogin} color="blue">
+                        Login
+                    </Button>
                 </div>
             </form>
         </div>
     );
 };
 
-export default AuthModal;
+export default Login;

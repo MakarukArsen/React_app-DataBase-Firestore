@@ -39,21 +39,21 @@ const Header = () => {
                             </div>
                         </li>
                         <li>
-                            <NavLink to="" className={classes.navigate__link}>
+                            <NavLink to="/404" className={classes.navigate__link}>
                                 <div className={classes.navigate__icon}>
                                     <TasksIcon />
                                 </div>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
+                            <NavLink to="/orders" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
                                 <div className={classes.navigate__icon}>
                                     <OrdersIcon />
                                 </div>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/" className={classes.navigate__link}>
+                            <NavLink to="/404" className={classes.navigate__link}>
                                 <div className={classes.navigate__icon}>
                                     <PaymentsIcon />
                                 </div>
@@ -67,7 +67,7 @@ const Header = () => {
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/" className={classes.navigate__link}>
+                            <NavLink to="/404" className={classes.navigate__link}>
                                 <div className={classes.navigate__icon}>
                                     <StorageIcon />
                                 </div>

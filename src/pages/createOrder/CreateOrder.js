@@ -4,8 +4,7 @@ import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { db } from "../../firebase";
-import { getDocs, addDoc, collection, query, where } from "firebase/firestore";
-import { useDispatch } from "react-redux";
+import { getDocs, addDoc, collection, query, where, startAt, orderBy, endAt } from "firebase/firestore";
 import { format } from "date-fns";
 import Modal from "../../components/modals/Modal";
 import CreateOrderModal from "../../components/modals/create-order-modal/CreateOrderModal";
@@ -13,10 +12,12 @@ import { Link } from "react-router-dom";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { v4 } from "uuid";
 
 const CreateOrder = () => {
     const [isModalActive, setModalActive] = useState(false);
     const [userName, setUserName] = useState("");
+    const [searchClients, setSearchClients] = useState([]);
 
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
@@ -39,8 +40,15 @@ const CreateOrder = () => {
     const orderExecutor = useInput("");
     const orderDeadline = useInput("");
 
-    const dispatch = useDispatch();
     const auth = getAuth();
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                setUserName(user.displayName);
+            }
+        });
+    }, [auth.currentUser]);
 
     const clearInputs = () => {
         clientName.clear();
@@ -61,19 +69,11 @@ const CreateOrder = () => {
         orderDeadline.clear();
     };
 
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserName(user.displayName);
-            }
-        });
-    }, [auth.currentUser]);
-
     const handleSumbit = async (e) => {
         e.preventDefault();
         const orderData = {
             id: "",
-            fireBaseId: "",
+            firebaseId: "",
             payment: [],
             history: [
                 {
@@ -84,8 +84,8 @@ const CreateOrder = () => {
                 },
             ],
             clientInfo: {
-                clientName: clientName.value || "-",
-                clientPhone: clientPhone.value || "-",
+                clientName: clientName.value,
+                clientPhone: clientPhone.value,
                 clientEmail: clientEmail.value || "-",
                 clientAddress: clientAddress.value || "-",
             },
@@ -97,8 +97,8 @@ const CreateOrder = () => {
                 deviceState: deviceState.value || "-",
                 deviceBreakage: deviceBreakage.value || "-",
                 deviceImeiSn: deviceImeiSn.value || "-",
-                deviceAccessories: deviceAccessories.value || "-",
-                devicePassword: devicePassword.value || "-",
+                deviceAccessories: deviceAccessories.value,
+                devicePassword: devicePassword.value,
             },
 
             orderInfo: {
@@ -121,9 +121,9 @@ const CreateOrder = () => {
         await addDoc(collection(db, "orders"), orderData);
 
         const clientData = {
-            fireBaseId: "",
-            clientName: clientName.value || "-",
-            clientPhone: clientPhone.value || "-",
+            firebaseId: "",
+            clientName: clientName.value.toLowerCase(),
+            clientPhone: clientPhone.value,
             clientEmail: clientEmail.value || "-",
             clientAddress: clientAddress.value || "-",
         };
@@ -139,6 +139,26 @@ const CreateOrder = () => {
         setModalActive(true);
     };
 
+    const searchClient = async (value) => {
+        const ref = collection(db, "clients");
+        const q = query(ref, orderBy("clientPhone"), startAt(value.toLowerCase()), endAt(value.toLowerCase() + "\uf8ff"));
+        if (value.length) {
+            const snap = await getDocs(q);
+            const data = snap.docs.map((item) => item.data());
+            setSearchClients(data);
+        } else {
+            setSearchClients([]);
+        }
+    };
+
+    const fillInputs = (client) => {
+        clientName.setValue(client.clientName);
+        clientPhone.setValue(client.clientPhone);
+        clientEmail.setValue(client.clientEmail);
+        clientAddress.setValue(client.clientAddress);
+        setSearchClients([]);
+    };
+
     return (
         <div className={classes.createOrder}>
             <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
@@ -151,7 +171,7 @@ const CreateOrder = () => {
                             <p>Створити замовлення</p>
                         </div>
                         <div className={classes.header__actions}>
-                            <Link to="/">
+                            <Link to="/orders">
                                 <div className={classes.actions__close}>
                                     <span></span>
                                 </div>
@@ -169,8 +189,17 @@ const CreateOrder = () => {
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientName.value}
-                                                    onChange={(e) => clientName.onChange(e)}
-                                                    onBlur={(e) => clientName.onBlur(e)}
+                                                    onClick={(e) => searchClient(e.target.valuem, "clientName")}
+                                                    onChange={(e) => {
+                                                        clientName.onChange(e);
+                                                        searchClient(e.target.value, "clientName");
+                                                    }}
+                                                    onBlur={() => {
+                                                        clientName.onBlur();
+                                                        setTimeout(() => {
+                                                            setSearchClients([]);
+                                                        }, 100);
+                                                    }}
                                                 />
                                             </div>
 
@@ -187,10 +216,31 @@ const CreateOrder = () => {
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientPhone.value}
-                                                    onChange={(e) => clientPhone.onChange(e)}
-                                                    onBlur={(e) => clientPhone.onBlur(e)}
+                                                    onClick={(e) => searchClient(e.target.value)}
+                                                    onChange={(e) => {
+                                                        clientPhone.onChange(e);
+                                                        searchClient(e.target.value, "clientPhone");
+                                                    }}
+                                                    onBlur={() => {
+                                                        clientPhone.onBlur();
+                                                        setTimeout(() => {
+                                                            setSearchClients([]);
+                                                        }, 100);
+                                                    }}
                                                 />
                                             </div>
+
+                                            {searchClients.length ? (
+                                                <ul className={classes.search}>
+                                                    {searchClients.map((client) => {
+                                                        return (
+                                                            <li key={v4()} onClick={() => fillInputs(client)} className={classes.search__item}>
+                                                                {client.clientName + " " + client.clientPhone}
+                                                            </li>
+                                                        );
+                                                    })}
+                                                </ul>
+                                            ) : null}
 
                                             <p className={classes.error}>
                                                 {clientPhone.isDirty && clientPhone.isEmpty

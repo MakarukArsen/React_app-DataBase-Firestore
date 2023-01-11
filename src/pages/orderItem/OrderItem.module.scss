@@ -251,28 +251,39 @@
 
             .order__title {}
 
-            .orderInfo__content {}
-
-            .order__row {
-                padding: 16px;
-                display: flex;
-                align-items: center;
-                border-bottom: 1px solid constants.$grey;
-                width: 350px;
-
-                .orderInfo__title {
-                    color: constants.$grey;
-                    flex: 0 0 50%;
-                    font-size: 16px;
-                }
-
-                .orderInfo__text {
-                    flex: 0 0 50%;
+            .orderInfo__content {
+                .order__row {
+                    padding: 16px;
                     display: flex;
-                    justify-content: center;
-                    text-align: center;
+                    align-items: center;
+                    border-bottom: 1px solid constants.$grey;
+                    width: 350px;
+
+                    .orderInfo__title {
+                        color: constants.$grey;
+                        flex: 0 0 50%;
+                        font-size: 16px;
+                    }
+
+                    .input__section {
+                        .input {}
+
+                        .error {
+                            font-size: 14px;
+                            color: constants.$warning;
+                        }
+                    }
+
+                    .orderInfo__text {
+                        flex: 0 0 50%;
+                        display: flex;
+                        justify-content: center;
+                        text-align: center;
+                    }
                 }
             }
+
+
         }
     }
 }

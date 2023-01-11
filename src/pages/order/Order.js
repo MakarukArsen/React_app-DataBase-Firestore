@@ -72,7 +72,7 @@ const Order = () => {
     const filteredOrders = filterOrders();
 
     const openOrderPage = (firebaseId) => {
-        navigate(`order/${firebaseId}`);
+        navigate(`${firebaseId}`);
     };
     return (
         <div className={classes.order}>
@@ -103,7 +103,7 @@ const Order = () => {
                                     </Button>
                                 </div>
                                 <div className={classes.button}>
-                                    <Link to="order/create-order">
+                                    <Link to="create-order">
                                         <Button color="blue">Create order</Button>
                                     </Link>
                                 </div>

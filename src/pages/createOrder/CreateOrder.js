@@ -189,16 +189,11 @@ const CreateOrder = () => {
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientName.value}
-                                                    onClick={(e) => searchClient(e.target.valuem, "clientName")}
                                                     onChange={(e) => {
                                                         clientName.onChange(e);
-                                                        searchClient(e.target.value, "clientName");
                                                     }}
                                                     onBlur={() => {
                                                         clientName.onBlur();
-                                                        setTimeout(() => {
-                                                            setSearchClients([]);
-                                                        }, 100);
                                                     }}
                                                 />
                                             </div>
@@ -234,7 +229,7 @@ const CreateOrder = () => {
                                                 <ul className={classes.search}>
                                                     {searchClients.map((client) => {
                                                         return (
-                                                            <li key={v4()} onClick={() => fillInputs(client)} className={classes.search__item}>
+                                                            <li onClick={() => fillInputs(client)} className={classes.search__item}>
                                                                 {client.clientName + " " + client.clientPhone}
                                                             </li>
                                                         );

@@ -6,22 +6,19 @@ import Button from "../../components/UI/button/Button";
 import { db } from "../../firebase";
 import { getDocs, addDoc, collection, query, where, startAt, orderBy, endAt } from "firebase/firestore";
 import { format } from "date-fns";
-import Modal from "../../components/modals/Modal";
-import CreateOrderModal from "../../components/modals/create-order-modal/CreateOrderModal";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { v4 } from "uuid";
 
 const CreateOrder = () => {
-    const [isModalActive, setModalActive] = useState(false);
     const [userName, setUserName] = useState("");
     const [searchClients, setSearchClients] = useState([]);
 
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
-    const clientPhone = useInput("", { isEmpty: true, length: 10 });
+    const clientPhone = useInput("", { isEmpty: true });
     const clientEmail = useInput("");
     const clientAddress = useInput("");
     // tech info
@@ -41,6 +38,7 @@ const CreateOrder = () => {
     const orderDeadline = useInput("");
 
     const auth = getAuth();
+    const navigate = useNavigate();
 
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
@@ -118,7 +116,7 @@ const CreateOrder = () => {
             })
             .catch((err) => console.log(err));
 
-        await addDoc(collection(db, "orders"), orderData);
+        const order = await addDoc(collection(db, "orders"), orderData);
 
         const clientData = {
             firebaseId: "",
@@ -135,8 +133,9 @@ const CreateOrder = () => {
         if (!clients.length) {
             await addDoc(docRef, clientData);
         }
+
         clearInputs();
-        setModalActive(true);
+        navigate(`/orders/${order.id}`);
     };
 
     const searchClient = async (value) => {
@@ -151,7 +150,7 @@ const CreateOrder = () => {
         }
     };
 
-    const fillInputs = (client) => {
+    const fillClientInputs = (client) => {
         clientName.setValue(client.clientName);
         clientPhone.setValue(client.clientPhone);
         clientEmail.setValue(client.clientEmail);
@@ -161,9 +160,6 @@ const CreateOrder = () => {
 
     return (
         <div className={classes.createOrder}>
-            <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
-                <CreateOrderModal onClose={() => setModalActive(false)} />
-            </Modal>
             <div className="container">
                 <div className={classes.createOrder__content}>
                     <div className={classes.createOrder__header}>
@@ -229,7 +225,7 @@ const CreateOrder = () => {
                                                 <ul className={classes.search}>
                                                     {searchClients.map((client) => {
                                                         return (
-                                                            <li onClick={() => fillInputs(client)} className={classes.search__item}>
+                                                            <li onClick={() => fillClientInputs(client)} className={classes.search__item}>
                                                                 {client.clientName + " " + client.clientPhone}
                                                             </li>
                                                         );
@@ -238,11 +234,7 @@ const CreateOrder = () => {
                                             ) : null}
 
                                             <p className={classes.error}>
-                                                {clientPhone.isDirty && clientPhone.isEmpty
-                                                    ? "Поле не може бути пустим"
-                                                    : clientPhone.isDirty && clientPhone.lengthError
-                                                    ? "Кількість символів 10"
-                                                    : ""}
+                                                {clientPhone.isDirty && clientPhone.isEmpty ? "Поле не може бути пустим" : ""}
                                             </p>
                                         </div>
                                         <div className={classes.input__section}>

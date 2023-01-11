@@ -72,7 +72,7 @@ const Order = () => {
     const filteredOrders = filterOrders();
 
     const openOrderPage = (firebaseId) => {
-        navigate(`${firebaseId}`);
+        navigate(firebaseId);
     };
     return (
         <div className={classes.order}>

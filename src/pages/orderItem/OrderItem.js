@@ -180,6 +180,9 @@ const OrderItem = () => {
                                         : "0.00"}{" "}
                                     PLN
                                 </p>
+                                <div className={classes.statusDropDown}>
+                                    <StatusDropDown firebaseId={firebaseId} order={order} />
+                                </div>
                             </div>
                             <div className={classes.header__actions}>
                                 <div onClick={() => setModalActive(true)} className={classes.actions__payment}>
@@ -503,12 +506,6 @@ const OrderItem = () => {
 
                                         <h2 className={classes.orderInfo__title}>Додаткова інформація</h2>
                                         <div className={classes.orderInfo__content}>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Статус</h3>
-                                                <div className={classes.orderInfo__text}>
-                                                    <StatusDropDown firebaseId={firebaseId} order={order} />
-                                                </div>
-                                            </div>
                                             <div className={classes.order__row}>
                                                 <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
                                                 <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>

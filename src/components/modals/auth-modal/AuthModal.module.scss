@@ -7,12 +7,12 @@
 .form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 30px;
 }
 
-.input {
-    height: 50px;
-    width: 100%;
+.title {
+    font-size: 24px;
+    text-align: center;
 }
 
 .buttons {
@@ -24,8 +24,4 @@
         height: 35px;
         width: 100%;
     }
-}
-
-.error {
-    color: constants.$warning;
 }

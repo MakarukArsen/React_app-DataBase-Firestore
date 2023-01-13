@@ -37,6 +37,10 @@
                 color: constants.$grey;
                 font-weight: 600;
             }
+
+            .statusDropDown {
+                white-space: nowrap;
+            }
         }
 
         .header__actions {

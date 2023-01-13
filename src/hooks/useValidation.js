@@ -27,11 +27,13 @@ const useValidation = (value, validations) => {
             }
         }
     }, [value]);
+
     useEffect(() => {
         if (isEmpty || minLengthError || lengthError || emailError) {
             setInputValid(false);
         } else setInputValid(true);
     }, [isEmpty, minLengthError, lengthError, emailError]);
+
     return {
         isEmpty,
         lengthError,

@@ -18,7 +18,7 @@ const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [userName, setUserName] = useState("");
-    const [isModalActive, setModalActive] = useState(false);
+    const [paymentModal, setPaymentModal] = useState({ isActive: false, type: "create", payment: {} });
 
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
@@ -160,8 +160,13 @@ const OrderItem = () => {
     const { deviceInfo, clientInfo, orderInfo, history, payment } = order;
     return (
         <div className={classes.order}>
-            <Modal isModalActive={isModalActive} onClose={() => setModalActive(false)}>
-                <PaymentModal onClose={() => setModalActive(false)} firebaseId={firebaseId} />
+            <Modal isModalActive={paymentModal.isActive} onClose={() => setPaymentModal({ isActive: false })}>
+                <PaymentModal
+                    onClose={() => setPaymentModal({ isActive: false })}
+                    firebaseId={firebaseId}
+                    payment={paymentModal.payment}
+                    type={paymentModal.type}
+                />
             </Modal>
             <div className="container">
                 {Object.keys(order).length ? (
@@ -185,7 +190,7 @@ const OrderItem = () => {
                                 </div>
                             </div>
                             <div className={classes.header__actions}>
-                                <div onClick={() => setModalActive(true)} className={classes.actions__payment}>
+                                <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
                                     <PaymentsIcon />
                                 </div>
 
@@ -201,57 +206,40 @@ const OrderItem = () => {
                         </div>
                         {order.payment.length ? (
                             <div className={classes.order__payment}>
-                                <h2 className={classes.title}>Price</h2>
-                                <div className={classes.content}>
-                                    <div className={classes.col}>
-                                        <h3>Назва</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.repairName}</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Відпустив</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.paymentAccepted}</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Виконавець</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.repairExecutor}</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Собівартість</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.repairCost} PLN</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Ціна </h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.repairPrice} PLN</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Тип оплати</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.paymentType}</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Гарантія дн.</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.guarantee}</p>
-                                        ))}
-                                    </div>
-                                    <div className={classes.col}>
-                                        <h3>Дата</h3>
-                                        {payment.map((item) => (
-                                            <p key={v4()}>{item.date}</p>
-                                        ))}
-                                    </div>
-                                </div>
+                                <h2 className={classes.title}>Платежі</h2>
+                                <table className={classes.table}>
+                                    <thead className={classes.table__thead}>
+                                        <tr className={classes.table__row}>
+                                            <th className={classes.table__item}>Назва</th>
+                                            <th className={classes.table__item}>Відпустив</th>
+                                            <th className={classes.table__item}>Виконавець</th>
+                                            <th className={classes.table__item}>Собівартість</th>
+                                            <th className={classes.table__item}>Ціна</th>
+                                            <th className={classes.table__item}>Тип оплати</th>
+                                            <th className={classes.table__item}>Гарантія дн.</th>
+                                            <th className={classes.table__item}>Дата</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className={classes.table__tbody}>
+                                        {order.payment.map((payment) => {
+                                            return (
+                                                <tr
+                                                    key={v4()}
+                                                    className={classes.table__row}
+                                                    onClick={() => setPaymentModal({ isActive: true, type: "edit", payment: payment })}>
+                                                    <td className={classes.table__item}>{payment.repairName}</td>
+                                                    <td className={classes.table__item}>{payment.paymentAccepted}</td>
+                                                    <td className={classes.table__item}>{payment.repairExecutor}</td>
+                                                    <td className={classes.table__item}>{payment.repairCost}</td>
+                                                    <td className={classes.table__item}>{payment.repairPrice}</td>
+                                                    <td className={classes.table__item}>{payment.paymentType}</td>
+                                                    <td className={classes.table__item}>{payment.repairGuarantee}</td>
+                                                    <td className={classes.table__item}>{payment.date}</td>
+                                                </tr>
+                                            );
+                                        })}
+                                    </tbody>
+                                </table>
                             </div>
                         ) : null}
                         <div className={classes.order__content}>

@@ -126,22 +126,34 @@
             font-size: 21px;
         }
 
-        .content {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+        .table {
+            border-collapse: collapse;
+            width: 100%;
 
-            .col {
-                display: flex;
-                flex-direction: column;
-                gap: 8px;
+            &__thead {}
 
-                h3 {
-                    font-size: 18px;
+            &__tbody {
+                .table__row:hover {
+                    background-color: constants.$light-grey;
+                }
+            }
+
+            &__row {}
+
+            &__title {}
+
+            &__item {
+                text-align: left;
+                line-height: 1.25;
+                padding: 10px;
+
+                &:not(:first-child) {
+                    padding: 10px 16px;
                 }
 
-                p {}
+                span {
+                    font-weight: 600;
+                }
             }
         }
     }

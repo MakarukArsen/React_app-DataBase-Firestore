@@ -1,7 +1,8 @@
 import { format } from "date-fns";
 import { getAuth } from "firebase/auth";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import React, { useState } from "react";
+import { v4 } from "uuid";
 import { db } from "../../../firebase";
 import useInput from "../../../hooks/useInput";
 import useSelect from "../../../hooks/useSelect";
@@ -10,16 +11,16 @@ import Input from "../../UI/input/Input";
 import Select from "../../UI/select/Select";
 import classes from "./PaymentModal.module.scss";
 
-const PaymentModal = ({ firebaseId, onClose }) => {
+const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
     const [paymentType, setPaymentType] = useState("cash");
 
     const auth = getAuth();
 
-    const repairName = useInput("", { isEmpty: true });
-    const repairExecutor = useSelect({ defaultValue: "Роман", options: ["Роман", "Арсен"] });
-    const repairCost = useInput("");
-    const repairPrice = useInput("", { isEmpty: true });
-    const guarantee = useInput("");
+    const repairName = useInput(type === "edit" ? payment.repairName : "", { isEmpty: true });
+    const repairExecutor = useSelect({ defaultValue: type === "edit" ? payment.repairExecutor : "Роман", options: ["Роман", "Арсен"] });
+    const repairCost = useInput(type === "edit" ? payment.repairCost : "");
+    const repairPrice = useInput(type === "edit" ? payment.repairPrice : "", { isEmpty: true });
+    const repairGuarantee = useInput(type === "edit" ? payment.repairGuarantee : "");
 
     const addPayment = async (e) => {
         e.preventDefault();
@@ -32,8 +33,9 @@ const PaymentModal = ({ firebaseId, onClose }) => {
                 repairCost: +repairCost.value,
                 repairPrice: +repairPrice.value,
                 paymentType: paymentType,
-                guarantee: guarantee.value || "-",
+                repairGuarantee: repairGuarantee.value || "-",
                 date: format(new Date(), "H:mm dd.MM.yy"),
+                id: v4(),
             }),
             history: arrayUnion({
                 techDate: Date.now(),
@@ -45,10 +47,40 @@ const PaymentModal = ({ firebaseId, onClose }) => {
         onClose();
     };
 
+    const updatePayment = async (e) => {
+        e.preventDefault();
+        const docRef = doc(db, "orders", firebaseId);
+        const snapshot = await getDoc(docRef);
+        const paymentData = snapshot.data().payment;
+        const filteredPaymentData = paymentData.filter((item) => {
+            return item.id !== payment.id;
+        });
+        filteredPaymentData.push({
+            repairName: repairName.value,
+            paymentAccepted: auth.currentUser.displayName,
+            repairExecutor: repairExecutor.value,
+            repairCost: +repairCost.value,
+            repairPrice: +repairPrice.value,
+            paymentType: paymentType,
+            repairGuarantee: repairGuarantee.value || "-",
+            date: format(new Date(), "H:mm dd.MM.yy"),
+            id: v4(),
+        });
+        await updateDoc(docRef, {
+            payment: filteredPaymentData,
+            history: arrayUnion({
+                techDate: Date.now(),
+                date: format(new Date(), "H:mm dd.MM.yy"),
+                message: `Платіж відредаговано ${repairPrice.value} PLN`,
+                author: auth.currentUser.displayName,
+            }),
+        });
+        onClose();
+    };
     return (
         <div className={classes.modal}>
             <div className={classes.payment}>
-                <h2 className={classes.title}>Добавити платіж</h2>
+                <h2 className={classes.title}>{type === "edit" ? "Редагування платежу" : "Добавити платіж"}</h2>
                 <form className={classes.form}>
                     <div className={classes.inputSection}>
                         <h3>Назва ремонту</h3>
@@ -103,12 +135,15 @@ const PaymentModal = ({ firebaseId, onClose }) => {
                     <div className={classes.inputSection}>
                         <h3>Гарантія дн.</h3>
                         <div className={classes.input}>
-                            <Input value={guarantee.value} onChange={(e) => guarantee.onChange(e)} type="number" />
+                            <Input value={repairGuarantee.value} onChange={(e) => repairGuarantee.onChange(e)} type="number" />
                         </div>
                     </div>
                     <div className={classes.button}>
-                        <Button onClick={addPayment} disabled={!repairName.inputValid || !repairPrice.inputValid} color="blue">
-                            Завершити
+                        <Button
+                            onClick={type === "edit" ? updatePayment : addPayment}
+                            disabled={!repairName.inputValid || !repairPrice.inputValid}
+                            color="blue">
+                            {type === "edit" ? "Редагувати" : "Завершити"}
                         </Button>
                     </div>
                 </form>

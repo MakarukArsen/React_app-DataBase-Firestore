@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@progress/kendo-react-pdf": "^5.9.0",
     "@reduxjs/toolkit": "^1.9.1",
     "date-fns": "^2.29.3",
     "firebase": "^9.15.0",

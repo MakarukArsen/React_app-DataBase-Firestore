@@ -1,7 +1,8 @@
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
-import { useNavigate, Route, Routes, useMatch, useLocation } from "react-router-dom";
+import { useNavigate, Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
+import PDF from "./components/PDF/PDF";
 import Clients from "./pages/clients/Clients";
 import CreateOrder from "./pages/createOrder/CreateOrder";
 import Login from "./pages/login/Login";
@@ -32,6 +33,7 @@ function App() {
                 <Route path="orders/create-order" element={<CreateOrder />} />
                 <Route path="orders/:id" element={<OrderItem />} />
                 <Route path="clients" element={<Clients />} />
+                <Route path="orders/:id/pdf" element={<PDF />} />
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<NotFound />} />

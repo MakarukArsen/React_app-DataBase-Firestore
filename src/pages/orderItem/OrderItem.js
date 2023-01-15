@@ -1,10 +1,11 @@
-import { arrayUnion, collection, doc, getDoc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import classes from "./OrderItem.module.scss";
 import EditIcon from "../../components/icons/EditIcon";
 import PaymentsIcon from "../../components/icons/PaymentsIcon";
+import PdfIcon from "../../components/icons/PdfIcon";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
@@ -14,6 +15,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Modal from "../../components/modals/Modal";
 import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
+
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
@@ -190,6 +192,11 @@ const OrderItem = () => {
                                 </div>
                             </div>
                             <div className={classes.header__actions}>
+                                <div className={classes.actions__pdf}>
+                                    <Link to="pdf" state={{ orderData: order }}>
+                                        <PdfIcon />
+                                    </Link>
+                                </div>
                                 <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
                                     <PaymentsIcon />
                                 </div>

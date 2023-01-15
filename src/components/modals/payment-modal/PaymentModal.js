@@ -71,7 +71,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), "H:mm dd.MM.yy"),
-                message: `Платіж відредаговано ${repairPrice.value} PLN`,
+                message: `Платіж відредаговано: ${repairPrice.value} PLN`,
                 author: auth.currentUser.displayName,
             }),
         });

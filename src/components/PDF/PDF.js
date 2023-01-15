@@ -139,7 +139,7 @@ const PDF = () => {
                                 <div className={classes.signature__column + " " + classes.signature__column_left}>
                                     <p className={classes.signature__text}>Potwierdzam przyjęcie sprzętu</p>
                                     <p className={classes.signature__text}>
-                                        <span>Data</span>: 11.01.2023 22:02
+                                        <span>Data</span>: {orderInfo.orderData}
                                     </p>
                                 </div>
                                 <div className={classes.signature__column + " " + classes.signature__column_right}>

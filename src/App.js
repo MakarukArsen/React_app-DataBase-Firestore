@@ -2,7 +2,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { useEffect } from "react";
 import { useNavigate, Route, Routes, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
-import PDF from "./components/PDF/PDF";
+import PDF from "./pages/PDF/PDF";
 import Clients from "./pages/clients/Clients";
 import CreateOrder from "./pages/createOrder/CreateOrder";
 import Login from "./pages/login/Login";

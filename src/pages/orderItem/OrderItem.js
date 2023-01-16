@@ -220,10 +220,10 @@ const OrderItem = () => {
                                             <th className={classes.table__item}>Назва</th>
                                             <th className={classes.table__item}>Відпустив</th>
                                             <th className={classes.table__item}>Виконавець</th>
-                                            <th className={classes.table__item}>Собівартість</th>
-                                            <th className={classes.table__item}>Ціна</th>
+                                            <th className={classes.table__item}>Собівартість PLN</th>
+                                            <th className={classes.table__item}>Ціна PLN</th>
                                             <th className={classes.table__item}>Тип оплати</th>
-                                            <th className={classes.table__item}>Гарантія дн.</th>
+                                            <th className={classes.table__item}>Гарантія мс.</th>
                                             <th className={classes.table__item}>Дата</th>
                                         </tr>
                                     </thead>

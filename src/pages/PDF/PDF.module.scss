@@ -1,0 +1,391 @@
+@use "../../styles/constants.scss";
+
+@font-face {
+    font-family: "DejaVu Sans";
+    src: url("https://kendo.cdn.telerik.com/2020.1.114/styles/fonts/DejaVu/DejaVuSans.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "DejaVu Sans";
+    font-weight: bold;
+    src: url("https://kendo.cdn.telerik.com/2020.1.114/styles/fonts/DejaVu/DejaVuSans-Bold.ttf") format("truetype");
+}
+
+.body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 15px;
+
+    .button {
+        height: 35px;
+    }
+}
+
+.pdf {
+    font-family: sans-serif;
+    letter-spacing: .05em;
+    background-color: constants.$white;
+    padding: 15px;
+    border-radius: 15px;
+    box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+    .container {
+        padding: 15px;
+        margin: 0 auto;
+    }
+
+    // First PDF
+
+    .content_first {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+
+            .title {
+                flex: 1 1 100%;
+
+                h1 {
+                    font-size: 17.5px;
+                    font-weight: 700;
+                    letter-spacing: .05em;
+                }
+
+                p {
+                    font-size: 15.5px;
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            .serviceInfo {
+                text-align: center;
+                font-size: 10px;
+
+                p {
+                    letter-spacing: .002em;
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            .logo {
+                flex: 0 0 110px;
+                height: 55px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .table {
+            border: 1px solid black;
+            text-align: left;
+            border-collapse: collapse;
+            width: 100%;
+
+            &__row {
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            &__title {
+                border-right: 1px solid black;
+                padding: 5px;
+                font-weight: 700;
+                font-size: 11px;
+                width: 120px;
+            }
+
+            &__text {
+
+                padding: 7px;
+                font-size: 10px;
+            }
+        }
+
+        .serviceRules {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 40px;
+
+            &__title {
+                font-size: 10px;
+                font-weight: 700;
+            }
+
+            &__list {
+                display: flex;
+                flex-direction: column;
+                gap: 3px;
+                line-height: 1.8;
+                list-style-type: decimal;
+                padding: 0px 12px;
+            }
+
+            &__text {
+                font-size: 6px;
+            }
+        }
+
+        .signature {
+            display: flex;
+
+            justify-content: space-between;
+
+            &__column {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                position: relative;
+                padding-top: 10px;
+
+                &_left {
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        width: 120%;
+                        height: 1px;
+                        background-color: black;
+                    }
+                }
+
+                &_right {
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0px;
+                        right: 0px;
+                        width: 120%;
+                        height: 1px;
+                        background-color: black;
+                    }
+                }
+            }
+
+            &__text {
+                font-size: 10px;
+
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+
+    // second PDF
+
+    .content_second {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+
+        .header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 10px;
+
+            .title {
+                flex: 1 1 100%;
+
+                &_second {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                }
+
+                h1 {
+                    font-size: 24px;
+                    font-weight: 700;
+                    letter-spacing: .05em;
+                }
+
+                p {
+                    font-size: 15.5px;
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            .serviceInfo {
+                text-align: center;
+                font-size: 10px;
+
+                p {
+                    letter-spacing: .002em;
+
+                    span {
+                        font-weight: 700;
+                    }
+                }
+            }
+
+            .logo {
+                flex: 0 0 110px;
+                height: 55px;
+
+                img {
+                    width: 100%;
+                    height: 100%;
+                }
+            }
+        }
+
+        .table {
+            border: 1px solid black;
+            text-align: left;
+            border-collapse: collapse;
+            width: 100%;
+
+            &__row {
+                display: flex;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            &__title {
+                border-right: 1px solid black;
+                padding: 5px;
+                font-weight: 700;
+                font-size: 10px;
+                flex: 0 0 120px;
+            }
+
+            &__text {
+                padding: 7px;
+                font-size: 9px;
+            }
+
+            &__row_additional {
+                display: flex;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid black;
+                }
+            }
+
+            &__title_additional {
+                padding: 5px;
+                font-weight: 700;
+                font-size: 10px;
+                flex: 1 1 auto;
+                border-right: 1px solid black;
+
+                span {
+                    font-weight: 400;
+                }
+            }
+
+            &__text_additional {
+                padding: 7px;
+                font-size: 9px;
+                flex: 0 0 102px;
+                text-align: right;
+
+                &:not(:last-child) {
+                    border-right: 1px solid black;
+                }
+
+                white-space: nowrap;
+            }
+        }
+
+        .terms {
+            margin-top: -12px;
+
+            &__title {
+                font-size: 10px;
+            }
+
+            &__text {
+                font-size: 9px;
+            }
+        }
+
+        .signature {
+            margin: 20px 0px 20px 0px;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+
+            &__date {
+                position: absolute;
+                top: -10px;
+                left: 50%;
+                transform: translateX(-50%);
+                font-size: 11px;
+                font-weight: 700;
+            }
+
+            &__stroke {
+                position: absolute;
+                bottom: -30px;
+                left: 50%;
+                transform: translateX(-50%);
+                white-space: nowrap;
+            }
+
+            &__column {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                position: relative;
+                padding-top: 10px;
+
+                &_left {
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0px;
+                        left: 0px;
+                        width: 120%;
+                        height: 1px;
+                        background-color: black;
+                    }
+                }
+
+                &_right {
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        top: 0px;
+                        right: 0px;
+                        width: 120%;
+                        height: 1px;
+                        background-color: black;
+                    }
+                }
+            }
+
+            &__text {
+                font-size: 10px;
+
+                span {
+                    font-weight: 700;
+                }
+            }
+        }
+    }
+}

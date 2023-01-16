@@ -133,7 +133,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
                         </div>
                     </div>
                     <div className={classes.inputSection}>
-                        <h3>Гарантія дн.</h3>
+                        <h3>Гарантія мс.</h3>
                         <div className={classes.input}>
                             <Input value={repairGuarantee.value} onChange={(e) => repairGuarantee.onChange(e)} type="number" />
                         </div>

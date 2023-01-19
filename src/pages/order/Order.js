@@ -9,10 +9,13 @@ import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Button from "../../components/UI/button/Button";
 import useInput from "../../hooks/useInput";
 import Search from "../../components/UI/search/Search";
+import ExportToExcel from "../../components/modals/exportToExcell/ExportToExcel";
+import Modal from "../../components/modals/Modal";
 
 const Order = () => {
     const [orders, setOrders] = useState([]);
     const [orderType, setOrderType] = useState("all");
+    const [isExcelModalActive, setExcelModalActive] = useState(false);
 
     const navigate = useNavigate();
     const search = useInput("");
@@ -74,8 +77,12 @@ const Order = () => {
     const openOrderPage = (firebaseId) => {
         navigate(firebaseId);
     };
+
     return (
         <div className={classes.order}>
+            <Modal isModalActive={isExcelModalActive} onClose={() => setExcelModalActive(false)}>
+                <ExportToExcel onClose={() => setExcelModalActive(false)} />
+            </Modal>
             <div className={classes.order__content}>
                 <div className={classes.order__actions}>
                     <div className="container">
@@ -100,6 +107,11 @@ const Order = () => {
                                         onClick={() => setOrderType("dataRecovery")}
                                         color="black">
                                         Відновлення данних
+                                    </Button>
+                                </div>
+                                <div className={classes.button}>
+                                    <Button onClick={() => setExcelModalActive(true)} color="blue">
+                                        Excel
                                     </Button>
                                 </div>
                                 <div className={classes.button}>

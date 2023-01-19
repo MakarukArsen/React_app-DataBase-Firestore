@@ -11,7 +11,7 @@ import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { format } from "date-fns";
 import { v4 } from "uuid";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Modal from "../../components/modals/Modal";
 import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
@@ -19,12 +19,11 @@ import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
-    const [userName, setUserName] = useState("");
     const [paymentModal, setPaymentModal] = useState({ isActive: false, type: "create", payment: {} });
 
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
-    const clientPhone = useInput("", { isEmpty: true, length: 10 });
+    const clientPhone = useInput("", { isEmpty: true });
     const clientEmail = useInput("");
     const clientAddress = useInput("");
 
@@ -36,7 +35,7 @@ const OrderItem = () => {
     const deviceBreakage = useInput("");
     const deviceImeiSn = useInput("");
     const deviceAccessories = useInput("", { isEmpty: true });
-    const devicePassword = useInput("", { isEmpty: true, minLength: 4 });
+    const devicePassword = useInput("", { isEmpty: true });
 
     // additional info
     const orderExecutor = useInput("");
@@ -49,14 +48,8 @@ const OrderItem = () => {
     const firebaseId = match.id;
 
     const auth = getAuth();
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserName(user.displayName);
-            }
-        });
-    }, [auth.currentUser]);
 
+    // Realtime updates for history, status
     useEffect(() => {
         const unsub = onSnapshot(doc(db, "orders", firebaseId), (doc) => {
             const data = doc.data();
@@ -87,7 +80,7 @@ const OrderItem = () => {
         orderDeadline.setValue(data.orderInfo.orderDeadline === "-" ? "" : data.orderInfo.orderDeadline);
     };
 
-    const handleSumbit = async (e) => {
+    const editOrder = async (e) => {
         e.preventDefault();
         const orderData = {
             id: order.id,
@@ -122,8 +115,19 @@ const OrderItem = () => {
                 orderDeadline: orderDeadline.value || "-",
             },
         };
+        // Updating order
         const orderRef = doc(db, "orders", firebaseId);
         await setDoc(orderRef, orderData);
+
+        // Creating comment order edited
+        await updateDoc(orderRef, {
+            history: arrayUnion({
+                techDate: Date.now(),
+                date: format(new Date(), " H:mm dd.MM.yy"),
+                message: "Замовлення відредаговано",
+                author: auth.currentUser.displayName,
+            }),
+        });
 
         const clientData = {
             firebaseId: "",
@@ -133,6 +137,7 @@ const OrderItem = () => {
             clientAddress: clientAddress.value || "-",
         };
 
+        // Updating client
         const clientsRef = collection(db, "clients");
         const q = query(clientsRef, where("clientPhone", "==", order.clientInfo.clientPhone));
         const querySnapshot = await getDocs(q);
@@ -153,7 +158,7 @@ const OrderItem = () => {
                 techDate: Date.now(),
                 date: format(new Date(), " H:mm dd.MM.yy"),
                 message: `Коментар: ${comment.value}`,
-                author: userName,
+                author: auth.currentUser.displayName,
             }),
         });
         comment.setValue("");
@@ -294,7 +299,7 @@ const OrderItem = () => {
                                                         !deviceAccessories.inputValid ||
                                                         !devicePassword.inputValid
                                                     }
-                                                    onClick={handleSumbit}
+                                                    onClick={editOrder}
                                                     color="blue">
                                                     Завершити
                                                 </Button>

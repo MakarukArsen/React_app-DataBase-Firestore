@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo } from "react";
 import { createPortal } from "react-dom";
 import classes from "./Modal.module.scss";
+
 const modalRootElement = document.querySelector("#modal");
 const Modal = ({ children, isModalActive, onClose }) => {
     const element = useMemo(() => document.createElement("div"), []);

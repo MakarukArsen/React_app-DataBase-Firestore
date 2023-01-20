@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import classes from "./OrderItem.module.scss";
@@ -15,6 +15,8 @@ import { getAuth } from "firebase/auth";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
 import Modal from "../../components/modals/Modal";
 import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
+import Loader from "../../components/loader/Loader";
+import DatePicker from "react-date-picker";
 
 const OrderItem = () => {
     const [order, setOrder] = useState({});
@@ -39,8 +41,7 @@ const OrderItem = () => {
 
     // additional info
     const orderExecutor = useInput("");
-    const orderDeadline = useInput("");
-
+    const [orderDeadline, setOrderDeadline] = useState("");
     // history
     const comment = useInput("");
 
@@ -77,11 +78,11 @@ const OrderItem = () => {
         devicePassword.setValue(data.deviceInfo.devicePassword === "-" ? "" : data.deviceInfo.devicePassword);
 
         orderExecutor.setValue(data.orderInfo.orderExecutor === "-" ? "" : data.orderInfo.orderExecutor);
-        orderDeadline.setValue(data.orderInfo.orderDeadline === "-" ? "" : data.orderInfo.orderDeadline);
     };
 
     const editOrder = async (e) => {
         e.preventDefault();
+
         const orderData = {
             id: order.id,
             firebaseId: "",
@@ -112,9 +113,11 @@ const OrderItem = () => {
                 orderType: order.orderInfo.orderType,
                 orderAccepted: order.orderInfo.orderAccepted,
                 orderExecutor: orderExecutor.value || "-",
-                orderDeadline: orderDeadline.value || "-",
+                orderDeadline:
+                    orderDeadline === null ? "-" : orderDeadline === "" ? order.orderInfo.orderDeadline : orderDeadline?.toLocaleDateString(),
             },
         };
+
         // Updating order
         const orderRef = doc(db, "orders", firebaseId);
         await setDoc(orderRef, orderData);
@@ -151,6 +154,7 @@ const OrderItem = () => {
         await setDoc(clientRef, clientData);
         setEditMode(false);
     };
+
     const createComment = async () => {
         const docRef = doc(db, "orders", firebaseId);
         await updateDoc(docRef, {
@@ -163,8 +167,8 @@ const OrderItem = () => {
         });
         comment.setValue("");
     };
-
     const { deviceInfo, clientInfo, orderInfo, history, payment } = order;
+
     return (
         <div className={classes.order}>
             <Modal isModalActive={paymentModal.isActive} onClose={() => setPaymentModal({ isActive: false })}>
@@ -306,9 +310,7 @@ const OrderItem = () => {
                                             </div>
                                         </div>
                                     </div>
-                                ) : (
-                                    ""
-                                )}
+                                ) : null}
                                 <div className={classes.order__info}>
                                     <div className={classes.order__column}>
                                         <h2 className={classes.order__title}>Інформація</h2>
@@ -531,7 +533,22 @@ const OrderItem = () => {
                                                 {editMode ? (
                                                     <div className={classes.input__section}>
                                                         <div className={classes.input}>
-                                                            <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
+                                                            <DatePicker
+                                                                dayPlaceholder={
+                                                                    orderInfo.orderDeadline.length > 1 ? orderInfo.orderDeadline.slice(0, 2) : "- -"
+                                                                }
+                                                                monthPlaceholder={
+                                                                    orderInfo.orderDeadline.length > 1 ? orderInfo.orderDeadline.slice(3, 5) : "- -"
+                                                                }
+                                                                yearPlaceholder={
+                                                                    orderInfo.orderDeadline.length > 1
+                                                                        ? orderInfo.orderDeadline.slice(6, 10)
+                                                                        : "- - - -"
+                                                                }
+                                                                format="dd.MM.y"
+                                                                onChange={setOrderDeadline}
+                                                                value={orderDeadline}
+                                                            />
                                                         </div>
                                                     </div>
                                                 ) : (
@@ -545,7 +562,7 @@ const OrderItem = () => {
                         </div>
                     </div>
                 ) : (
-                    "loading"
+                    <Loader />
                 )}
             </div>
         </div>

@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import Button from "../../components/UI/button/Button";
 import useInput from "../../hooks/useInput";
 import Search from "../../components/UI/search/Search";
+import Loader from "../../components/loader/Loader";
+
 const Clients = () => {
     const [clients, setClients] = useState([]);
 
@@ -73,7 +75,9 @@ const Clients = () => {
                                 })
                             ) : (
                                 <tr>
-                                    <td>loading</td>
+                                    <td>
+                                        <Loader />
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

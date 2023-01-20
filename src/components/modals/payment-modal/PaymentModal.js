@@ -1,6 +1,6 @@
 import { format } from "date-fns";
 import { getAuth } from "firebase/auth";
-import { arrayUnion, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import { v4 } from "uuid";
 import { db } from "../../../firebase";

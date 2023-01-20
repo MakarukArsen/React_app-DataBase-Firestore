@@ -4,7 +4,7 @@ import useInput from "../../hooks/useInput";
 import Input from "../../components/UI/input/Input";
 import Button from "../../components/UI/button/Button";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
     const email = useInput("", { isEmpty: true, email: true });

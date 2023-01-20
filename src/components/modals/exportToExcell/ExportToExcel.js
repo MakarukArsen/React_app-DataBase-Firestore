@@ -5,6 +5,7 @@ import { db } from "../../../firebase";
 import Button from "../../UI/button/Button";
 import { v4 } from "uuid";
 import classes from "./ExportToExcel.module.scss";
+
 const ExportToExcel = () => {
     const [orders, setOrders] = useState([]);
 
@@ -22,7 +23,7 @@ const ExportToExcel = () => {
             return data;
         });
         ordersData.sort((a, b) => {
-            return a.id - b.id;
+            return b.id - a.id;
         });
         setOrders(ordersData);
     };

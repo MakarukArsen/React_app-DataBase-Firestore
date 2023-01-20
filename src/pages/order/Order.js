@@ -11,6 +11,7 @@ import useInput from "../../hooks/useInput";
 import Search from "../../components/UI/search/Search";
 import ExportToExcel from "../../components/modals/exportToExcell/ExportToExcel";
 import Modal from "../../components/modals/Modal";
+import Loader from "../../components/loader/Loader";
 
 const Order = () => {
     const [orders, setOrders] = useState([]);
@@ -186,7 +187,9 @@ const Order = () => {
                                 )
                             ) : (
                                 <tr>
-                                    <td>loading</td>
+                                    <td>
+                                        <Loader />
+                                    </td>
                                 </tr>
                             )}
                         </tbody>

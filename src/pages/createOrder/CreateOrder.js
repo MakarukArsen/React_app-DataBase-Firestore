@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useRef, useState } from "react";
 import classes from "./CreateOrder.module.scss";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
@@ -9,24 +9,24 @@ import { format } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 import { v4 } from "uuid";
 import { deviceTypesAndProducers, deviceСondition } from "../../constants";
-const CreateOrder = () => {
-    const [userName, setUserName] = useState("");
+import DatePicker from "react-date-picker";
 
+const CreateOrder = () => {
     const [clientOptions, setClientOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
     const [deviceProducerOptions, setDeviceProducerOptions] = useState([]);
     const [deviceStateOptions, setDeviceStateOptions] = useState([]);
 
-    // client info
+    // Client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
     const clientPhone = useInput("", { isEmpty: true });
     const clientEmail = useInput("");
     const clientAddress = useInput("");
-    // tech info
 
+    // Device info
     const deviceType = useInput("");
     const deviceProducer = useInput("");
     const deviceModel = useInput("");
@@ -35,41 +35,14 @@ const CreateOrder = () => {
     const deviceImeiSn = useInput("");
     const deviceAccessories = useInput("", { isEmpty: true });
     const devicePassword = useInput("", { isEmpty: true });
-    // additional info
 
+    // Order info
     const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
     const orderExecutor = useInput("");
-    const orderDeadline = useInput("");
+    const [orderDeadline, setOrderDeadline] = useState("");
 
     const auth = getAuth();
     const navigate = useNavigate();
-
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            if (user) {
-                setUserName(user.displayName);
-            }
-        });
-    }, [auth.currentUser]);
-
-    const clearInputs = () => {
-        clientName.clear();
-        clientPhone.clear();
-        clientEmail.clear();
-        clientAddress.clear();
-
-        deviceType.clear();
-        deviceProducer.clear();
-        deviceModel.clear();
-        deviceState.clear();
-        deviceBreakage.clear();
-        deviceImeiSn.clear();
-        deviceAccessories.clear();
-        devicePassword.clear();
-
-        orderExecutor.clear();
-        orderDeadline.clear();
-    };
 
     const handleSumbit = async (e) => {
         e.preventDefault();
@@ -82,7 +55,7 @@ const CreateOrder = () => {
                     techDate: Date.now(),
                     date: format(new Date(), " H:mm dd.MM.yy"),
                     message: "Замовлення створене",
-                    author: userName,
+                    author: auth.currentUser.displayName,
                 },
             ],
             clientInfo: {
@@ -108,9 +81,9 @@ const CreateOrder = () => {
                 orderUpdatedDate: "-",
                 orderStatus: "До діагностики",
                 orderType: orderType.value || "-",
-                orderAccepted: userName,
+                orderAccepted: auth.currentUser.displayName,
                 orderExecutor: orderExecutor.value || "-",
-                orderDeadline: orderDeadline.value || "-",
+                orderDeadline: orderDeadline === "" || orderDeadline === null ? "-" : orderDeadline?.toLocaleDateString(),
             },
         };
 
@@ -138,7 +111,6 @@ const CreateOrder = () => {
             await addDoc(docRef, clientData);
         }
 
-        clearInputs();
         navigate(`/orders/${order.id}`);
     };
 
@@ -231,8 +203,9 @@ const CreateOrder = () => {
             return;
         }
     };
+
     return (
-        <div className={classes.createOrder}>
+        <div className={classes.createOrder.value}>
             <div className="container">
                 <div className={classes.createOrder__content}>
                     <div className={classes.createOrder__header}>
@@ -343,9 +316,12 @@ const CreateOrder = () => {
                                         </div>
                                         <div className={classes.input__section}>
                                             <h3 className={classes.title}>Термін виконання</h3>
-                                            <div className={classes.input}>
-                                                <Input value={orderDeadline.value} onChange={(e) => orderDeadline.onChange(e)} />
-                                            </div>
+                                            <DatePicker
+                                                format="dd.MM.y"
+                                                className={classes.input}
+                                                onChange={setOrderDeadline}
+                                                value={orderDeadline}
+                                            />
                                         </div>
                                     </div>
                                 </div>

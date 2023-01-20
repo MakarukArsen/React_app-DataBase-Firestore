@@ -270,7 +270,7 @@ const PDF = () => {
                                 </p>
                             </div>
                             <div className={classes.signature}>
-                                <div className={classes.signature__date}>Data: 11.01.2023</div>
+                                <div className={classes.signature__date}>Data: {orderInfo.orderDate}</div>
                                 <div className={classes.signature__column + " " + classes.signature__column_left}>
                                     <p className={classes.signature__text}>Potwierdzam wydanie sprzętu</p>
                                 </div>
@@ -368,7 +368,7 @@ const PDF = () => {
                                 </table>
                             </div>
                             <div className={classes.signature}>
-                                <div className={classes.signature__date}>Data: 11.01.2023</div>
+                                <div className={classes.signature__date}>Data: {orderInfo.orderDate}</div>
                                 <div className={classes.signature__column + " " + classes.signature__column_left}>
                                     <p className={classes.signature__text}>Potwierdzam wydanie sprzętu</p>
                                 </div>

@@ -3,6 +3,7 @@ import classes from "./PDF.module.scss";
 import { PDFExport } from "@progress/kendo-react-pdf";
 import { useLocation } from "react-router-dom";
 import Button from "../../components/UI/button/Button";
+import { v4 } from "uuid";
 
 const PDF = () => {
     const location = useLocation();
@@ -226,7 +227,7 @@ const PDF = () => {
                                         {Object.keys(payment).length ? (
                                             payment.map((payment) => {
                                                 return (
-                                                    <tr className={classes.table__row}>
+                                                    <tr key={v4()} className={classes.table__row}>
                                                         <th className={classes.table__title_additional}>
                                                             <span>{payment.repairName}</span>
                                                         </th>
@@ -331,7 +332,7 @@ const PDF = () => {
                                         {Object.keys(payment).length ? (
                                             payment.map((payment) => {
                                                 return (
-                                                    <tr className={classes.table__row}>
+                                                    <tr key={v4()} className={classes.table__row}>
                                                         <th className={classes.table__title_additional}>
                                                             <span>{payment.repairName}</span>
                                                         </th>

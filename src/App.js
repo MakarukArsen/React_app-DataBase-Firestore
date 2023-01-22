@@ -7,7 +7,7 @@ import Clients from "./pages/clients/Clients";
 import CreateOrder from "./pages/createOrder/CreateOrder";
 import Login from "./pages/login/Login";
 import NotFound from "./pages/notFound/NotFound";
-import Order from "./pages/order/Order";
+import Orders from "./pages/orders/Orders";
 import OrderItem from "./pages/orderItem/OrderItem";
 import "./styles/style.scss";
 
@@ -29,7 +29,7 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<Layout />}>
-                <Route path="orders" element={<Order />} />
+                <Route path="orders" element={<Orders />} />
                 <Route path="orders/create-order" element={<CreateOrder />} />
                 <Route path="orders/:id" element={<OrderItem />} />
                 <Route path="clients" element={<Clients />} />

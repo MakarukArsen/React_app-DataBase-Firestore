@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import classes from "./Order.module.scss";
+import classes from "./Orders.module.scss";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase";
-import { getDocs, collection, query, where } from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy, limit, startAt, endAt } from "firebase/firestore";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
@@ -13,37 +13,74 @@ import ExportToExcel from "../../components/modals/exportToExcell/ExportToExcel"
 import Modal from "../../components/modals/Modal";
 import Loader from "../../components/loader/Loader";
 
-const Order = () => {
+const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [orderType, setOrderType] = useState("all");
+    const [ordersLimit, setOrdersLimit] = useState(30);
     const [isExcelModalActive, setExcelModalActive] = useState(false);
 
     const navigate = useNavigate();
     const search = useInput("");
 
+    // Lazy Loading
     useEffect(() => {
+        setOrdersLimit(30);
         if (orderType === "all") getOrders();
         if (orderType === "repair") getRepairOrders();
         if (orderType === "dataRecovery") getDataRecoveryOrders();
     }, [orderType]);
 
+    useEffect(() => {
+        window.addEventListener("scroll", loadNewData);
+        return () => window.removeEventListener("scroll", loadNewData);
+    });
+
+    useEffect(() => {
+        getOrders();
+    }, [search.value]);
+
+    const loadNewData = () => {
+        if (document.body.scrollHeight <= window.innerHeight + window.scrollY + 100) {
+            setOrdersLimit(ordersLimit + 20);
+            if (orderType === "all") getOrders();
+            if (orderType === "repair") getRepairOrders();
+            if (orderType === "dataRecovery") getDataRecoveryOrders();
+        }
+    };
+    // ----------------
+
     const getOrders = async () => {
-        const ordersRef = collection(db, "orders");
-        const snapshots = await getDocs(ordersRef);
-        const ordersData = snapshots.docs.map((doc) => {
-            const data = doc.data();
-            data.firebaseId = doc.id;
-            return data;
-        });
-        ordersData.sort((a, b) => {
-            return b.id - a.id;
-        });
-        setOrders(ordersData);
+        // Searched orders
+        if (search.value.length > 2) {
+            const ref = collection(db, "orders");
+            const q = query(
+                ref,
+                orderBy("clientInfo.clientPhone"),
+                orderBy("id", "desc"),
+                limit(ordersLimit),
+                startAt(search.value.toLowerCase()),
+                endAt(search.value.toLowerCase() + "\uf8ff")
+            );
+            const snap = await getDocs(q);
+            const data = snap.docs.map((item) => item.data());
+            setOrders(data);
+        } else {
+            // All orders
+            const ordersRef = collection(db, "orders");
+            const q = query(ordersRef, orderBy("id", "desc"), limit(ordersLimit));
+            const snapshots = await getDocs(q);
+            const ordersData = snapshots.docs.map((doc) => {
+                const data = doc.data();
+                data.firebaseId = doc.id;
+                return data;
+            });
+            setOrders(ordersData);
+        }
     };
 
     const getRepairOrders = async () => {
         const ordersRef = collection(db, "orders");
-        const q = query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"));
+        const q = query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"), orderBy("id", "desc"), limit(ordersLimit));
         const querySnapshot = await getDocs(q);
         const ordersRepair = querySnapshot.docs.map((doc) => {
             const data = doc.data();
@@ -55,7 +92,7 @@ const Order = () => {
 
     const getDataRecoveryOrders = async () => {
         const ordersRef = collection(db, "orders");
-        const q = query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"));
+        const q = query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"), orderBy("id", "desc"), limit(ordersLimit));
         const querySnapshot = await getDocs(q);
         const ordersDataRecovery = querySnapshot.docs.map((doc) => {
             const data = doc.data();
@@ -65,20 +102,9 @@ const Order = () => {
         setOrders(ordersDataRecovery);
     };
 
-    function filterOrders() {
-        const filteredOrders = orders.filter((item) => {
-            const clientInfo = Object.values(item.clientInfo).join("");
-            if (clientInfo.toLowerCase().includes(search.value.toLowerCase())) return item;
-        });
-        return filteredOrders;
-    }
-
-    const filteredOrders = filterOrders();
-
     const openOrderPage = (firebaseId) => {
         navigate(firebaseId);
     };
-
     return (
         <div className={classes.order}>
             <Modal isModalActive={isExcelModalActive} onClose={() => setExcelModalActive(false)}>
@@ -145,46 +171,41 @@ const Order = () => {
                         </thead>
                         <tbody className={classes.table__body}>
                             {orders.length ? (
-                                filteredOrders.length ? (
-                                    filteredOrders.map((order) => {
-                                        const { clientInfo, orderInfo, deviceInfo, payment } = order;
-                                        return (
-                                            <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
-                                                <td className={classes.table__item}>
-                                                    <span>#{order.id}</span> <br /> {orderInfo.orderDate}
-                                                </td>
-                                                {/* <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td> */}
-                                                <td className={classes.table__item + " " + classes.nowrap}>
-                                                    <StatusDropDown firebaseId={order.firebaseId} order={order}></StatusDropDown>
-                                                </td>
-                                                <td className={classes.table__item}>
-                                                    {clientInfo.clientName}
-                                                    <br />
-                                                    {clientInfo.clientPhone}
-                                                </td>
-                                                {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
-                                                {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
-                                                <td className={classes.table__item}>
-                                                    {Object.keys(payment).length
-                                                        ? payment.length > 1
-                                                            ? `${payment.reduce((acc, value) => acc + value.repairPrice, 0)} PLN`
-                                                            : `${payment[0].repairPrice} PLN`
-                                                        : "-"}
-                                                </td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceType}</td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
-                                                <td className={classes.table__item}>{deviceInfo.deviceModel}</td>
-                                                {/* <td className={classes.table__item}>{deviceInfo.deviceState}</td> */}
-                                                {/* <td className={classes.table__item}>{deviceInfo.deviceBreakage}</td> */}
-                                                {/* <td className={classes.table__item}>{deviceInfo.deviceImeiSn}</td> */}
-                                            </tr>
-                                        );
-                                    })
-                                ) : (
-                                    <tr>
-                                        <td>нема результатів</td>
-                                    </tr>
-                                )
+                                orders.map((order) => {
+                                    const { clientInfo, orderInfo, deviceInfo, payment } = order;
+                                    return (
+                                        <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
+                                            <td className={classes.table__item}>
+                                                <span>#{order.id}</span> <br /> {orderInfo.orderDate}
+                                            </td>
+                                            {/* <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td> */}
+                                            <td className={classes.table__item + " " + classes.nowrap}>
+                                                <StatusDropDown firebaseId={order.firebaseId} order={order}></StatusDropDown>
+                                            </td>
+                                            <td className={classes.table__item}>
+                                                {clientInfo.clientName}
+                                                <br />
+                                                {clientInfo.clientPhone}
+                                            </td>
+                                            {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
+                                            {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
+                                            <td className={classes.table__item}>
+                                                {Object.keys(payment).length
+                                                    ? payment.length > 1
+                                                        ? `${payment.reduce((acc, value) => acc + value.repairPrice, 0)} PLN`
+                                                        : `${payment[0].repairPrice} PLN`
+                                                    : "-"}
+                                            </td>
+                                            <td className={classes.table__item}>{orderInfo.orderType}</td>
+                                            <td className={classes.table__item}>{deviceInfo.deviceType}</td>
+                                            <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
+                                            <td className={classes.table__item}>{deviceInfo.deviceModel}</td>
+                                            {/* <td className={classes.table__item}>{deviceInfo.deviceState}</td> */}
+                                            {/* <td className={classes.table__item}>{deviceInfo.deviceBreakage}</td> */}
+                                            {/* <td className={classes.table__item}>{deviceInfo.deviceImeiSn}</td> */}
+                                        </tr>
+                                    );
+                                })
                             ) : (
                                 <tr>
                                     <td>
@@ -199,4 +220,4 @@ const Order = () => {
         </div>
     );
 };
-export default Order;
+export default Orders;

@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import classes from "./OrderItem.module.scss";
@@ -42,6 +42,7 @@ const OrderItem = () => {
     // additional info
     const orderExecutor = useInput("");
     const [orderDeadline, setOrderDeadline] = useState("");
+
     // history
     const comment = useInput("");
 

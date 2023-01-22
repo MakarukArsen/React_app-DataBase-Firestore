@@ -40,7 +40,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), "H:mm dd.MM.yy"),
-                message: `Добавлений платіж: ${repairName.value} ${repairPrice.value} PLN`,
+                message: `Добавлений платіж: ${repairName.value} - ${repairPrice.value} PLN`,
                 author: auth.currentUser.displayName,
             }),
         });
@@ -71,7 +71,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), "H:mm dd.MM.yy"),
-                message: `Платіж відредаговано: ${repairName.value} ${repairPrice.value} PLN`,
+                message: `Платіж відредаговано: ${repairName.value} - ${repairPrice.value} PLN`,
                 author: auth.currentUser.displayName,
             }),
         });

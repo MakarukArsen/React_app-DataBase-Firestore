@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import classes from "./CreateOrder.module.scss";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
@@ -37,7 +37,7 @@ const CreateOrder = () => {
     const devicePassword = useInput("", { isEmpty: true });
 
     // Order info
-    const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
+    const orderType = useSelect({ defaultValue: "Відновлення данних", options: ["Ремонт", "Відновлення данних"] });
     const orderExecutor = useInput("");
     const [orderDeadline, setOrderDeadline] = useState("");
 
@@ -46,6 +46,7 @@ const CreateOrder = () => {
 
     const handleSumbit = async (e) => {
         e.preventDefault();
+
         const orderData = {
             id: "",
             firebaseId: "",
@@ -102,13 +103,13 @@ const CreateOrder = () => {
             clientEmail: clientEmail.value || "-",
             clientAddress: clientAddress.value || "-",
         };
-        const docRef = collection(db, "clients");
-        const q = query(docRef, where("clientPhone", "==", clientData.clientPhone));
+        const clientRef = collection(db, "clients");
+        const q = query(clientRef, where("clientPhone", "==", clientData.clientPhone));
         const querySnapshot = await getDocs(q);
         const clients = querySnapshot.docs.map((doc) => doc.data());
 
         if (!clients.length) {
-            await addDoc(docRef, clientData);
+            await addDoc(clientRef, clientData);
         }
 
         navigate(`/orders/${order.id}`);
@@ -117,7 +118,7 @@ const CreateOrder = () => {
     const searchClient = async (value) => {
         const ref = collection(db, "clients");
         const q = query(ref, orderBy("clientPhone"), startAt(value.toLowerCase()), endAt(value.toLowerCase() + "\uf8ff"));
-        if (value.length) {
+        if (value.length >= 3) {
             const snap = await getDocs(q);
             const data = snap.docs.map((item) => item.data());
             setClientOptions(data);

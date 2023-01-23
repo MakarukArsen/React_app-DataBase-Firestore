@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import classes from "./Orders.module.scss";
 import { Link } from "react-router-dom";
 import { db } from "../../firebase";
-import { getDocs, collection, query, where, orderBy, limit, startAt, endAt } from "firebase/firestore";
+import { getDocs, collection, query, where, orderBy, limit, startAt, endAt, startAfter } from "firebase/firestore";
 import { v4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import StatusDropDown from "../../components/status-dropdown/StatusDropDown";
@@ -15,8 +15,9 @@ import Loader from "../../components/loader/Loader";
 
 const Orders = () => {
     const [orders, setOrders] = useState([]);
+    const [lastVisibleOrder, setLastVisibleOrder] = useState("");
     const [orderType, setOrderType] = useState("all");
-    const [ordersLimit, setOrdersLimit] = useState(30);
+
     const [isExcelModalActive, setExcelModalActive] = useState(false);
 
     const navigate = useNavigate();
@@ -24,10 +25,7 @@ const Orders = () => {
 
     // Lazy Loading
     useEffect(() => {
-        setOrdersLimit(30);
-        if (orderType === "all") getOrders();
-        if (orderType === "repair") getRepairOrders();
-        if (orderType === "dataRecovery") getDataRecoveryOrders();
+        getOrders();
     }, [orderType]);
 
     useEffect(() => {
@@ -37,69 +35,83 @@ const Orders = () => {
 
     useEffect(() => {
         getOrders();
-    }, [search.value]);
+    }, [search.value.length > 2]);
 
     const loadNewData = () => {
-        if (document.body.scrollHeight <= window.innerHeight + window.scrollY + 100) {
-            setOrdersLimit(ordersLimit + 20);
-            if (orderType === "all") getOrders();
-            if (orderType === "repair") getRepairOrders();
-            if (orderType === "dataRecovery") getDataRecoveryOrders();
+        if (document.body.scrollHeight === window.innerHeight + window.scrollY) {
+            getOrders();
         }
     };
     // ----------------
 
     const getOrders = async () => {
-        // Searched orders
+        const ordersRef = collection(db, "orders");
+
+        // Search orders
         if (search.value.length > 2) {
-            const ref = collection(db, "orders");
             const q = query(
-                ref,
+                ordersRef,
                 orderBy("clientInfo.clientPhone"),
                 orderBy("id", "desc"),
-                limit(ordersLimit),
+                limit(30),
                 startAt(search.value.toLowerCase()),
                 endAt(search.value.toLowerCase() + "\uf8ff")
             );
             const snap = await getDocs(q);
             const data = snap.docs.map((item) => item.data());
             setOrders(data);
-        } else {
-            // All orders
-            const ordersRef = collection(db, "orders");
-            const q = query(ordersRef, orderBy("id", "desc"), limit(ordersLimit));
+            return;
+        }
+
+        // Load new data
+        if (Object.keys(lastVisibleOrder).length) {
+            const q =
+                orderType === "all"
+                    ? query(ordersRef, orderBy("id", "desc"), startAfter(lastVisibleOrder), limit(30))
+                    : orderType === "repair"
+                    ? query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"), orderBy("id", "desc"), startAfter(lastVisibleOrder), limit(30))
+                    : orderType === "dataRecovery"
+                    ? query(
+                          ordersRef,
+                          where("orderInfo.orderType", "==", "Відновлення данних"),
+                          orderBy("id", "desc"),
+                          startAfter(lastVisibleOrder),
+                          limit(30)
+                      )
+                    : null;
             const snapshots = await getDocs(q);
+            const lastVisible = snapshots.docs[snapshots.docs.length - 1];
+            setLastVisibleOrder(lastVisible);
+            const newOrders = orders;
             const ordersData = snapshots.docs.map((doc) => {
                 const data = doc.data();
                 data.firebaseId = doc.id;
+                newOrders.push(data);
                 return data;
             });
-            setOrders(ordersData);
+            setOrders(newOrders);
+            return;
         }
-    };
 
-    const getRepairOrders = async () => {
-        const ordersRef = collection(db, "orders");
-        const q = query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"), orderBy("id", "desc"), limit(ordersLimit));
-        const querySnapshot = await getDocs(q);
-        const ordersRepair = querySnapshot.docs.map((doc) => {
+        // First data load
+        const q =
+            orderType === "all"
+                ? query(ordersRef, orderBy("id", "desc"), limit(30))
+                : orderType === "repair"
+                ? query(ordersRef, where("orderInfo.orderType", "==", "Ремонт"), orderBy("id", "desc"), limit(30))
+                : orderType === "dataRecovery"
+                ? query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"), orderBy("id", "desc"), limit(30))
+                : null;
+        const snapshots = await getDocs(q);
+        const lastVisible = snapshots.docs[snapshots.docs.length - 1];
+        setLastVisibleOrder(lastVisible);
+        const ordersData = snapshots.docs.map((doc) => {
             const data = doc.data();
             data.firebaseId = doc.id;
             return data;
         });
-        setOrders(ordersRepair);
-    };
 
-    const getDataRecoveryOrders = async () => {
-        const ordersRef = collection(db, "orders");
-        const q = query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"), orderBy("id", "desc"), limit(ordersLimit));
-        const querySnapshot = await getDocs(q);
-        const ordersDataRecovery = querySnapshot.docs.map((doc) => {
-            const data = doc.data();
-            data.firebaseId = doc.id;
-            return data;
-        });
-        setOrders(ordersDataRecovery);
+        setOrders(ordersData);
     };
 
     const openOrderPage = (firebaseId) => {
@@ -115,23 +127,44 @@ const Orders = () => {
                     <div className="container">
                         <div className={classes.orderActions}>
                             <div className={classes.actions__search}>
-                                <Search value={search.value} onChange={(e) => search.onChange(e)} />
+                                <Search
+                                    value={search.value}
+                                    onChange={(e) => {
+                                        search.onChange(e);
+                                        setLastVisibleOrder("");
+                                    }}
+                                />
                             </div>
                             <div className={classes.actions__buttons}>
                                 <div className={classes.button}>
-                                    <Button active={(orderType === "all").toString()} onClick={() => setOrderType("all")} color="black">
+                                    <Button
+                                        active={(orderType === "all").toString()}
+                                        onClick={() => {
+                                            setOrderType("all");
+                                            setLastVisibleOrder("");
+                                        }}
+                                        color="black">
                                         Всі
                                     </Button>
                                 </div>
                                 <div className={classes.button}>
-                                    <Button active={(orderType === "repair").toString()} onClick={() => setOrderType("repair")} color="black">
+                                    <Button
+                                        active={(orderType === "repair").toString()}
+                                        onClick={() => {
+                                            setOrderType("repair");
+                                            setLastVisibleOrder("");
+                                        }}
+                                        color="black">
                                         Ремонт
                                     </Button>
                                 </div>
                                 <div className={classes.button}>
                                     <Button
                                         active={(orderType === "dataRecovery").toString()}
-                                        onClick={() => setOrderType("dataRecovery")}
+                                        onClick={() => {
+                                            setOrderType("dataRecovery");
+                                            setLastVisibleOrder("");
+                                        }}
                                         color="black">
                                         Відновлення данних
                                     </Button>

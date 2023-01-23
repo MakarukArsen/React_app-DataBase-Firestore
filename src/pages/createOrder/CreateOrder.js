@@ -4,7 +4,7 @@ import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
 import Button from "../../components/UI/button/Button";
 import { db } from "../../firebase";
-import { getDocs, addDoc, collection, query, where, startAt, orderBy, endAt } from "firebase/firestore";
+import { getDocs, addDoc, collection, query, where, startAt, orderBy, endAt, getCountFromServer } from "firebase/firestore";
 import { format } from "date-fns";
 import { Link, useNavigate } from "react-router-dom";
 import Select from "../../components/UI/select/Select";
@@ -37,7 +37,7 @@ const CreateOrder = () => {
     const devicePassword = useInput("", { isEmpty: true });
 
     // Order info
-    const orderType = useSelect({ defaultValue: "Відновлення данних", options: ["Ремонт", "Відновлення данних"] });
+    const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
     const orderExecutor = useInput("");
     const [orderDeadline, setOrderDeadline] = useState("");
 
@@ -88,9 +88,9 @@ const CreateOrder = () => {
             },
         };
 
-        await getDocs(collection(db, "orders"))
+        await getCountFromServer(collection(db, "orders"))
             .then((res) => {
-                orderData.id = res.size + 1;
+                orderData.id = res.data().count;
             })
             .catch((err) => console.log(err));
 

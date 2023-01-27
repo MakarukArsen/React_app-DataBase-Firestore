@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import classes from "./Header.module.scss";
 import { NavLink } from "react-router-dom";
-import TasksIcon from "../icons/TasksIcon";
 import OrdersIcon from "../icons/OrdersIcon";
 import PaymentsIcon from "../icons/PaymentsIcon";
 import ClientsIcon from "../icons/ClientsIcon";
-import StorageIcon from "../icons/StorageIcon";
 import Modal from "../modals/Modal";
 import AuthModal from "../modals/auth-modal/AuthModal";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
@@ -39,37 +37,23 @@ const Header = () => {
                             </div>
                         </li>
                         <li>
-                            <NavLink to="/404" className={classes.navigate__link}>
-                                <div className={classes.navigate__icon}>
-                                    <TasksIcon />
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/orders" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
+                            <NavLink to="orders" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
                                 <div className={classes.navigate__icon}>
                                     <OrdersIcon />
                                 </div>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/404" className={classes.navigate__link}>
+                            <NavLink to="finances" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
                                 <div className={classes.navigate__icon}>
                                     <PaymentsIcon />
                                 </div>
                             </NavLink>
                         </li>
                         <li>
-                            <NavLink to="/clients" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
+                            <NavLink to="clients" className={({ isActive }) => (isActive ? classes.navigate__link_active : classes.navigate__link)}>
                                 <div className={classes.navigate__icon}>
                                     <ClientsIcon />
-                                </div>
-                            </NavLink>
-                        </li>
-                        <li>
-                            <NavLink to="/404" className={classes.navigate__link}>
-                                <div className={classes.navigate__icon}>
-                                    <StorageIcon />
                                 </div>
                             </NavLink>
                         </li>

@@ -1,0 +1,74 @@
+@use "../../styles/constants.scss";
+
+.finances {
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    &__actions {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .input {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 0 0 250px;
+        }
+    }
+
+    &__table {
+        background-color: constants.$white;
+        padding: 15px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+            border: 1px solid constants.$grey;
+
+            &__header {}
+
+            &__body {
+                .table__row:hover {
+                    background-color: constants.$light-grey;
+                }
+            }
+
+            &__row {
+                border-top: 1px solid constants.$grey;
+                border-bottom: 1px solid constants.$grey;
+            }
+
+            &__item {
+                text-align: left;
+                line-height: 1.25;
+                padding: 10px;
+
+                &:not(:first-child) {
+                    padding: 10px 16px;
+                }
+
+                span {
+                    font-weight: 600;
+                }
+
+                &_big {
+                    border: 1px solid constants.$grey;
+                }
+            }
+
+            .nowrap {
+                white-space: nowrap;
+            }
+        }
+    }
+}

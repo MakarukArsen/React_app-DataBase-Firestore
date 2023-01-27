@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import classes from "./CreateOrder.module.scss";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
@@ -44,13 +44,20 @@ const CreateOrder = () => {
     const auth = getAuth();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        // handleSumbit();
+    }, []);
     const handleSumbit = async (e) => {
         e.preventDefault();
 
         const orderData = {
             id: "",
-            firebaseId: "",
-            payment: [],
+            techData: {
+                techDate: Date.now(),
+                isAnyPayments: false,
+                paymentType: null,
+            },
+            payments: [],
             history: [
                 {
                     techDate: Date.now(),
@@ -78,8 +85,7 @@ const CreateOrder = () => {
             },
 
             orderInfo: {
-                orderDate: format(new Date(), "H:mm dd.MM.yyy"),
-                orderUpdatedDate: "-",
+                orderDate: format(new Date(), "H:mm dd.MM.yy"),
                 orderStatus: "До діагностики",
                 orderType: orderType.value || "-",
                 orderAccepted: auth.currentUser.displayName,
@@ -90,7 +96,7 @@ const CreateOrder = () => {
 
         await getCountFromServer(collection(db, "orders"))
             .then((res) => {
-                orderData.id = res.data().count;
+                orderData.id = res.data().count + 1;
             })
             .catch((err) => console.log(err));
 

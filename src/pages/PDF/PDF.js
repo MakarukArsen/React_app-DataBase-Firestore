@@ -4,10 +4,13 @@ import { PDFExport } from "@progress/kendo-react-pdf";
 import { useLocation } from "react-router-dom";
 import Button from "../../components/UI/button/Button";
 import { v4 } from "uuid";
+import { format } from "date-fns";
 
 const PDF = () => {
     const location = useLocation();
     const { orderData } = location.state;
+
+    const pdfDate = format(new Date(), "dd.MM.yy");
 
     const pdfExportComponentFirst = useRef(null);
     const pdfExportComponentSecond = useRef(null);
@@ -18,7 +21,7 @@ const PDF = () => {
         if (number === "second") pdfExportComponentSecond.current.save();
     };
 
-    const { clientInfo, deviceInfo, orderInfo, payment } = orderData;
+    const { clientInfo, deviceInfo, orderInfo, payments } = orderData;
 
     return (
         <div className={classes.body}>
@@ -30,7 +33,7 @@ const PDF = () => {
                                 <div className={classes.title}>
                                     <h1>Potwierdzenie przyjęcia sprzętu</h1>
                                     <p>
-                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate}</span>
+                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate.slice(6)}</span>
                                     </p>
                                 </div>
                                 <div className={classes.serviceInfo}>
@@ -167,7 +170,7 @@ const PDF = () => {
                                 <div className={classes.title}>
                                     <h1>Karta naprawy</h1>
                                     <p>
-                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate}</span>
+                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate.slice(6)}</span>
                                     </p>
                                 </div>
                                 <div className={classes.serviceInfo}>
@@ -224,8 +227,8 @@ const PDF = () => {
                                                 <b>Cena,PLN</b>
                                             </td>
                                         </tr>
-                                        {Object.keys(payment).length ? (
-                                            payment.map((payment) => {
+                                        {Object.keys(payments).length ? (
+                                            payments.map((payment) => {
                                                 return (
                                                     <tr key={v4()} className={classes.table__row}>
                                                         <th className={classes.table__title_additional}>
@@ -251,10 +254,10 @@ const PDF = () => {
                                             </th>
                                             <td className={classes.table__text_additional}>
                                                 <b>
-                                                    {Object.keys(payment).length
-                                                        ? payment.length > 1
-                                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
-                                                            : payment[0].repairPrice
+                                                    {Object.keys(payments).length
+                                                        ? payments.length > 1
+                                                            ? payments.reduce((acc, value) => acc + value.repairPrice, 0)
+                                                            : payments[0].repairPrice
                                                         : ""}
                                                 </b>
                                             </td>
@@ -271,7 +274,7 @@ const PDF = () => {
                                 </p>
                             </div>
                             <div className={classes.signature}>
-                                <div className={classes.signature__date}>Data: {orderInfo.orderDate}</div>
+                                <div className={classes.signature__date}>Data: {pdfDate}</div>
                                 <div className={classes.signature__column + " " + classes.signature__column_left}>
                                     <p className={classes.signature__text}>Potwierdzam wydanie sprzętu</p>
                                 </div>
@@ -285,7 +288,7 @@ const PDF = () => {
                             <div className={classes.header}>
                                 <div className={classes.title + " " + classes.title_second}>
                                     <p>
-                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate}</span>
+                                        Zlecenie <span># {orderData.id}</span> dnia <span>{orderInfo.orderDate.slice(6)}</span>
                                     </p>
                                     <h1>Karta naprawy</h1>
                                 </div>
@@ -329,8 +332,8 @@ const PDF = () => {
                                                 <b>Cena,PLN</b>
                                             </td>
                                         </tr>
-                                        {Object.keys(payment).length ? (
-                                            payment.map((payment) => {
+                                        {Object.keys(payments).length ? (
+                                            payments.map((payment) => {
                                                 return (
                                                     <tr key={v4()} className={classes.table__row}>
                                                         <th className={classes.table__title_additional}>
@@ -357,10 +360,10 @@ const PDF = () => {
                                             <td className={classes.table__text_additional}>
                                                 <b>
                                                     {" "}
-                                                    {Object.keys(payment).length
-                                                        ? payment.length > 1
-                                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
-                                                            : payment[0].repairPrice
+                                                    {Object.keys(payments).length
+                                                        ? payments.length > 1
+                                                            ? payments.reduce((acc, value) => acc + value.repairPrice, 0)
+                                                            : payments[0].repairPrice
                                                         : ""}
                                                 </b>
                                             </td>
@@ -369,7 +372,7 @@ const PDF = () => {
                                 </table>
                             </div>
                             <div className={classes.signature}>
-                                <div className={classes.signature__date}>Data: {orderInfo.orderDate}</div>
+                                <div className={classes.signature__date}>Data: {pdfDate}</div>
                                 <div className={classes.signature__column + " " + classes.signature__column_left}>
                                     <p className={classes.signature__text}>Potwierdzam wydanie sprzętu</p>
                                 </div>

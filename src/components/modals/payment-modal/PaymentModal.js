@@ -11,7 +11,7 @@ import Input from "../../UI/input/Input";
 import Select from "../../UI/select/Select";
 import classes from "./PaymentModal.module.scss";
 
-const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
+const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
     const [paymentType, setPaymentType] = useState("cash");
 
     const auth = getAuth();
@@ -26,7 +26,11 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
         e.preventDefault();
         const docRef = doc(db, "orders", firebaseId);
         await updateDoc(docRef, {
-            payment: arrayUnion({
+            techData: {
+                techDate: techData.techDate,
+                isAnyPayments: true,
+            },
+            payments: arrayUnion({
                 repairName: repairName.value,
                 paymentAccepted: auth.currentUser.displayName,
                 repairExecutor: repairExecutor.value,
@@ -51,7 +55,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
         e.preventDefault();
         const docRef = doc(db, "orders", firebaseId);
         const snapshot = await getDoc(docRef);
-        const paymentData = snapshot.data().payment;
+        const paymentData = snapshot.data().payments;
         const filteredPaymentData = paymentData.filter((item) => {
             return item.id !== payment.id;
         });
@@ -67,7 +71,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, type }) => {
             id: v4(),
         });
         await updateDoc(docRef, {
-            payment: filteredPaymentData,
+            payments: filteredPaymentData,
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), "H:mm dd.MM.yy"),

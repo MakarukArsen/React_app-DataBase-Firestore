@@ -53,7 +53,6 @@ const Orders = () => {
                 ordersRef,
                 orderBy("clientInfo.clientPhone"),
                 orderBy("id", "desc"),
-                limit(30),
                 startAt(search.value.toLowerCase()),
                 endAt(search.value.toLowerCase() + "\uf8ff")
             );
@@ -205,13 +204,13 @@ const Orders = () => {
                         <tbody className={classes.table__body}>
                             {orders.length ? (
                                 orders.map((order) => {
-                                    const { clientInfo, orderInfo, deviceInfo, payment } = order;
+                                    const { clientInfo, orderInfo, deviceInfo, payments } = order;
                                     return (
                                         <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
                                             <td className={classes.table__item}>
                                                 <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                             </td>
-                                            {/* <td className={classes.table__item}>{orderInfo.orderUpdatedDate}</td> */}
+
                                             <td className={classes.table__item + " " + classes.nowrap}>
                                                 <StatusDropDown firebaseId={order.firebaseId} order={order}></StatusDropDown>
                                             </td>
@@ -223,10 +222,10 @@ const Orders = () => {
                                             {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
                                             {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
                                             <td className={classes.table__item}>
-                                                {Object.keys(payment).length
-                                                    ? payment.length > 1
-                                                        ? `${payment.reduce((acc, value) => acc + value.repairPrice, 0)} PLN`
-                                                        : `${payment[0].repairPrice} PLN`
+                                                {Object.keys(payments).length
+                                                    ? payments.length > 1
+                                                        ? `${payments.reduce((acc, value) => acc + value.repairPrice, 0)} PLN`
+                                                        : `${payments[0].repairPrice} PLN`
                                                     : "-"}
                                             </td>
                                             <td className={classes.table__item}>{orderInfo.orderType}</td>

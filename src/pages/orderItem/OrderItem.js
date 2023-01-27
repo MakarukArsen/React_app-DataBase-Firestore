@@ -87,7 +87,7 @@ const OrderItem = () => {
         const orderData = {
             id: order.id,
             firebaseId: "",
-            payment: order.payment,
+            payments: order.payments,
             history: order.history,
             clientInfo: {
                 clientName: clientName.value || "-",
@@ -109,7 +109,6 @@ const OrderItem = () => {
 
             orderInfo: {
                 orderDate: order.orderInfo.orderDate,
-                orderUpdatedDate: format(new Date(), "H:mm dd.MM.yyy"),
                 orderStatus: order.orderInfo.orderStatus,
                 orderType: order.orderInfo.orderType,
                 orderAccepted: order.orderInfo.orderAccepted,
@@ -168,7 +167,7 @@ const OrderItem = () => {
         });
         comment.setValue("");
     };
-    const { deviceInfo, clientInfo, orderInfo, history, payment } = order;
+    const { deviceInfo, clientInfo, orderInfo, history, payments } = order;
 
     return (
         <div className={classes.order}>
@@ -177,6 +176,7 @@ const OrderItem = () => {
                     onClose={() => setPaymentModal({ isActive: false })}
                     firebaseId={firebaseId}
                     payment={paymentModal.payment}
+                    techData={order.techData}
                     type={paymentModal.type}
                 />
             </Modal>
@@ -190,10 +190,10 @@ const OrderItem = () => {
                                     <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
                                 </div>
                                 <p className={classes.orderPrice}>
-                                    {Object.keys(payment).length
-                                        ? payment.length > 1
-                                            ? payment.reduce((acc, value) => acc + value.repairPrice, 0)
-                                            : payment[0].repairPrice
+                                    {Object.keys(payments).length
+                                        ? payments.length > 1
+                                            ? payments.reduce((acc, value) => acc + value.repairPrice, 0)
+                                            : payments[0].repairPrice
                                         : "0.00"}{" "}
                                     PLN
                                 </p>
@@ -221,7 +221,7 @@ const OrderItem = () => {
                                 </Link>
                             </div>
                         </div>
-                        {order.payment.length ? (
+                        {order.payments.length ? (
                             <div className={classes.order__payment}>
                                 <h2 className={classes.title}>Платежі</h2>
                                 <table className={classes.table}>
@@ -238,7 +238,7 @@ const OrderItem = () => {
                                         </tr>
                                     </thead>
                                     <tbody className={classes.table__tbody}>
-                                        {order.payment.map((payment) => {
+                                        {order.payments.map((payment) => {
                                             return (
                                                 <tr
                                                     key={v4()}

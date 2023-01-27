@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import classes from "./OrderItem.module.scss";
@@ -50,6 +50,19 @@ const OrderItem = () => {
     const firebaseId = match.id;
 
     const auth = getAuth();
+
+    // Create comment on key Enter
+    useEffect(() => {
+        const onKeypress = (e) => {
+            if (e.code === "Enter" && comment.value.length > 0 && comment.isFocused) {
+                createComment();
+            }
+        };
+        document.addEventListener("keypress", onKeypress);
+        return () => {
+            document.removeEventListener("keypress", onKeypress);
+        };
+    }, [comment]);
 
     // Realtime updates for history, status
     useEffect(() => {
@@ -156,6 +169,7 @@ const OrderItem = () => {
     };
 
     const createComment = async () => {
+        if (comment.value.length === 0) return;
         const docRef = doc(db, "orders", firebaseId);
         await updateDoc(docRef, {
             history: arrayUnion({
@@ -263,7 +277,13 @@ const OrderItem = () => {
                             <div className={classes.order__history}>
                                 <h2 className={classes.history__title}>History</h2>
                                 <div className={classes.history__input}>
-                                    <Input placeholder="Leave a comment..." value={comment.value} onChange={(e) => comment.onChange(e)} />
+                                    <Input
+                                        placeholder="Leave a comment..."
+                                        onFocus={() => comment.onFocus()}
+                                        onBlur={() => comment.onBlur()}
+                                        value={comment.value}
+                                        onChange={(e) => comment.onChange(e)}
+                                    />
                                     <div className={classes.history__submitComment}>
                                         <Button onClick={createComment} color="blue">
                                             Submit

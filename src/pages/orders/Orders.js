@@ -47,6 +47,34 @@ const Orders = () => {
     const getOrders = async () => {
         const ordersRef = collection(db, "orders");
 
+        // Search orders from last visible
+        if (Object.keys(lastVisibleOrder).length) {
+            if (search.value.length > 2) {
+                const q = query(
+                    ordersRef,
+                    orderBy("clientInfo.clientPhone"),
+                    orderBy("id", "desc"),
+                    startAt(search.value.toLowerCase()),
+                    endAt(search.value.toLowerCase() + "\uf8ff"),
+                    startAfter(lastVisibleOrder),
+                    limit(30)
+                );
+                const snapshots = await getDocs(q);
+                const lastVisible = snapshots.docs[snapshots.docs.length - 1];
+                setLastVisibleOrder(lastVisible);
+                const newOrders = orders;
+                const data = snapshots.docs.map((doc) => {
+                    const data = doc.data();
+                    data.firebaseId = doc.id;
+                    newOrders.push(data);
+                    return data;
+                });
+
+                setOrders(newOrders);
+                return;
+            }
+        }
+
         // Search orders
         if (search.value.length > 2) {
             const q = query(
@@ -54,10 +82,17 @@ const Orders = () => {
                 orderBy("clientInfo.clientPhone"),
                 orderBy("id", "desc"),
                 startAt(search.value.toLowerCase()),
-                endAt(search.value.toLowerCase() + "\uf8ff")
+                endAt(search.value.toLowerCase() + "\uf8ff"),
+                limit(30)
             );
-            const snap = await getDocs(q);
-            const data = snap.docs.map((item) => item.data());
+            const snapshots = await getDocs(q);
+            const lastVisible = snapshots.docs[snapshots.docs.length - 1];
+            setLastVisibleOrder(lastVisible);
+            const data = snapshots.docs.map((doc) => {
+                const data = doc.data();
+                data.firebaseId = doc.id;
+                return data;
+            });
             setOrders(data);
             return;
         }
@@ -113,7 +148,7 @@ const Orders = () => {
         setOrders(ordersData);
     };
 
-    const openOrderPage = (firebaseId) => {
+    const navigateToOrder = (firebaseId) => {
         navigate(firebaseId);
     };
     return (
@@ -130,6 +165,7 @@ const Orders = () => {
                                     value={search.value}
                                     onChange={(e) => {
                                         search.onChange(e);
+                                        setOrderType("all");
                                         setLastVisibleOrder("");
                                     }}
                                 />
@@ -187,18 +223,12 @@ const Orders = () => {
                         <thead className={classes.table__header}>
                             <tr className={classes.table__row}>
                                 <th className={classes.table__item}>Замовлення</th>
-                                {/* <th className={classes.table__item}>Оновлено</th> */}
                                 <th className={classes.table__item}>Статус</th>
                                 <th className={classes.table__item}>Клієнт</th>
-                                {/* <th className={classes.table__item}>Прийняв замовлення</th> */}
-                                {/* <th className={classes.table__item}>Виконав замовлення</th> */}
                                 <th className={classes.table__item}>Вартість</th>
                                 <th className={classes.table__item}>Тип</th>
                                 <th className={classes.table__item}>Виробник</th>
                                 <th className={classes.table__item}>Модель</th>
-                                {/* <th className={classes.table__item}>Стан</th> */}
-                                {/* <th className={classes.table__item}>Несправність</th> */}
-                                {/* <th className={classes.table__item + " " + classes.nowrap}>IMEI / SN</th> */}
                             </tr>
                         </thead>
                         <tbody className={classes.table__body}>
@@ -206,11 +236,10 @@ const Orders = () => {
                                 orders.map((order) => {
                                     const { clientInfo, orderInfo, deviceInfo, payments } = order;
                                     return (
-                                        <tr onClick={() => openOrderPage(order.firebaseId)} key={v4()} className={classes.table__row}>
+                                        <tr onClick={() => navigateToOrder(order.firebaseId)} key={v4()} className={classes.table__row}>
                                             <td className={classes.table__item}>
                                                 <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                             </td>
-
                                             <td className={classes.table__item + " " + classes.nowrap}>
                                                 <StatusDropDown firebaseId={order.firebaseId} order={order}></StatusDropDown>
                                             </td>
@@ -219,8 +248,6 @@ const Orders = () => {
                                                 <br />
                                                 {clientInfo.clientPhone}
                                             </td>
-                                            {/* <td className={classes.table__item}>{orderInfo.orderAccepted}</td> */}
-                                            {/* <td className={classes.table__item}>{orderInfo.orderExecutor}</td> */}
                                             <td className={classes.table__item}>
                                                 {Object.keys(payments).length
                                                     ? payments.length > 1
@@ -232,9 +259,6 @@ const Orders = () => {
                                             <td className={classes.table__item}>{deviceInfo.deviceType}</td>
                                             <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
                                             <td className={classes.table__item}>{deviceInfo.deviceModel}</td>
-                                            {/* <td className={classes.table__item}>{deviceInfo.deviceState}</td> */}
-                                            {/* <td className={classes.table__item}>{deviceInfo.deviceBreakage}</td> */}
-                                            {/* <td className={classes.table__item}>{deviceInfo.deviceImeiSn}</td> */}
                                         </tr>
                                     );
                                 })

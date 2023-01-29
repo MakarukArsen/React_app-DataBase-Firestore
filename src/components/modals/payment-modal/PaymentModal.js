@@ -1,7 +1,7 @@
 import { format } from "date-fns";
 import { getAuth } from "firebase/auth";
 import { arrayUnion, doc, getDoc, updateDoc } from "firebase/firestore";
-import React, { useState } from "react";
+import React from "react";
 import { v4 } from "uuid";
 import { db } from "../../../firebase";
 import useInput from "../../../hooks/useInput";
@@ -12,8 +12,6 @@ import Select from "../../UI/select/Select";
 import classes from "./PaymentModal.module.scss";
 
 const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
-    const [paymentType, setPaymentType] = useState("cash");
-
     const auth = getAuth();
 
     const repairName = useInput(type === "edit" ? payment.repairName : "", { isEmpty: true });
@@ -29,6 +27,7 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
             techData: {
                 techDate: techData.techDate,
                 isAnyPayments: true,
+                paymentType: techData.paymentType,
             },
             payments: arrayUnion({
                 repairName: repairName.value,
@@ -36,7 +35,6 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
                 repairExecutor: repairExecutor.value,
                 repairCost: +repairCost.value,
                 repairPrice: +repairPrice.value,
-                paymentType: paymentType,
                 repairGuarantee: repairGuarantee.value || "-",
                 date: format(new Date(), "H:mm dd.MM.yy"),
                 id: v4(),
@@ -65,7 +63,6 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
             repairExecutor: repairExecutor.value,
             repairCost: +repairCost.value,
             repairPrice: +repairPrice.value,
-            paymentType: paymentType,
             repairGuarantee: repairGuarantee.value || "-",
             date: format(new Date(), "H:mm dd.MM.yy"),
             id: v4(),
@@ -121,19 +118,6 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
                                 />
                             </div>
                             <p className={classes.error}>{repairPrice.isDirty && repairPrice.isEmpty ? "Поле не може бути пустим" : ""}</p>
-                        </div>
-                    </div>
-                    <div className={classes.inputSection}>
-                        <h3>Метод оплати</h3>
-                        <div className={classes.row}>
-                            <label>
-                                <input onChange={() => setPaymentType("cash")} defaultChecked type="radio" name="radio" />
-                                Готівка
-                            </label>
-                            <label>
-                                <input onChange={() => setPaymentType("card")} type="radio" name="radio" />
-                                Карта
-                            </label>
                         </div>
                     </div>
                     <div className={classes.inputSection}>

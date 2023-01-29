@@ -1,5 +1,5 @@
 import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
 import classes from "./OrderItem.module.scss";
@@ -17,11 +17,16 @@ import Modal from "../../components/modals/Modal";
 import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
 import Loader from "../../components/loader/Loader";
 import DatePicker from "react-date-picker";
+import { deviceTypesAndProducers, deviceСondition } from "../../constants";
 
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
     const [paymentModal, setPaymentModal] = useState({ isActive: false, type: "create", payment: {} });
+
+    const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
+    const [deviceProducerOptions, setDeviceProducerOptions] = useState([]);
+    const [deviceStateOptions, setDeviceStateOptions] = useState([]);
 
     // client info
     const clientName = useInput("", { isEmpty: true, minLength: 2 });
@@ -99,6 +104,7 @@ const OrderItem = () => {
 
         const orderData = {
             id: order.id,
+            techData: order.techData,
             firebaseId: "",
             payments: order.payments,
             history: order.history,
@@ -181,6 +187,77 @@ const OrderItem = () => {
         });
         comment.setValue("");
     };
+
+    const deviceTypeDropDown = (value) => {
+        const options = [];
+
+        for (const key in deviceTypesAndProducers) {
+            if (value.type === "click") {
+                options.push(key);
+                continue;
+            }
+            if (key.toLowerCase().includes(value.toLowerCase())) {
+                options.push(key);
+            }
+        }
+        return setDeviceTypeOptions(options);
+    };
+
+    const deviceProducerDropDown = (value) => {
+        const type = deviceType.value;
+        const options = [];
+
+        if (type === "PC" || type === "") return;
+
+        if (value.type === "click") {
+            deviceTypesAndProducers[type].forEach((producer) => {
+                options.push(producer);
+            });
+            return setDeviceProducerOptions(options);
+        }
+
+        if (type === "Laptop" || type === "smartphone" || type === "Tablet") {
+            deviceTypesAndProducers[type].forEach((producer) => {
+                if (producer.toLowerCase().includes(value.toLowerCase())) {
+                    options.push(producer);
+                }
+            });
+            return setDeviceProducerOptions(options);
+        }
+    };
+
+    const deviceStateDropDown = (value) => {
+        const options = [];
+
+        if (value.type === "click") {
+            return setDeviceStateOptions(deviceСondition);
+        }
+
+        deviceСondition.forEach((condition) => {
+            if (condition.toLowerCase().includes(value.toLowerCase())) {
+                options.push(condition);
+            }
+        });
+        return setDeviceStateOptions(options);
+    };
+
+    const fillInputs = (inputType, data) => {
+        if (inputType === "deviceType") {
+            deviceType.setValue(data);
+            setDeviceTypeOptions([]);
+            return;
+        }
+        if (inputType === "deviceProducer") {
+            deviceProducer.setValue(data);
+            setDeviceProducerOptions([]);
+            return;
+        }
+        if (inputType === "deviceState") {
+            deviceState.setValue(data);
+            setDeviceStateOptions([]);
+            return;
+        }
+    };
     const { deviceInfo, clientInfo, orderInfo, history, payments } = order;
 
     return (
@@ -237,7 +314,12 @@ const OrderItem = () => {
                         </div>
                         {order.payments.length ? (
                             <div className={classes.order__payment}>
-                                <h2 className={classes.title}>Платежі</h2>
+                                <div className={classes.payment__row}>
+                                    <h2 className={classes.title}>Платежі</h2>
+                                    {order.techData.paymentType !== null ? (
+                                        <p className={classes.paymentType}>Тип оплати {order.techData.paymentType}</p>
+                                    ) : null}
+                                </div>
                                 <table className={classes.table}>
                                     <thead className={classes.table__thead}>
                                         <tr className={classes.table__row}>
@@ -246,7 +328,6 @@ const OrderItem = () => {
                                             <th className={classes.table__item}>Виконавець</th>
                                             <th className={classes.table__item}>Собівартість PLN</th>
                                             <th className={classes.table__item}>Ціна PLN</th>
-                                            <th className={classes.table__item}>Тип оплати</th>
                                             <th className={classes.table__item}>Гарантія мс.</th>
                                             <th className={classes.table__item}>Дата</th>
                                         </tr>
@@ -263,7 +344,6 @@ const OrderItem = () => {
                                                     <td className={classes.table__item}>{payment.repairExecutor}</td>
                                                     <td className={classes.table__item}>{payment.repairCost}</td>
                                                     <td className={classes.table__item}>{payment.repairPrice}</td>
-                                                    <td className={classes.table__item}>{payment.paymentType}</td>
                                                     <td className={classes.table__item}>{payment.repairGuarantee}</td>
                                                     <td className={classes.table__item}>{payment.date}</td>
                                                 </tr>
@@ -341,8 +421,34 @@ const OrderItem = () => {
                                                 {editMode ? (
                                                     <div className={classes.input__section}>
                                                         <div className={classes.input}>
-                                                            <Input value={deviceType.value} onChange={(e) => deviceType.onChange(e)} />
+                                                            <Input
+                                                                value={deviceType.value}
+                                                                onChange={(e) => {
+                                                                    deviceType.onChange(e);
+                                                                    deviceTypeDropDown(e.target.value);
+                                                                }}
+                                                                onClick={deviceTypeDropDown}
+                                                                onBlur={() => {
+                                                                    setTimeout(() => {
+                                                                        setDeviceTypeOptions([]);
+                                                                    }, 100);
+                                                                }}
+                                                            />
                                                         </div>
+                                                        {deviceTypeOptions.length ? (
+                                                            <ul className={classes.dropdown}>
+                                                                {deviceTypeOptions.map((type) => {
+                                                                    return (
+                                                                        <li
+                                                                            key={v4()}
+                                                                            onClick={() => fillInputs("deviceType", type)}
+                                                                            className={classes.dropdown__item}>
+                                                                            {type}
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                            </ul>
+                                                        ) : null}
                                                     </div>
                                                 ) : (
                                                     <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>
@@ -353,8 +459,34 @@ const OrderItem = () => {
                                                 {editMode ? (
                                                     <div className={classes.input__section}>
                                                         <div className={classes.input}>
-                                                            <Input value={deviceProducer.value} onChange={(e) => deviceProducer.onChange(e)} />
+                                                            <Input
+                                                                value={deviceProducer.value}
+                                                                onChange={(e) => {
+                                                                    deviceProducer.onChange(e);
+                                                                    deviceProducerDropDown(e.target.value);
+                                                                }}
+                                                                onClick={deviceProducerDropDown}
+                                                                onBlur={() => {
+                                                                    setTimeout(() => {
+                                                                        setDeviceProducerOptions([]);
+                                                                    }, 100);
+                                                                }}
+                                                            />
                                                         </div>
+                                                        {deviceProducerOptions.length ? (
+                                                            <ul className={classes.dropdown}>
+                                                                {deviceProducerOptions.map((producer) => {
+                                                                    return (
+                                                                        <li
+                                                                            key={v4()}
+                                                                            onClick={() => fillInputs("deviceProducer", producer)}
+                                                                            className={classes.dropdown__item}>
+                                                                            {producer}
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                            </ul>
+                                                        ) : null}
                                                     </div>
                                                 ) : (
                                                     <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
@@ -377,8 +509,34 @@ const OrderItem = () => {
                                                 {editMode ? (
                                                     <div className={classes.input__section}>
                                                         <div className={classes.input}>
-                                                            <Input value={deviceState.value} onChange={(e) => deviceState.onChange(e)} />
+                                                            <Input
+                                                                value={deviceState.value}
+                                                                onChange={(e) => {
+                                                                    deviceState.onChange(e);
+                                                                    deviceStateDropDown(e.target.value);
+                                                                }}
+                                                                onClick={deviceStateDropDown}
+                                                                onBlur={() => {
+                                                                    setTimeout(() => {
+                                                                        setDeviceStateOptions([]);
+                                                                    }, 100);
+                                                                }}
+                                                            />
                                                         </div>
+                                                        {deviceStateOptions.length ? (
+                                                            <ul className={classes.dropdown}>
+                                                                {deviceStateOptions.map((state) => {
+                                                                    return (
+                                                                        <li
+                                                                            key={v4()}
+                                                                            onClick={() => fillInputs("deviceState", state)}
+                                                                            className={classes.dropdown__item}>
+                                                                            {state}
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                            </ul>
+                                                        ) : null}
                                                     </div>
                                                 ) : (
                                                     <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>

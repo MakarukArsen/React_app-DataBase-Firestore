@@ -4,10 +4,14 @@ import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import classes from "./StatusDropDown.module.scss";
+import Modal from "../modals/Modal";
+import PaymentTypeModal from "../modals/paymentTypeModal/PaymentTypeModal";
+
 const StatusDropDown = ({ order, firebaseId }) => {
     const [active, setActive] = useState(false);
     const [chosenOption, setChosenOption] = useState(order.orderInfo.orderStatus);
     const [userName, setUserName] = useState("");
+    const [isPaymentTypeModalActive, setPaymentTypeModalActive] = useState(false);
 
     const auth = getAuth();
     useEffect(() => {
@@ -26,6 +30,11 @@ const StatusDropDown = ({ order, firebaseId }) => {
     const updateOrder = async (e, status) => {
         e.stopPropagation();
         setActive(false);
+        const startStatus = chosenOption;
+        if (startStatus !== "Завершено" && status === "Завершено" && order.payments.length) {
+            setPaymentTypeModalActive(true);
+        }
+
         setChosenOption(status);
         const docRef = doc(db, "orders", firebaseId);
         await updateDoc(docRef, {
@@ -41,6 +50,14 @@ const StatusDropDown = ({ order, firebaseId }) => {
     };
     return (
         <div className={classes.dropdown} onMouseLeave={() => setActive(false)}>
+            <Modal
+                isModalActive={isPaymentTypeModalActive}
+                onClose={(e) => {
+                    setPaymentTypeModalActive(false);
+                    e.stopPropagation();
+                }}>
+                <PaymentTypeModal onClose={() => setPaymentTypeModalActive(false)} firebaseId={firebaseId} order={order} />
+            </Modal>
             <div className={classes.header}>
                 <p
                     onClick={handleClick}

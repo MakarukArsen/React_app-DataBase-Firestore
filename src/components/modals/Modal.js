@@ -19,7 +19,9 @@ const Modal = ({ children, isModalActive, onClose }) => {
         return createPortal(
             <>
                 <div onClick={onClose} className={classes.modal__background}></div>
-                <div className={classes.modal__content}>{children}</div>
+                <div onClick={(e) => e.stopPropagation()} className={classes.modal__content}>
+                    {children}
+                </div>
             </>,
             element
         );

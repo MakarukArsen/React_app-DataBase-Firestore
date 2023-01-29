@@ -5,6 +5,8 @@ import { db } from "../../firebase";
 import classes from "./Finances.module.scss";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
+import { useNavigate } from "react-router-dom";
+
 const Finances = () => {
     const [orders, setOrders] = useState([]);
     const [payments, setPayments] = useState([]);
@@ -18,6 +20,8 @@ const Finances = () => {
     useEffect(() => {
         getPayments();
     }, [paymentsDate.value, paymentType.value]);
+
+    const navigate = useNavigate();
 
     const setQuery = () => {
         const orderRef = collection(db, "orders");
@@ -71,8 +75,14 @@ const Finances = () => {
 
     const getPayments = async () => {
         const snapshot = await getDocs(q);
-        const orders = snapshot.docs.map((order) => order.data());
-        const paymentsArrOfObj = [];
+        const orders = snapshot.docs.map((doc) => {
+            const data = doc.data();
+            data.firebaseId = doc.id;
+            return data;
+        });
+        orders.sort((a, b) => b.id - a.id);
+
+        let paymentsArrOfObj = [];
         const payments = snapshot.docs.map((order) => order.data().payments.forEach((payment) => paymentsArrOfObj.push(payment)));
 
         if (paymentType.value === "all") {
@@ -81,11 +91,11 @@ const Finances = () => {
             return;
         }
 
-        const filteredOrders = orders?.filter((order) => order.payments?.every((payment) => payment.paymentType === paymentType.value));
-        const filteredPayments = paymentsArrOfObj?.filter((payment) => payment.paymentType === paymentType.value);
-
+        paymentsArrOfObj = [];
+        const filteredOrders = orders?.filter((order) => order.techData.paymentType === paymentType.value);
+        const filteredPayments = filteredOrders.map((order) => order.payments.forEach((payment) => paymentsArrOfObj.push(payment)));
         setOrders(filteredOrders);
-        setPayments(filteredPayments);
+        setPayments(paymentsArrOfObj);
     };
 
     const calcPayments = (payments, type) => {
@@ -94,6 +104,10 @@ const Finances = () => {
         if (type === "income") return payments.reduce((acc, value) => acc + (value.repairPrice - value.repairCost), 0);
     };
 
+    const navigateToOrder = (firebaseId) => {
+        navigate(`/orders/${firebaseId}`);
+    };
+    
     return (
         <div className={classes.finances}>
             <div className="container">
@@ -135,7 +149,7 @@ const Finances = () => {
                                 {orders.length
                                     ? orders.map((order) => {
                                           return (
-                                              <tr className={classes.table__row} key={v4()}>
+                                              <tr onClick={() => navigateToOrder(order.firebaseId)} className={classes.table__row} key={v4()}>
                                                   <td className={classes.table__item}>#{order.id}</td>
                                                   <td className={classes.table__item}>{calcPayments(order.payments, "costs")}</td>
                                                   <td className={classes.table__item}>{calcPayments(order.payments, "price")}</td>

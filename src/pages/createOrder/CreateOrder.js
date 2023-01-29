@@ -44,9 +44,6 @@ const CreateOrder = () => {
     const auth = getAuth();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        // handleSumbit();
-    }, []);
     const handleSumbit = async (e) => {
         e.preventDefault();
 

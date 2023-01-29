@@ -1,0 +1,45 @@
+@use "../../../styles/constants.scss";
+
+.modal {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    &__title {
+        font-size: 28px;
+        text-align: center;
+    }
+
+    &__body {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        font-size: 18px;
+    }
+
+    &__row {
+        display: flex;
+        gap: 25px;
+    }
+
+    &__inputSection {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+    }
+
+    &__label_radio {
+        display: flex;
+        gap: 5px;
+    }
+
+    &__radio {}
+
+    &__submit {
+        margin-top: 20px;
+        height: 30px;
+    }
+}

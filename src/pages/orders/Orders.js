@@ -17,6 +17,7 @@ const Orders = () => {
     const [orders, setOrders] = useState([]);
     const [lastVisibleOrder, setLastVisibleOrder] = useState("");
     const [orderType, setOrderType] = useState("all");
+    const [ordersError, setOrdersError] = useState("");
 
     const [isExcelModalActive, setExcelModalActive] = useState(false);
 
@@ -35,7 +36,7 @@ const Orders = () => {
 
     useEffect(() => {
         getOrders();
-    }, [search.value.length > 2]);
+    }, [search.value]);
 
     const loadNewData = () => {
         if (document.body.scrollHeight === window.innerHeight + window.scrollY) {
@@ -49,7 +50,7 @@ const Orders = () => {
 
         // Search orders from last visible
         if (Object.keys(lastVisibleOrder).length) {
-            if (search.value.length > 2) {
+            if (search.value.length) {
                 const q = query(
                     ordersRef,
                     orderBy("clientInfo.clientPhone"),
@@ -76,7 +77,7 @@ const Orders = () => {
         }
 
         // Search orders
-        if (search.value.length > 2) {
+        if (search.value.length) {
             const q = query(
                 ordersRef,
                 orderBy("clientInfo.clientPhone"),
@@ -86,6 +87,11 @@ const Orders = () => {
                 limit(30)
             );
             const snapshots = await getDocs(q);
+            if (!snapshots.size) {
+                setOrdersError("Замовлення не знайдені");
+            } else {
+                setOrdersError("");
+            }
             const lastVisible = snapshots.docs[snapshots.docs.length - 1];
             setLastVisibleOrder(lastVisible);
             const data = snapshots.docs.map((doc) => {
@@ -137,6 +143,11 @@ const Orders = () => {
                 ? query(ordersRef, where("orderInfo.orderType", "==", "Відновлення данних"), orderBy("id", "desc"), limit(30))
                 : null;
         const snapshots = await getDocs(q);
+        if (!snapshots.size) {
+            setOrdersError("Нема ніяких замовлень");
+        } else {
+            setOrdersError("");
+        }
         const lastVisible = snapshots.docs[snapshots.docs.length - 1];
         setLastVisibleOrder(lastVisible);
         const ordersData = snapshots.docs.map((doc) => {
@@ -232,7 +243,13 @@ const Orders = () => {
                             </tr>
                         </thead>
                         <tbody className={classes.table__body}>
-                            {orders.length ? (
+                            {ordersError ? (
+                                <tr>
+                                    <td>
+                                        <h2>{ordersError}</h2>
+                                    </td>
+                                </tr>
+                            ) : orders.length ? (
                                 orders.map((order) => {
                                     const { clientInfo, orderInfo, deviceInfo, payments } = order;
                                     return (

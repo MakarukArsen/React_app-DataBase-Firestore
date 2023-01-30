@@ -1,4 +1,4 @@
-import { arrayUnion, collection, doc, getDocs, onSnapshot, query, setDoc, updateDoc, where } from "firebase/firestore";
+import { arrayUnion, collection, doc, endAt, getDocs, onSnapshot, orderBy, query, setDoc, startAt, updateDoc, where } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { db } from "../../firebase";
@@ -24,6 +24,7 @@ const OrderItem = () => {
     const [editMode, setEditMode] = useState(false);
     const [paymentModal, setPaymentModal] = useState({ isActive: false, type: "create", payment: {} });
 
+    const [clientOptions, setClientOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
     const [deviceProducerOptions, setDeviceProducerOptions] = useState([]);
     const [deviceStateOptions, setDeviceStateOptions] = useState([]);
@@ -188,6 +189,18 @@ const OrderItem = () => {
         comment.setValue("");
     };
 
+    const clientsDropDown = async (value) => {
+        const ref = collection(db, "clients");
+        const q = query(ref, orderBy("clientPhone"), startAt(value.toLowerCase()), endAt(value.toLowerCase() + "\uf8ff"));
+        if (value.length >= 3) {
+            const snap = await getDocs(q);
+            const data = snap.docs.map((item) => item.data());
+            setClientOptions(data);
+        } else {
+            setClientOptions([]);
+        }
+    };
+
     const deviceTypeDropDown = (value) => {
         const options = [];
 
@@ -242,6 +255,14 @@ const OrderItem = () => {
     };
 
     const fillInputs = (inputType, data) => {
+        if (inputType === "client") {
+            clientName.setValue(data.clientName);
+            clientPhone.setValue(data.clientPhone);
+            clientEmail.setValue(data.clientEmail);
+            clientAddress.setValue(data.clientAddress);
+            setClientOptions([]);
+            return;
+        }
         if (inputType === "deviceType") {
             deviceType.setValue(data);
             setDeviceTypeOptions([]);
@@ -643,10 +664,33 @@ const OrderItem = () => {
                                                         <div className={classes.input}>
                                                             <Input
                                                                 value={clientPhone.value}
-                                                                onChange={(e) => clientPhone.onChange(e)}
-                                                                onBlur={() => clientPhone.onBlur()}
+                                                                onClick={(e) => clientsDropDown(e.target.value)}
+                                                                onChange={(e) => {
+                                                                    clientPhone.onChange(e);
+                                                                    clientsDropDown(e.target.value);
+                                                                }}
+                                                                onBlur={() => {
+                                                                    clientPhone.onBlur();
+                                                                    setTimeout(() => {
+                                                                        setClientOptions([]);
+                                                                    }, 100);
+                                                                }}
                                                             />
                                                         </div>
+                                                        {clientOptions.length ? (
+                                                            <ul className={classes.dropdown}>
+                                                                {clientOptions.map((client) => {
+                                                                    return (
+                                                                        <li
+                                                                            key={client.clientPhone}
+                                                                            onClick={() => fillInputs("client", client)}
+                                                                            className={classes.dropdown__item}>
+                                                                            {client.clientName + " " + client.clientPhone}
+                                                                        </li>
+                                                                    );
+                                                                })}
+                                                            </ul>
+                                                        ) : null}
                                                         <p className={classes.error}>
                                                             {clientPhone.isDirty && clientPhone.isEmpty
                                                                 ? "Поле не може бути пустим"

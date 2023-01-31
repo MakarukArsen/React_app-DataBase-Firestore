@@ -51,11 +51,8 @@
             &__item {
                 text-align: left;
                 line-height: 1.25;
-                padding: 10px;
 
-                &:not(:first-child) {
-                    padding: 10px 16px;
-                }
+                padding: 10px;
 
                 span {
                     font-weight: 600;
@@ -68,6 +65,10 @@
 
             .nowrap {
                 white-space: nowrap;
+            }
+
+            .ordersError {
+                padding: 10px;
             }
         }
     }

@@ -6,10 +6,13 @@ import classes from "./Finances.module.scss";
 import Select from "../../components/UI/select/Select";
 import useSelect from "../../hooks/useSelect";
 import { useNavigate } from "react-router-dom";
+import Loader from "../../components/loader/Loader";
 
 const Finances = () => {
     const [orders, setOrders] = useState([]);
     const [payments, setPayments] = useState([]);
+
+    const [ordersError, setOrdersError] = useState("");
 
     const paymentsDate = useSelect({
         defaultValue: "Цей місяць",
@@ -40,8 +43,8 @@ const Finances = () => {
             );
         }
         if (paymentsDate.value === "Цей місяць") {
-            const startTime = Date.parse(`${month}.01.${year}`);
-            const endTime = Date.parse(`${month}.31.${year}`);
+            const startTime = Date.parse(`${month}.01.${year} 00:00:00`);
+            const endTime = Date.parse(`${month}.31.${year} 23:59:59`);
             return query(
                 orderRef,
                 where("techData.isAnyPayments", "==", true),
@@ -75,6 +78,11 @@ const Finances = () => {
 
     const getPayments = async () => {
         const snapshot = await getDocs(q);
+        if (!snapshot.size) {
+            setOrdersError("За даними фільтрами замовлення не знайдені");
+        } else {
+            setOrdersError("");
+        }
         const orders = snapshot.docs.map((doc) => {
             const data = doc.data();
             data.firebaseId = doc.id;
@@ -107,7 +115,7 @@ const Finances = () => {
     const navigateToOrder = (firebaseId) => {
         navigate(`/orders/${firebaseId}`);
     };
-    
+
     return (
         <div className={classes.finances}>
             <div className="container">
@@ -146,18 +154,32 @@ const Finances = () => {
                                 </tr>
                             </thead>
                             <tbody className={classes.table__body}>
-                                {orders.length
-                                    ? orders.map((order) => {
-                                          return (
-                                              <tr onClick={() => navigateToOrder(order.firebaseId)} className={classes.table__row} key={v4()}>
-                                                  <td className={classes.table__item}>#{order.id}</td>
-                                                  <td className={classes.table__item}>{calcPayments(order.payments, "costs")}</td>
-                                                  <td className={classes.table__item}>{calcPayments(order.payments, "price")}</td>
-                                                  <td className={classes.table__item}>{calcPayments(order.payments, "income")}</td>
-                                              </tr>
-                                          );
-                                      })
-                                    : null}
+                                {ordersError ? (
+                                    <tr>
+                                        <td>
+                                            <h2 className={classes.ordersError}>{ordersError}</h2>
+                                        </td>
+                                    </tr>
+                                ) : orders.length ? (
+                                    orders.map((order) => {
+                                        return (
+                                            <tr onClick={() => navigateToOrder(order.firebaseId)} className={classes.table__row} key={v4()}>
+                                                <td className={classes.table__item}>
+                                                    #{order.id}. {order.orderInfo.orderDate.slice(6)}
+                                                </td>
+                                                <td className={classes.table__item}>{calcPayments(order.payments, "costs")}</td>
+                                                <td className={classes.table__item}>{calcPayments(order.payments, "price")}</td>
+                                                <td className={classes.table__item}>{calcPayments(order.payments, "income")}</td>
+                                            </tr>
+                                        );
+                                    })
+                                ) : (
+                                    <tr>
+                                        <td>
+                                            <Loader />
+                                        </td>
+                                    </tr>
+                                )}
                             </tbody>
                         </table>
                     </div>

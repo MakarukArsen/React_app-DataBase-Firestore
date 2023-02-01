@@ -33,8 +33,8 @@ const Finances = () => {
         const month = new Date().getMonth() + 1;
 
         if (paymentsDate.value === "Попередній місяць") {
-            const startTime = Date.parse(`${month - 1 === 0 ? 12 : month - 1}.01.${month - 1 === 0 ? year - 1 : year}`);
-            const endTime = Date.parse(`${month - 1 === 0 ? 12 : month - 1}.31.${month - 1 === 0 ? year - 1 : year}`);
+            const startTime = Date.parse(`${month - 1 === 0 ? 12 : month - 1}.01.${month - 1 === 0 ? year - 1 : year}  00:00:00`);
+            const endTime = Date.parse(`${month - 1 === 0 ? 12 : month - 1}.31.${month - 1 === 0 ? year - 1 : year} 23:59:59`);
             return query(
                 orderRef,
                 where("techData.isAnyPayments", "==", true),
@@ -53,8 +53,8 @@ const Finances = () => {
             );
         }
         if (paymentsDate.value === "Попередній рік") {
-            const startTime = Date.parse(`01.01.${year - 1}`);
-            const endTime = Date.parse(`12.31.${year - 1}`);
+            const startTime = Date.parse(`01.01.${year - 1} 00:00:00`);
+            const endTime = Date.parse(`12.31.${year - 1} 23:59:59`);
             return query(
                 orderRef,
                 where("techData.isAnyPayments", "==", true),
@@ -63,8 +63,8 @@ const Finances = () => {
             );
         }
         if (paymentsDate.value === "Цей рік") {
-            const startTime = Date.parse(`01.01.${year}`);
-            const endTime = Date.parse(`12.31.${year}`);
+            const startTime = Date.parse(`01.01.${year} 00:00:00`);
+            const endTime = Date.parse(`12.31.${year} 23:59:59`);
             return query(
                 orderRef,
                 where("techData.isAnyPayments", "==", true),
@@ -102,6 +102,11 @@ const Finances = () => {
         paymentsArrOfObj = [];
         const filteredOrders = orders?.filter((order) => order.techData.paymentType === paymentType.value);
         const filteredPayments = filteredOrders.map((order) => order.payments.forEach((payment) => paymentsArrOfObj.push(payment)));
+        if (!filteredOrders.length) {
+            setOrdersError("За даними фільтрами замовлення не знайдені");
+        } else {
+            setOrdersError("");
+        }
         setOrders(filteredOrders);
         setPayments(paymentsArrOfObj);
     };

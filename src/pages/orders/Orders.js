@@ -272,7 +272,6 @@ const Orders = () => {
                                                         : `${payments[0].repairPrice} PLN`
                                                     : "-"}
                                             </td>
-                                            <td className={classes.table__item}>{orderInfo.orderType}</td>
                                             <td className={classes.table__item}>{deviceInfo.deviceType}</td>
                                             <td className={classes.table__item}>{deviceInfo.deviceProducer}</td>
                                             <td className={classes.table__item}>{deviceInfo.deviceModel}</td>

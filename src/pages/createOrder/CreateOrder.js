@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import classes from "./CreateOrder.module.scss";
 import Input from "../../components/UI/input/Input";
 import useInput from "../../hooks/useInput";
@@ -309,7 +309,9 @@ const CreateOrder = () => {
                                     <div className={classes.additionalInfo}>
                                         <div className={classes.input__section}>
                                             <h3 className={classes.title}>Тип замовлення</h3>
-                                            <Select {...orderType} />
+                                            <div className={classes.input}>
+                                                <Select {...orderType} />
+                                            </div>
                                         </div>
 
                                         <div className={classes.input__section}>

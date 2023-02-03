@@ -10,14 +10,34 @@
     }
 
     &__actions {
+        margin: 0px -15px;
+
         .orderActions {
             display: flex;
             align-items: center;
             gap: 15px;
 
+            @media(max-width: 1024px) {
+                flex-direction: column-reverse;
+            }
+
+            @media(max-width: 600px) {}
+
             .actions__search {
                 flex: 0 1 50%;
                 height: 45px;
+
+                @media(max-width: 1024px) {
+                    width: 100%;
+                }
+
+                @media(max-width: 700px) {
+                    flex: 0 0 25px;
+                }
+
+                @media(max-width: 600px) {}
+
+
             }
 
             .actions__buttons {
@@ -27,9 +47,51 @@
                 justify-content: flex-end;
                 gap: 15px;
 
+                @media(max-width: 1024px) {
+                    width: 100%;
+
+                }
+
+                @media(max-width: 700px) {
+                    flex-direction: column;
+                }
+
+                .filterButtons {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 15px;
+
+                    @media(max-width: 1024px) {
+                        width: 100%;
+                        justify-content: flex-start;
+                    }
+                }
+
+                .createButtons {
+                    display: flex;
+                    align-items: center;
+                    justify-content: flex-end;
+                    gap: 15px;
+
+                    @media(max-width: 1024px) {
+                        flex: 1 1 100%;
+                        width: 100%;
+                    }
+
+                    @media(max-width: 700px) {
+                        justify-content: flex-start;
+                    }
+                }
+
                 .button {
                     width: 120px;
                     height: 45px;
+
+                    @media(max-width: 700px) {
+                        flex: 1 1 auto;
+                        height: 35px;
+                    }
                 }
             }
         }
@@ -59,8 +121,9 @@
                 line-height: 1.25;
                 padding: 10px;
 
-                &:not(:first-child) {
-                    padding: 10px 16px;
+                @media(max-width: 700px) {
+                    font-size: 14px;
+                    padding: 8px;
                 }
 
                 span {

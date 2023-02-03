@@ -182,48 +182,52 @@ const Orders = () => {
                                 />
                             </div>
                             <div className={classes.actions__buttons}>
-                                <div className={classes.button}>
-                                    <Button
-                                        active={(orderType === "all").toString()}
-                                        onClick={() => {
-                                            setOrderType("all");
-                                            setLastVisibleOrder("");
-                                        }}
-                                        color="black">
-                                        Всі
-                                    </Button>
+                                <div className={classes.filterButtons}>
+                                    <div className={classes.button}>
+                                        <Button
+                                            active={(orderType === "all").toString()}
+                                            onClick={() => {
+                                                setOrderType("all");
+                                                setLastVisibleOrder("");
+                                            }}
+                                            color="black">
+                                            Всі
+                                        </Button>
+                                    </div>
+                                    <div className={classes.button}>
+                                        <Button
+                                            active={(orderType === "repair").toString()}
+                                            onClick={() => {
+                                                setOrderType("repair");
+                                                setLastVisibleOrder("");
+                                            }}
+                                            color="black">
+                                            Ремонт
+                                        </Button>
+                                    </div>
+                                    <div className={classes.button}>
+                                        <Button
+                                            active={(orderType === "dataRecovery").toString()}
+                                            onClick={() => {
+                                                setOrderType("dataRecovery");
+                                                setLastVisibleOrder("");
+                                            }}
+                                            color="black">
+                                            Відновлення данних
+                                        </Button>
+                                    </div>
                                 </div>
-                                <div className={classes.button}>
-                                    <Button
-                                        active={(orderType === "repair").toString()}
-                                        onClick={() => {
-                                            setOrderType("repair");
-                                            setLastVisibleOrder("");
-                                        }}
-                                        color="black">
-                                        Ремонт
-                                    </Button>
-                                </div>
-                                <div className={classes.button}>
-                                    <Button
-                                        active={(orderType === "dataRecovery").toString()}
-                                        onClick={() => {
-                                            setOrderType("dataRecovery");
-                                            setLastVisibleOrder("");
-                                        }}
-                                        color="black">
-                                        Відновлення данних
-                                    </Button>
-                                </div>
-                                <div className={classes.button}>
-                                    <Button onClick={() => setExcelModalActive(true)} color="blue">
-                                        Excel
-                                    </Button>
-                                </div>
-                                <div className={classes.button}>
-                                    <Link to="create-order">
-                                        <Button color="blue">Create order</Button>
-                                    </Link>
+                                <div className={classes.createButtons}>
+                                    <div className={classes.button}>
+                                        <Button onClick={() => setExcelModalActive(true)} color="blue">
+                                            Excel
+                                        </Button>
+                                    </div>
+                                    <div className={classes.button}>
+                                        <Link to="create-order">
+                                            <Button color="blue">Create order</Button>
+                                        </Link>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -39,6 +39,11 @@
         height: 100%;
         box-shadow: inset 0px 0px 12px -11px rgba(0, 0, 0, 0.75);
 
+        @media(max-width: 700px) {
+            font-size: 15px;
+            padding: 12px 24px 12px 40px;
+        }
+
         &::placeholder {
             color: #9C99AD;
             font-weight: 400;

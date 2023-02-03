@@ -309,28 +309,30 @@ const OrderItem = () => {
                                         : "0.00"}{" "}
                                     PLN
                                 </p>
+                            </div>
+                            <div className={classes.header__actions}>
                                 <div className={classes.statusDropDown}>
                                     <StatusDropDown firebaseId={firebaseId} order={order} />
                                 </div>
-                            </div>
-                            <div className={classes.header__actions}>
-                                <div className={classes.actions__pdf}>
-                                    <Link to="pdf" state={{ orderData: order }}>
-                                        <PdfIcon />
+                                <div className={classes.actions__row}>
+                                    <div className={classes.actions__pdf}>
+                                        <Link to="pdf" state={{ orderData: order }}>
+                                            <PdfIcon />
+                                        </Link>
+                                    </div>
+                                    <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
+                                        <PaymentsIcon />
+                                    </div>
+
+                                    <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
+                                        <EditIcon />
+                                    </div>
+                                    <Link to="/orders">
+                                        <div className={classes.actions__close}>
+                                            <span></span>
+                                        </div>
                                     </Link>
                                 </div>
-                                <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
-                                    <PaymentsIcon />
-                                </div>
-
-                                <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
-                                    <EditIcon />
-                                </div>
-                                <Link to="/orders">
-                                    <div className={classes.actions__close}>
-                                        <span></span>
-                                    </div>
-                                </Link>
                             </div>
                         </div>
                         {order.payments.length ? (

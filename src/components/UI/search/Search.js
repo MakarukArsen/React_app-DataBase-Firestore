@@ -6,7 +6,7 @@ const Search = ({ setValue, clear, ...props }) => {
     return (
         <label className={classes.label}>
             <SearchIcon className={classes.icon} />
-            <input {...props} className={classes.input} type="search" placeholder="Пошук за ім'ям, телефоном, поштою, адресою"></input>
+            <input {...props} className={classes.input} type="search" placeholder="Пошук за телефоном"></input>
         </label>
     );
 };

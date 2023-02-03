@@ -21,6 +21,10 @@
 
         @media(max-width:600px) {}
 
+        @media(max-width:480px) {
+            flex-direction: column;
+        }
+
         .header__info {
             display: flex;
             gap: 30px;
@@ -30,6 +34,10 @@
                 gap: 10px;
                 width: 100%;
                 font-size: 18px;
+            }
+
+            @media(max-width:480px) {
+                justify-content: center;
             }
 
             .header__column {
@@ -68,6 +76,10 @@
 
             @media(max-width:600px) {
                 flex-direction: column;
+            }
+
+            @media(max-width:480px) {
+                flex-direction: row;
             }
 
             .actions__row {

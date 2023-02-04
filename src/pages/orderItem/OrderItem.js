@@ -297,42 +297,43 @@ const OrderItem = () => {
                     <div className={classes.order__body}>
                         <div className={classes.order__header}>
                             <div className={classes.header__info}>
-                                <div className={classes.header__column}>
-                                    <p className={classes.orderId}>Замовлення #{order.id}</p>
-                                    <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
+                                <div className={classes.header__row}>
+                                    <div className={classes.header__column}>
+                                        <p className={classes.orderId}>Замовлення #{order.id}</p>
+                                        <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
+                                    </div>
+                                    <p className={classes.orderPrice}>
+                                        {Object.keys(payments).length
+                                            ? payments.length > 1
+                                                ? payments.reduce((acc, value) => acc + value.repairPrice, 0)
+                                                : payments[0].repairPrice
+                                            : "0.00"}{" "}
+                                        PLN
+                                    </p>
                                 </div>
-                                <p className={classes.orderPrice}>
-                                    {Object.keys(payments).length
-                                        ? payments.length > 1
-                                            ? payments.reduce((acc, value) => acc + value.repairPrice, 0)
-                                            : payments[0].repairPrice
-                                        : "0.00"}{" "}
-                                    PLN
-                                </p>
-                            </div>
-                            <div className={classes.header__actions}>
+
                                 <div className={classes.statusDropDown}>
                                     <StatusDropDown firebaseId={firebaseId} order={order} />
                                 </div>
-                                <div className={classes.actions__row}>
-                                    <div className={classes.actions__pdf}>
-                                        <Link to="pdf" state={{ orderData: order }}>
-                                            <PdfIcon />
-                                        </Link>
-                                    </div>
-                                    <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
-                                        <PaymentsIcon />
-                                    </div>
-
-                                    <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
-                                        <EditIcon />
-                                    </div>
-                                    <Link to="/orders">
-                                        <div className={classes.actions__close}>
-                                            <span></span>
-                                        </div>
+                            </div>
+                            <div className={classes.header__actions}>
+                                <div className={classes.actions__pdf}>
+                                    <Link to="pdf" state={{ orderData: order }}>
+                                        <PdfIcon />
                                     </Link>
                                 </div>
+                                <div onClick={() => setPaymentModal({ isActive: true, type: "create" })} className={classes.actions__payment}>
+                                    <PaymentsIcon />
+                                </div>
+
+                                <div onClick={() => setEditMode(!editMode)} className={classes.actions__edit}>
+                                    <EditIcon />
+                                </div>
+                                <Link to="/orders">
+                                    <div className={classes.actions__close}>
+                                        <span></span>
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                         {order.payments.length ? (
@@ -346,13 +347,13 @@ const OrderItem = () => {
                                 <table className={classes.table}>
                                     <thead className={classes.table__thead}>
                                         <tr className={classes.table__row}>
-                                            <th className={classes.table__item}>Назва</th>
-                                            <th className={classes.table__item}>Відпустив</th>
-                                            <th className={classes.table__item}>Виконавець</th>
-                                            <th className={classes.table__item}>Собівартість PLN</th>
-                                            <th className={classes.table__item}>Ціна PLN</th>
-                                            <th className={classes.table__item}>Гарантія мс.</th>
-                                            <th className={classes.table__item}>Дата</th>
+                                            <th className={classes.table__item + " " + classes.paymentName}>Назва</th>
+                                            <th className={classes.table__item + " " + classes.paymentAccepted}>Відпустив</th>
+                                            <th className={classes.table__item + " " + classes.paymentExecutor}>Виконавець</th>
+                                            <th className={classes.table__item + " " + classes.paymentCost}>Собівартість PLN</th>
+                                            <th className={classes.table__item + " " + classes.paymentPrice}>Ціна PLN</th>
+                                            <th className={classes.table__item + " " + classes.paymentGuarantee}>Гарантія мс.</th>
+                                            <th className={classes.table__item + " " + classes.paymentDate}>Дата</th>
                                         </tr>
                                     </thead>
                                     <tbody className={classes.table__tbody}>
@@ -362,13 +363,15 @@ const OrderItem = () => {
                                                     key={v4()}
                                                     className={classes.table__row}
                                                     onClick={() => setPaymentModal({ isActive: true, type: "edit", payment: payment })}>
-                                                    <td className={classes.table__item}>{payment.repairName}</td>
-                                                    <td className={classes.table__item}>{payment.paymentAccepted}</td>
-                                                    <td className={classes.table__item}>{payment.repairExecutor}</td>
-                                                    <td className={classes.table__item}>{payment.repairCost}</td>
-                                                    <td className={classes.table__item}>{payment.repairPrice}</td>
-                                                    <td className={classes.table__item}>{payment.repairGuarantee}</td>
-                                                    <td className={classes.table__item}>{payment.date}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentName}>{payment.repairName}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentAccepted}>{payment.paymentAccepted}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentExecutor}>{payment.repairExecutor}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentCost}>{payment.repairCost}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentPrice}>{payment.repairPrice}</td>
+                                                    <td className={classes.table__item + " " + classes.paymentGuarantee}>
+                                                        {payment.repairGuarantee}
+                                                    </td>
+                                                    <td className={classes.table__item + " " + classes.paymentDate}>{payment.date}</td>
                                                 </tr>
                                             );
                                         })}

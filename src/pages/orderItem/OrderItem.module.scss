@@ -17,12 +17,8 @@
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
         gap: 15px;
 
-        @media(max-width:700px) {}
-
-        @media(max-width:600px) {}
-
         @media(max-width:480px) {
-            flex-direction: column;
+            padding: 10px;
         }
 
         .header__info {
@@ -30,66 +26,64 @@
             gap: 30px;
             font-size: 21px;
 
-            @media(max-width:700px) {
+            @media(max-width:720px) {
+                flex-direction: column;
                 gap: 10px;
-                width: 100%;
                 font-size: 18px;
             }
 
-            @media(max-width:480px) {
-                justify-content: center;
-            }
+            .header__row {
+                display: flex;
+                gap: 10px;
 
-            .header__column {
-                white-space: nowrap;
+                .header__column {
+                    white-space: nowrap;
 
-                .orderId {
-                    font-weight: 700;
-                }
+                    .orderId {
+                        font-weight: 700;
+                    }
 
-                .orderDate {
-                    font-size: 18px;
+                    .orderDate {
+                        font-size: 18px;
 
-                    @media(max-width:700px) {
-                        font-size: 16px;
+                        @media(max-width:720px) {
+                            font-size: 16px;
+                        }
                     }
                 }
-            }
 
-            .orderPrice {
-                color: constants.$grey;
-                font-weight: 600;
-                white-space: nowrap;
+                .orderPrice {
+                    color: constants.$grey;
+                    font-weight: 600;
+                    white-space: nowrap;
+                }
             }
 
             .statusDropDown {
                 white-space: nowrap;
+
+                @media(max-width: 870px) {
+                    white-space: normal;
+                }
+
+                @media(max-width: 480px) {
+                    white-space: nowrap;
+                }
             }
         }
 
         .header__actions {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
             gap: 15px;
+            flex: 1 1 100%;
 
-            @media(max-width:700px) {}
+            @media(max-width:500px) {
+                gap: 10px;
+                flex-direction: column-reverse;
 
-            @media(max-width:600px) {
-                flex-direction: column;
-            }
-
-            @media(max-width:480px) {
-                flex-direction: row;
-            }
-
-            .actions__row {
-                display: flex;
-                align-items: center;
-                gap: 15px;
-
-                @media(max-width:600px) {
-                    gap: 12px;
-                }
+                align-items: flex-end;
             }
 
             .actions__pdf {
@@ -205,7 +199,6 @@
         padding: 15px;
         border-radius: 15px;
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
-        display: none;
 
         .payment__row {
             display: flex;
@@ -214,10 +207,18 @@
 
             .title {
                 font-size: 21px;
+
+                @media(max-width: 700px) {
+                    font-size: 18px;
+                }
             }
 
             .paymentType {
                 font-size: 18px;
+
+                @media(max-width: 700px) {
+                    font-size: 16px;
+                }
             }
         }
 
@@ -233,7 +234,38 @@
                 }
             }
 
-            &__row {}
+            &__row {
+                .paymentName {}
+
+                .paymentAccepted {
+                    @media(max-width: 840px) {
+                        display: none;
+                    }
+
+                }
+
+                .paymentExecutor {
+                    @media(max-width: 840px) {
+                        display: none;
+                    }
+                }
+
+                .paymentCost {
+                    @media(max-width: 450px) {
+                        display: none;
+                    }
+                }
+
+                .paymentPrice {}
+
+                .paymentGuarantee {}
+
+                .paymentDate {
+                    @media(max-width: 550px) {
+                        display: none;
+                    }
+                }
+            }
 
             &__title {}
 
@@ -242,8 +274,8 @@
                 line-height: 1.25;
                 padding: 10px;
 
-                &:not(:first-child) {
-                    padding: 10px 16px;
+                @media(max-width: 700px) {
+                    font-size: 14px;
                 }
 
                 span {
@@ -257,7 +289,6 @@
         flex: 1 1 auto;
         display: flex;
         gap: 20px;
-        display: none;
     }
 
     &__history {
@@ -270,6 +301,16 @@
         padding: 15px;
         border-radius: 15px;
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
+
+        @media(max-width: 1150px) {
+            flex: 0 0 25%;
+        }
+
+        @media(max-width: 950px) {
+            display: none;
+        }
+
+
 
         .history__title {}
 
@@ -356,14 +397,23 @@
         box-shadow: 0px 0px 33px -11px rgba(0, 0, 0, 0.75);
         height: 100%;
 
+        @media(max-width: 800px) {
+            flex-direction: column;
+        }
+
         .order__column {
             display: flex;
             flex-direction: column;
             gap: 20px;
 
+            @media(max-width: 950px) {
+                align-items: center;
+            }
+
             .order__title {}
 
             .orderInfo__content {
+
                 .order__row {
                     padding: 16px;
                     display: flex;
@@ -371,15 +421,32 @@
                     border-bottom: 1px solid constants.$grey;
                     width: 350px;
 
+                    @media(max-width: 1150px) {
+                        padding: 16px 10px;
+                        width: 300px;
+                    }
+
+                    @media(max-width: 950px) {
+                        padding: 16px;
+                        width: 350px;
+                    }
+
                     .orderInfo__title {
                         color: constants.$grey;
                         flex: 0 0 50%;
                         font-size: 16px;
+
+                        @media(max-width: 1150px) {
+                            flex: 0 0 40%;
+                        }
+
+                        @media(max-width: 950px) {
+                            flex: 0 0 50%;
+                        }
                     }
 
                     .input__section {
                         display: flex;
-
                         flex-direction: column;
                         position: relative;
 

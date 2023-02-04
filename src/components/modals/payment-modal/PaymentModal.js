@@ -81,7 +81,9 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
     return (
         <div className={classes.modal}>
             <div className={classes.payment}>
-                <h2 className={classes.title}>{type === "edit" ? "Редагування платежу" : "Добавити платіж"}</h2>
+                <h2 className={classes.title}>
+                    {type === "edit" ? "Редагування платежу" : "Добавити платіж"} <span className={classes.date}>{payment?.date}</span>
+                </h2>
                 <form className={classes.form}>
                     <div className={classes.inputSection}>
                         <h3>Назва ремонту</h3>

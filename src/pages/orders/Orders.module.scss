@@ -36,8 +36,6 @@
                 }
 
                 @media(max-width: 600px) {}
-
-
             }
 
             .actions__buttons {
@@ -133,6 +131,10 @@
 
             .nowrap {
                 white-space: nowrap;
+
+                @media(max-width: 450px) {
+                    white-space: normal;
+                }
             }
         }
     }

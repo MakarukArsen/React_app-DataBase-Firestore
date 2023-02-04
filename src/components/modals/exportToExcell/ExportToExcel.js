@@ -33,7 +33,6 @@ const ExportToExcel = () => {
         filename: "Orders table",
         sheet: "Orders",
     });
-
     return (
         <div>
             <div className={classes.button}>
@@ -66,20 +65,21 @@ const ExportToExcel = () => {
                         <th>Order executor</th>
                         <th>Deadline</th>
 
+                        <th>Payment type</th>
                         <th>Payment name</th>
                         <th>Payment accepted</th>
                         <th>Payment executor</th>
                         <th>Repair cost</th>
                         <th>Repair price</th>
-                        <th>Repair type</th>
                         <th>Repair guarantee</th>
                         <th>Repair date</th>
                     </tr>
                 </thead>
                 <tbody>
                     {orders.length
-                        ? orders.map((order) => {
-                              const { clientInfo, deviceInfo, orderInfo, payment } = order;
+                        ? orders?.map((order) => {
+                              const { clientInfo, deviceInfo, orderInfo, payments } = order;
+                              console.log(order);
 
                               return (
                                   <tr key={v4()}>
@@ -105,43 +105,39 @@ const ExportToExcel = () => {
                                       <td>{orderInfo.orderExecutor}</td>
                                       <td>{orderInfo.orderDeadline}</td>
 
+                                      <td>{order.techData.paymentType}</td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.repairName}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.paymentAccepted}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.repairExecutor}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.repairCost}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.repairPrice}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
-                                              <div key={v4()}>{item.paymentType}</div>
-                                          ))}
-                                      </td>
-                                      <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.repairGuarantee}</div>
                                           ))}
                                       </td>
                                       <td>
-                                          {payment.map((item) => (
+                                          {payments.map((item) => (
                                               <div key={v4()}>{item.date}</div>
                                           ))}
                                       </td>

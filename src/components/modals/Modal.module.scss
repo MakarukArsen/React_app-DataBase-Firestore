@@ -23,4 +23,8 @@
     border-radius: 32px;
     z-index: 200;
     overflow: hidden;
+
+    @media(max-width:700px) {
+        padding: 20px;
+    }
 }

@@ -1,16 +1,36 @@
 @use "../../../styles/constants.scss";
 
 .modal {
+    width: 60vw;
+
     .payment {
         display: flex;
         flex-direction: column;
         gap: 15px;
 
-        .title {
+        .modal__header {
+            display: flex;
+            align-items: center;
+
+            @media(max-width:480px) {
+                flex-direction: column;
+            }
+
+            .title {
+                white-space: nowrap;
+
+                @media(max-width:700px) {
+                    font-size: 21px;
+                }
+            }
 
             .date {
                 font-size: 18px;
                 margin-left: 15px;
+
+                @media(max-width:700px) {
+                    font-size: 16px;
+                }
             }
         }
 
@@ -25,7 +45,21 @@
                 gap: 5px;
                 flex: 1 1 50%;
 
-                h3 {}
+                h3 {
+                    @media(max-width:700px) {
+                        font-size: 16px;
+                    }
+                }
+
+                .input {
+                    height: 45px;
+
+                    & * {
+                        @media(max-width:700px) {
+                            font-size: 14px;
+                        }
+                    }
+                }
 
                 label {
                     display: flex;
@@ -37,6 +71,10 @@
                     line-height: 3;
                     font-size: 18px;
                     font-weight: 600;
+
+                    @media(max-width:700px) {
+                        font-size: 14px;
+                    }
                 }
 
                 .error {
@@ -48,6 +86,10 @@
             .row {
                 display: flex;
                 gap: 20px;
+
+                @media(max-width:830px) {
+                    flex-direction: column;
+                }
             }
 
             .button {

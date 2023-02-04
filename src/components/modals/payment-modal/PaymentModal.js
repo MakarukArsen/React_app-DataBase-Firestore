@@ -81,9 +81,10 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
     return (
         <div className={classes.modal}>
             <div className={classes.payment}>
-                <h2 className={classes.title}>
-                    {type === "edit" ? "Редагування платежу" : "Добавити платіж"} <span className={classes.date}>{payment?.date}</span>
-                </h2>
+                <div className={classes.modal__header}>
+                    <h2 className={classes.title}>{type === "edit" ? "Редагування платежу" : "Добавити платіж"}</h2>
+                    <p className={classes.date}>{payment?.date}</p>
+                </div>
                 <form className={classes.form}>
                     <div className={classes.inputSection}>
                         <h3>Назва ремонту</h3>
@@ -99,7 +100,9 @@ const PaymentModal = ({ firebaseId, onClose, payment, techData, type }) => {
                         </div>
                         <div className={classes.inputSection}>
                             <h3>Виконавець</h3>
-                            <Select {...repairExecutor} />
+                            <div className={classes.input}>
+                                <Select {...repairExecutor} />
+                            </div>
                         </div>
                     </div>
                     <div className={classes.row}>

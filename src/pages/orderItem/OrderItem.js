@@ -637,7 +637,7 @@ const OrderItem = () => {
                                         </div>
                                     </div>
                                     <div className={classes.order__column}>
-                                        <h2 className={classes.orderInfo__title}>Клієнт</h2>
+                                        <h2 className={classes.order__title}>Клієнт</h2>
                                         <div className={classes.orderInfo__content}>
                                             <div className={classes.order__row}>
                                                 <h3 className={classes.orderInfo__title}>Ім'я</h3>
@@ -734,7 +734,7 @@ const OrderItem = () => {
                                             </div>
                                         </div>
 
-                                        <h2 className={classes.orderInfo__title}>Додаткова інформація</h2>
+                                        <h2 className={classes.order__title}>Додаткова інформація</h2>
                                         <div className={classes.orderInfo__content}>
                                             <div className={classes.order__row}>
                                                 <h3 className={classes.orderInfo__title}>Тип замовлення</h3>

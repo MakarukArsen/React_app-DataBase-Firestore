@@ -46,7 +46,7 @@ const PaymentTypeModal = ({ onClose, firebaseId, order }) => {
                 </div>
                 <div className={classes.modal__row}>
                     <div className={classes.modal__inputSection}>
-                        <h3>Метод оплати</h3>
+                        <h3 className={classes.modal__inputTitle}>Метод оплати</h3>
                         <div className={classes.modal__row}>
                             <label className={classes.modal__label_radio}>
                                 <input className={classes.modal__radio} onChange={() => setPaymentType("cash")} type="radio" name="radio" />

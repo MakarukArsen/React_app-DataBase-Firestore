@@ -5,9 +5,17 @@
     flex-direction: column;
     gap: 20px;
 
+    @media(max-width: 700px) {
+        gap: 10px;
+    }
+
     &__title {
         font-size: 28px;
         text-align: center;
+
+        @media(max-width: 700px) {
+            font-size: 21px;
+        }
     }
 
     &__body {
@@ -20,6 +28,12 @@
     &__row {
         display: flex;
         gap: 25px;
+
+        p {
+            @media(max-width: 700px) {
+                font-size: 16px;
+            }
+        }
     }
 
     &__inputSection {
@@ -31,9 +45,19 @@
         gap: 8px;
     }
 
+    &__inputTitle {
+        @media(max-width: 700px) {
+            font-size: 18px;
+        }
+    }
+
     &__label_radio {
         display: flex;
         gap: 5px;
+
+        @media(max-width: 700px) {
+            font-size: 16px;
+        }
     }
 
     &__radio {}
@@ -41,5 +65,9 @@
     &__submit {
         margin-top: 20px;
         height: 30px;
+
+        @media(max-width: 700px) {
+            margin: 0px;
+        }
     }
 }

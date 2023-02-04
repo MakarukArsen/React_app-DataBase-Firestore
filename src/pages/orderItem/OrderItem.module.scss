@@ -322,6 +322,12 @@
             display: flex;
             gap: 10px;
 
+            & * {
+                @media(max-width: 420px) {
+                    font-size: 14px;
+                }
+            }
+
             .history__submitComment {
                 flex: 0 0 80px;
             }

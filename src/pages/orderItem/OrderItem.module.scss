@@ -310,8 +310,6 @@
             flex: 0 0 25%;
         }
 
-
-
         .history__title {
             @media(max-width: 420px) {
                 font-size: 18px;
@@ -321,12 +319,6 @@
         .history__input {
             display: flex;
             gap: 10px;
-
-            & * {
-                @media(max-width: 420px) {
-                    font-size: 14px;
-                }
-            }
 
             .history__submitComment {
                 flex: 0 0 80px;
@@ -491,11 +483,15 @@
                         flex-direction: column;
                         position: relative;
 
-                        .input * {
-                            @media(max-width: 420px) {
-                                font-size: 14px;
+                        .input {
+                            & * {
+                                @media(max-width: 420px) {
+                                    font-size: 14px;
+                                }
                             }
                         }
+
+
 
                         .dropdown {
                             position: absolute;

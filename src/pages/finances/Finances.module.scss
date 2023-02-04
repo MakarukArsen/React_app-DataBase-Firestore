@@ -21,10 +21,21 @@
             flex-direction: column;
             gap: 10px;
             flex: 0 0 250px;
+
+            @media(max-width: 600px) {
+                flex: 1 1 50%;
+            }
+
+            & * {
+                @media(max-width: 600px) {
+                    font-size: 14px;
+                }
+            }
         }
     }
 
     &__table {
+        overflow-x: scroll;
         background-color: constants.$white;
         padding: 15px;
         border-radius: 15px;
@@ -51,8 +62,12 @@
             &__item {
                 text-align: left;
                 line-height: 1.25;
-
                 padding: 10px;
+
+                @media(max-width: 600px) {
+                    font-size: 14px;
+                    padding: 8px 10px;
+                }
 
                 span {
                     font-weight: 600;

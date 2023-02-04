@@ -419,12 +419,12 @@
             }
 
             .orderInfo__content {
+                flex: 1 1 100%;
 
                 .order__row {
                     padding: 16px;
                     display: flex;
                     align-items: center;
-
                     border-bottom: 1px solid constants.$grey;
                     width: 350px;
 
@@ -440,7 +440,7 @@
 
                     @media(max-width: 420px) {
                         padding: 10px;
-                        width: auto;
+                        width: 280px;
                     }
 
                     .orderInfo__title {
@@ -458,6 +458,7 @@
 
                         @media(max-width: 420px) {
                             font-size: 14px;
+
                         }
                     }
 

@@ -440,348 +440,360 @@ const OrderItem = () => {
                                 ) : null}
                                 <div className={classes.order__info}>
                                     <div className={classes.order__column}>
-                                        <h2 className={classes.order__title}>Інформація</h2>
-                                        <div className={classes.orderInfo__content}>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={deviceType.value}
-                                                                onChange={(e) => {
-                                                                    deviceType.onChange(e);
-                                                                    deviceTypeDropDown(e.target.value);
-                                                                }}
-                                                                onClick={deviceTypeDropDown}
-                                                                onBlur={() => {
-                                                                    setTimeout(() => {
-                                                                        setDeviceTypeOptions([]);
-                                                                    }, 100);
-                                                                }}
-                                                            />
+                                        <div className={classes.orderColumn__block}>
+                                            <h2 className={classes.order__title}>Інформація</h2>
+                                            <div className={classes.orderInfo__content}>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={deviceType.value}
+                                                                    onChange={(e) => {
+                                                                        deviceType.onChange(e);
+                                                                        deviceTypeDropDown(e.target.value);
+                                                                    }}
+                                                                    onClick={deviceTypeDropDown}
+                                                                    onBlur={() => {
+                                                                        setTimeout(() => {
+                                                                            setDeviceTypeOptions([]);
+                                                                        }, 100);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            {deviceTypeOptions.length ? (
+                                                                <ul className={classes.dropdown}>
+                                                                    {deviceTypeOptions.map((type) => {
+                                                                        return (
+                                                                            <li
+                                                                                key={v4()}
+                                                                                onClick={() => fillInputs("deviceType", type)}
+                                                                                className={classes.dropdown__item}>
+                                                                                {type}
+                                                                            </li>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            ) : null}
                                                         </div>
-                                                        {deviceTypeOptions.length ? (
-                                                            <ul className={classes.dropdown}>
-                                                                {deviceTypeOptions.map((type) => {
-                                                                    return (
-                                                                        <li
-                                                                            key={v4()}
-                                                                            onClick={() => fillInputs("deviceType", type)}
-                                                                            className={classes.dropdown__item}>
-                                                                            {type}
-                                                                        </li>
-                                                                    );
-                                                                })}
-                                                            </ul>
-                                                        ) : null}
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Виробник</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={deviceProducer.value}
-                                                                onChange={(e) => {
-                                                                    deviceProducer.onChange(e);
-                                                                    deviceProducerDropDown(e.target.value);
-                                                                }}
-                                                                onClick={deviceProducerDropDown}
-                                                                onBlur={() => {
-                                                                    setTimeout(() => {
-                                                                        setDeviceProducerOptions([]);
-                                                                    }, 100);
-                                                                }}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceType}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Виробник</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={deviceProducer.value}
+                                                                    onChange={(e) => {
+                                                                        deviceProducer.onChange(e);
+                                                                        deviceProducerDropDown(e.target.value);
+                                                                    }}
+                                                                    onClick={deviceProducerDropDown}
+                                                                    onBlur={() => {
+                                                                        setTimeout(() => {
+                                                                            setDeviceProducerOptions([]);
+                                                                        }, 100);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            {deviceProducerOptions.length ? (
+                                                                <ul className={classes.dropdown}>
+                                                                    {deviceProducerOptions.map((producer) => {
+                                                                        return (
+                                                                            <li
+                                                                                key={v4()}
+                                                                                onClick={() => fillInputs("deviceProducer", producer)}
+                                                                                className={classes.dropdown__item}>
+                                                                                {producer}
+                                                                            </li>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            ) : null}
                                                         </div>
-                                                        {deviceProducerOptions.length ? (
-                                                            <ul className={classes.dropdown}>
-                                                                {deviceProducerOptions.map((producer) => {
-                                                                    return (
-                                                                        <li
-                                                                            key={v4()}
-                                                                            onClick={() => fillInputs("deviceProducer", producer)}
-                                                                            className={classes.dropdown__item}>
-                                                                            {producer}
-                                                                        </li>
-                                                                    );
-                                                                })}
-                                                            </ul>
-                                                        ) : null}
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Модель</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceProducer}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Модель</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceModel}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Технічний стан</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={deviceState.value}
-                                                                onChange={(e) => {
-                                                                    deviceState.onChange(e);
-                                                                    deviceStateDropDown(e.target.value);
-                                                                }}
-                                                                onClick={deviceStateDropDown}
-                                                                onBlur={() => {
-                                                                    setTimeout(() => {
-                                                                        setDeviceStateOptions([]);
-                                                                    }, 100);
-                                                                }}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceModel}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Технічний стан</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={deviceState.value}
+                                                                    onChange={(e) => {
+                                                                        deviceState.onChange(e);
+                                                                        deviceStateDropDown(e.target.value);
+                                                                    }}
+                                                                    onClick={deviceStateDropDown}
+                                                                    onBlur={() => {
+                                                                        setTimeout(() => {
+                                                                            setDeviceStateOptions([]);
+                                                                        }, 100);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            {deviceStateOptions.length ? (
+                                                                <ul className={classes.dropdown}>
+                                                                    {deviceStateOptions.map((state) => {
+                                                                        return (
+                                                                            <li
+                                                                                key={v4()}
+                                                                                onClick={() => fillInputs("deviceState", state)}
+                                                                                className={classes.dropdown__item}>
+                                                                                {state}
+                                                                            </li>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            ) : null}
                                                         </div>
-                                                        {deviceStateOptions.length ? (
-                                                            <ul className={classes.dropdown}>
-                                                                {deviceStateOptions.map((state) => {
-                                                                    return (
-                                                                        <li
-                                                                            key={v4()}
-                                                                            onClick={() => fillInputs("deviceState", state)}
-                                                                            className={classes.dropdown__item}>
-                                                                            {state}
-                                                                        </li>
-                                                                    );
-                                                                })}
-                                                            </ul>
-                                                        ) : null}
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Несправність</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceState}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Несправність</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceBreakage}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>IMEI / SN</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceBreakage}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>IMEI / SN</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={deviceImeiSn.value} onChange={(e) => deviceImeiSn.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceImeiSn}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Аксесуари</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={deviceAccessories.value}
-                                                                onChange={(e) => deviceAccessories.onChange(e)}
-                                                                onBlur={() => deviceAccessories.onBlur()}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceImeiSn}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Аксесуари</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={deviceAccessories.value}
+                                                                    onChange={(e) => deviceAccessories.onChange(e)}
+                                                                    onBlur={() => deviceAccessories.onBlur()}
+                                                                />
+                                                            </div>
+                                                            <p className={classes.error}>
+                                                                {deviceAccessories.isDirty && deviceAccessories.isEmpty
+                                                                    ? "Поле не може бути пустим"
+                                                                    : ""}
+                                                            </p>
                                                         </div>
-                                                        <p className={classes.error}>
-                                                            {deviceAccessories.isDirty && deviceAccessories.isEmpty ? "Поле не може бути пустим" : ""}
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.deviceAccessories}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Пароль</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={devicePassword.value}
-                                                                onChange={(e) => devicePassword.onChange(e)}
-                                                                onBlur={() => devicePassword.onBlur()}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.deviceAccessories}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Пароль</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={devicePassword.value}
+                                                                    onChange={(e) => devicePassword.onChange(e)}
+                                                                    onBlur={() => devicePassword.onBlur()}
+                                                                />
+                                                            </div>
+                                                            <p className={classes.error}>
+                                                                {devicePassword.isDirty && devicePassword.isEmpty
+                                                                    ? "Поле не може бути пустим"
+                                                                    : devicePassword.isDirty && devicePassword.minLengthError
+                                                                    ? "Мінімальна кількість символів 4"
+                                                                    : ""}
+                                                            </p>
                                                         </div>
-                                                        <p className={classes.error}>
-                                                            {devicePassword.isDirty && devicePassword.isEmpty
-                                                                ? "Поле не може бути пустим"
-                                                                : devicePassword.isDirty && devicePassword.minLengthError
-                                                                ? "Мінімальна кількість символів 4"
-                                                                : ""}
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{deviceInfo.devicePassword}</p>
-                                                )}
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{deviceInfo.devicePassword}</p>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className={classes.order__column}>
-                                        <h2 className={classes.order__title}>Клієнт</h2>
-                                        <div className={classes.orderInfo__content}>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Ім'я</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={clientName.value}
-                                                                onChange={(e) => clientName.onChange(e)}
-                                                                onBlur={() => clientName.onBlur()}
-                                                            />
+                                        <div className={classes.orderColumn__block}>
+                                            <h2 className={classes.order__title}>Клієнт</h2>
+                                            <div className={classes.orderInfo__content}>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Ім'я</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={clientName.value}
+                                                                    onChange={(e) => clientName.onChange(e)}
+                                                                    onBlur={() => clientName.onBlur()}
+                                                                />
+                                                            </div>
+                                                            <p className={classes.error}>
+                                                                {clientName.isDirty && clientName.isEmpty
+                                                                    ? "Поле не може бути пустим"
+                                                                    : clientName.isDirty && clientName.minLengthError
+                                                                    ? "Мінімальна кількість символів 2"
+                                                                    : ""}
+                                                            </p>
                                                         </div>
-                                                        <p className={classes.error}>
-                                                            {clientName.isDirty && clientName.isEmpty
-                                                                ? "Поле не може бути пустим"
-                                                                : clientName.isDirty && clientName.minLengthError
-                                                                ? "Мінімальна кількість символів 2"
-                                                                : ""}
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{clientInfo.clientName}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Телефон</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input
-                                                                value={clientPhone.value}
-                                                                onClick={(e) => clientsDropDown(e.target.value)}
-                                                                onChange={(e) => {
-                                                                    clientPhone.onChange(e);
-                                                                    clientsDropDown(e.target.value);
-                                                                }}
-                                                                onBlur={() => {
-                                                                    clientPhone.onBlur();
-                                                                    setTimeout(() => {
-                                                                        setClientOptions([]);
-                                                                    }, 100);
-                                                                }}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{clientInfo.clientName}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Телефон</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input
+                                                                    value={clientPhone.value}
+                                                                    onClick={(e) => clientsDropDown(e.target.value)}
+                                                                    onChange={(e) => {
+                                                                        clientPhone.onChange(e);
+                                                                        clientsDropDown(e.target.value);
+                                                                    }}
+                                                                    onBlur={() => {
+                                                                        clientPhone.onBlur();
+                                                                        setTimeout(() => {
+                                                                            setClientOptions([]);
+                                                                        }, 100);
+                                                                    }}
+                                                                />
+                                                            </div>
+                                                            {clientOptions.length ? (
+                                                                <ul className={classes.dropdown}>
+                                                                    {clientOptions.map((client) => {
+                                                                        return (
+                                                                            <li
+                                                                                key={client.clientPhone}
+                                                                                onClick={() => fillInputs("client", client)}
+                                                                                className={classes.dropdown__item}>
+                                                                                {client.clientName + " " + client.clientPhone}
+                                                                            </li>
+                                                                        );
+                                                                    })}
+                                                                </ul>
+                                                            ) : null}
+                                                            <p className={classes.error}>
+                                                                {clientPhone.isDirty && clientPhone.isEmpty
+                                                                    ? "Поле не може бути пустим"
+                                                                    : clientPhone.isDirty && clientPhone.lengthError
+                                                                    ? "Кількість символів 10"
+                                                                    : ""}
+                                                            </p>
                                                         </div>
-                                                        {clientOptions.length ? (
-                                                            <ul className={classes.dropdown}>
-                                                                {clientOptions.map((client) => {
-                                                                    return (
-                                                                        <li
-                                                                            key={client.clientPhone}
-                                                                            onClick={() => fillInputs("client", client)}
-                                                                            className={classes.dropdown__item}>
-                                                                            {client.clientName + " " + client.clientPhone}
-                                                                        </li>
-                                                                    );
-                                                                })}
-                                                            </ul>
-                                                        ) : null}
-                                                        <p className={classes.error}>
-                                                            {clientPhone.isDirty && clientPhone.isEmpty
-                                                                ? "Поле не може бути пустим"
-                                                                : clientPhone.isDirty && clientPhone.lengthError
-                                                                ? "Кількість символів 10"
-                                                                : ""}
-                                                        </p>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{clientInfo.clientPhone}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Пошта</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{clientInfo.clientPhone}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Email</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{clientInfo.clientEmail}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Адреса</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{clientInfo.clientEmail}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Address</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{clientInfo.clientAddress}</p>
-                                                )}
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{clientInfo.clientAddress}</p>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
 
-                                        <h2 className={classes.order__title}>Додаткова інформація</h2>
-                                        <div className={classes.orderInfo__content}>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
-                                                <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
-                                                <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
+                                        <div className={classes.orderColumn__block}>
+                                            <h2 className={classes.order__title}>Додаткова інформація</h2>
+                                            <div className={classes.orderInfo__content}>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
+                                                    <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
+                                                    <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{orderInfo.orderExecutor}</p>
-                                                )}
-                                            </div>
-                                            <div className={classes.order__row}>
-                                                <h3 className={classes.orderInfo__title}>Термін виконання</h3>
-                                                {editMode ? (
-                                                    <div className={classes.input__section}>
-                                                        <div className={classes.input}>
-                                                            <DatePicker
-                                                                dayPlaceholder={
-                                                                    orderInfo.orderDeadline.length > 1 ? orderInfo.orderDeadline.slice(0, 2) : "- -"
-                                                                }
-                                                                monthPlaceholder={
-                                                                    orderInfo.orderDeadline.length > 1 ? orderInfo.orderDeadline.slice(3, 5) : "- -"
-                                                                }
-                                                                yearPlaceholder={
-                                                                    orderInfo.orderDeadline.length > 1
-                                                                        ? orderInfo.orderDeadline.slice(6, 10)
-                                                                        : "- - - -"
-                                                                }
-                                                                format="dd.MM.y"
-                                                                onChange={setOrderDeadline}
-                                                                value={orderDeadline}
-                                                            />
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{orderInfo.orderExecutor}</p>
+                                                    )}
+                                                </div>
+                                                <div className={classes.order__row}>
+                                                    <h3 className={classes.orderInfo__title}>Термін виконання</h3>
+                                                    {editMode ? (
+                                                        <div className={classes.input__section}>
+                                                            <div className={classes.input}>
+                                                                <DatePicker
+                                                                    dayPlaceholder={
+                                                                        orderInfo.orderDeadline.length > 1
+                                                                            ? orderInfo.orderDeadline.slice(0, 2)
+                                                                            : "- -"
+                                                                    }
+                                                                    monthPlaceholder={
+                                                                        orderInfo.orderDeadline.length > 1
+                                                                            ? orderInfo.orderDeadline.slice(3, 5)
+                                                                            : "- -"
+                                                                    }
+                                                                    yearPlaceholder={
+                                                                        orderInfo.orderDeadline.length > 1
+                                                                            ? orderInfo.orderDeadline.slice(6, 10)
+                                                                            : "- - - -"
+                                                                    }
+                                                                    format="dd.MM.y"
+                                                                    onChange={setOrderDeadline}
+                                                                    value={orderDeadline}
+                                                                />
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                ) : (
-                                                    <p className={classes.orderInfo__text}>{orderInfo.orderDeadline}</p>
-                                                )}
+                                                    ) : (
+                                                        <p className={classes.orderInfo__text}>{orderInfo.orderDeadline}</p>
+                                                    )}
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

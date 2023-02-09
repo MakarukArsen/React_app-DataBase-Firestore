@@ -56,7 +56,7 @@
 
 .pdf {
     font-family: sans-serif;
-    letter-spacing: .05em;
+    letter-spacing: .002em;
     background-color: constants.$white;
     padding: 15px;
     border-radius: 15px;
@@ -86,7 +86,7 @@
                 h1 {
                     font-size: 27px;
                     font-weight: 700;
-                    letter-spacing: .025em;
+
                 }
 
                 p {
@@ -103,8 +103,6 @@
                 font-size: 14px;
 
                 p {
-                    letter-spacing: .002em;
-
                     span {
                         font-weight: 700;
                     }
@@ -219,7 +217,7 @@
                 h1 {
                     font-size: 32px;
                     font-weight: 700;
-                    letter-spacing: .05em;
+
                 }
 
                 p {
@@ -236,7 +234,7 @@
                 font-size: 14px;
 
                 p {
-                    letter-spacing: .002em;
+
 
                     span {
                         font-weight: 700;

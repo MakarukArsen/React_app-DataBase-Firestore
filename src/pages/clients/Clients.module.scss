@@ -48,13 +48,12 @@
 
             &__row {
                 border-bottom: 1px solid constants.$grey;
-
             }
 
             &__item {
                 text-align: left;
                 line-height: 1.25;
-                padding: 10px 0px;
+                padding: 10px;
 
                 &:not(:first-child) {
                     padding: 10px 16px;
@@ -70,6 +69,4 @@
             }
         }
     }
-
-
 }

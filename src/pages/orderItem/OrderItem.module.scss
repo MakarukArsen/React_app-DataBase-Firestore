@@ -413,7 +413,7 @@
 
     &__info {
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         gap: 30px;
         background-color: constants.$white;
         padding: 15px;
@@ -428,14 +428,21 @@
         .order__column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 40px;
 
-            @media(max-width: 950px) {
-                align-items: center;
-            }
 
-            @media(max-width: 420px) {
-                gap: 10px;
+            .orderColumn__block {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+
+                @media(max-width: 950px) {
+                    align-items: center;
+                }
+
+                @media(max-width: 420px) {
+                    gap: 10px;
+                }
             }
 
             .order__title {
@@ -445,8 +452,6 @@
             }
 
             .orderInfo__content {
-                flex: 1 1 100%;
-
                 .order__row {
                     padding: 16px;
                     display: flex;

@@ -66,8 +66,8 @@ const CreateOrder = () => {
             clientInfo: {
                 clientName: clientName.value,
                 clientPhone: clientPhone.value,
-                clientEmail: clientEmail.value || "-",
-                clientAddress: clientAddress.value || "-",
+                clientEmail: clientEmail.value,
+                clientAddress: clientAddress.value,
             },
 
             deviceInfo: {
@@ -106,6 +106,7 @@ const CreateOrder = () => {
             clientEmail: clientEmail.value || "-",
             clientAddress: clientAddress.value || "-",
         };
+
         const clientRef = collection(db, "clients");
         const q = query(clientRef, where("clientPhone", "==", clientData.clientPhone));
         const querySnapshot = await getDocs(q);
@@ -291,15 +292,25 @@ const CreateOrder = () => {
                                             </p>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Пошта</h3>
+                                            <h3 className={classes.title}>Email</h3>
                                             <div className={classes.input}>
-                                                <Input value={clientEmail.value} onChange={(e) => clientEmail.onChange(e)} />
+                                                <Input
+                                                    value={clientEmail.value}
+                                                    onChange={(e) => {
+                                                        clientEmail.onChange(e);
+                                                    }}
+                                                />
                                             </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Адреса</h3>
+                                            <h3 className={classes.title}>Address</h3>
                                             <div className={classes.input}>
-                                                <Input value={clientAddress.value} onChange={(e) => clientAddress.onChange(e)} />
+                                                <Input
+                                                    value={clientAddress.value}
+                                                    onChange={(e) => {
+                                                        clientAddress.onChange(e);
+                                                    }}
+                                                />
                                             </div>
                                         </div>
                                     </div>

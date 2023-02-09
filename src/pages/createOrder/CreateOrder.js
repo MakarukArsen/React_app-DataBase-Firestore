@@ -127,7 +127,7 @@ const CreateOrder = () => {
             await addDoc(clientRef, clientData);
         }
 
-        // navigate(`/orders/${order.id}`);
+        navigate(`/orders/${order.id}`);
     };
 
     const searchClient = async (value) => {

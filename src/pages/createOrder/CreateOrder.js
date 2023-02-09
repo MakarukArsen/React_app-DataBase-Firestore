@@ -47,12 +47,23 @@ const CreateOrder = () => {
     const handleSumbit = async (e) => {
         e.preventDefault();
 
+        const createSearchArray = (arr) => {
+            const resultArray = [];
+            arr.forEach((item) => {
+                for (let i = 1; i < item.length + 1; i++) {
+                    resultArray.push(item.toLowerCase().substring(0, i));
+                }
+            });
+            return resultArray;
+        };
+
         const orderData = {
             id: "",
             techData: {
                 techDate: Date.now(),
                 isAnyPayments: false,
                 paymentType: null,
+                searchArray: createSearchArray([clientName.value, clientPhone.value, deviceType.value, deviceProducer.value, deviceModel.value]),
             },
             payments: [],
             history: [
@@ -116,7 +127,7 @@ const CreateOrder = () => {
             await addDoc(clientRef, clientData);
         }
 
-        navigate(`/orders/${order.id}`);
+        // navigate(`/orders/${order.id}`);
     };
 
     const searchClient = async (value) => {

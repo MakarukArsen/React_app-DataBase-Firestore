@@ -53,10 +53,8 @@ const Orders = () => {
             if (search.value.length) {
                 const q = query(
                     ordersRef,
-                    orderBy("clientInfo.clientPhone"),
                     orderBy("id", "desc"),
-                    startAt(search.value.toLowerCase()),
-                    endAt(search.value.toLowerCase() + "\uf8ff"),
+                    where("techData.searchArray", "array-contains", search.value.toLowerCase()),
                     startAfter(lastVisibleOrder),
                     limit(30)
                 );
@@ -78,14 +76,7 @@ const Orders = () => {
 
         // Search orders
         if (search.value.length) {
-            const q = query(
-                ordersRef,
-                orderBy("clientInfo.clientPhone"),
-                orderBy("id", "desc"),
-                startAt(search.value.toLowerCase()),
-                endAt(search.value.toLowerCase() + "\uf8ff"),
-                limit(30)
-            );
+            const q = query(ordersRef, orderBy("id", "desc"), where("techData.searchArray", "array-contains", search.value.toLowerCase()), limit(30));
             const snapshots = await getDocs(q);
             if (!snapshots.size) {
                 setOrdersError("Замовлення не знайдені");

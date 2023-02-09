@@ -327,7 +327,7 @@ const PDF = () => {
                                             <b>Gwarancja, mies.</b>
                                         </td>
                                         <td className={classes.table__text_additional}>
-                                            <b>Cena,PLN</b>
+                                            <b>Cena, PLN</b>
                                         </td>
                                     </tr>
                                     {Object.keys(payments).length ? (

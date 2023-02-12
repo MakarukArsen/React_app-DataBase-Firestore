@@ -247,8 +247,12 @@ const Orders = () => {
                             ) : orders.length ? (
                                 orders.map((order) => {
                                     const { clientInfo, orderInfo, deviceInfo, payments } = order;
+
                                     return (
-                                        <tr onClick={() => navigateToOrder(order.firebaseId)} key={v4()} className={classes.table__row}>
+                                        <tr
+                                            onClick={() => navigateToOrder(order.firebaseId)}
+                                            key={v4()}
+                                            className={order.id % 2 !== 0 ? classes.table__row : classes.table__row + " " + classes.even__row}>
                                             <td className={classes.table__item}>
                                                 <span>#{order.id}</span> <br /> {orderInfo.orderDate}
                                             </td>

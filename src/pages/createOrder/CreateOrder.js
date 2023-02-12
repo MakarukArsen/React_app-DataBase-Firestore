@@ -77,8 +77,8 @@ const CreateOrder = () => {
             clientInfo: {
                 clientName: clientName.value,
                 clientPhone: clientPhone.value,
-                clientEmail: clientEmail.value,
-                clientAddress: clientAddress.value,
+                clientEmail: clientEmail.value || "-",
+                clientAddress: clientAddress.value || "-",
             },
 
             deviceInfo: {

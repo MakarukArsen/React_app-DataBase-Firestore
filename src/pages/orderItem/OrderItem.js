@@ -18,11 +18,15 @@ import PaymentModal from "../../components/modals/payment-modal/PaymentModal";
 import Loader from "../../components/loader/Loader";
 import DatePicker from "react-date-picker";
 import { deviceTypesAndProducers, deviceСondition } from "../../constants";
+import CopyOrderIcon from "../../components/icons/CopyOrderIcon";
+import CopyOrderModal from "../../components/modals/copyOrderModal/CopyOrderModal";
 
 const OrderItem = () => {
     const [order, setOrder] = useState({});
     const [editMode, setEditMode] = useState(false);
+
     const [paymentModal, setPaymentModal] = useState({ isActive: false, type: "create", payment: {} });
+    const [copyModal, setCopyModal] = useState(false);
 
     const [clientOptions, setClientOptions] = useState([]);
     const [deviceTypeOptions, setDeviceTypeOptions] = useState([]);
@@ -292,6 +296,9 @@ const OrderItem = () => {
                     type={paymentModal.type}
                 />
             </Modal>
+            <Modal isModalActive={copyModal} onClose={() => setCopyModal(false)}>
+                <CopyOrderModal onClose={() => setCopyModal(false)} order={order} />
+            </Modal>
             <div className="container">
                 {Object.keys(order).length ? (
                     <div className={classes.order__body}>
@@ -317,6 +324,9 @@ const OrderItem = () => {
                                 </div>
                             </div>
                             <div className={classes.header__actions}>
+                                <div onClick={() => setCopyModal(true)} className={classes.actions__copy}>
+                                    <CopyOrderIcon />
+                                </div>
                                 <div className={classes.actions__pdf}>
                                     <Link to="pdf" state={{ orderData: order }}>
                                         <PdfIcon />

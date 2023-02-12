@@ -106,12 +106,16 @@
 
             &__body {
                 .table__row:hover {
-                    background-color: constants.$light-grey;
+                    background-color: #c0c0c0;
                 }
             }
 
             &__row {
                 border-bottom: 1px solid constants.$grey;
+            }
+
+            .even__row {
+                background-color: constants.$light-grey;
             }
 
             &__item {

@@ -182,7 +182,7 @@ const Orders = () => {
                                                 setLastVisibleOrder("");
                                             }}
                                             color="black">
-                                            Всі
+                                            Wszystko
                                         </Button>
                                     </div>
                                     <div className={classes.button}>
@@ -193,7 +193,7 @@ const Orders = () => {
                                                 setLastVisibleOrder("");
                                             }}
                                             color="black">
-                                            Ремонт
+                                            Naprawy
                                         </Button>
                                     </div>
                                     <div className={classes.button}>
@@ -204,7 +204,7 @@ const Orders = () => {
                                                 setLastVisibleOrder("");
                                             }}
                                             color="black">
-                                            Відновлення данних
+                                            Odzyskiwanie danych
                                         </Button>
                                     </div>
                                 </div>
@@ -228,13 +228,13 @@ const Orders = () => {
                     <table className={classes.table}>
                         <thead className={classes.table__header}>
                             <tr className={classes.table__row}>
-                                <th className={classes.table__item}>Замовлення</th>
-                                <th className={classes.table__item}>Статус</th>
-                                <th className={classes.table__item}>Клієнт</th>
-                                <th className={classes.table__item}>Вартість</th>
-                                <th className={classes.table__item}>Тип</th>
-                                <th className={classes.table__item}>Виробник</th>
-                                <th className={classes.table__item}>Модель</th>
+                                <th className={classes.table__item}>Zlecenie</th>
+                                <th className={classes.table__item}>Status</th>
+                                <th className={classes.table__item}>Klient</th>
+                                <th className={classes.table__item}>Cena</th>
+                                <th className={classes.table__item}>Rodzaj</th>
+                                <th className={classes.table__item}>Producent</th>
+                                <th className={classes.table__item}>Model</th>
                             </tr>
                         </thead>
                         <tbody className={classes.table__body}>

@@ -37,7 +37,7 @@ const CreateOrder = () => {
     const devicePassword = useInput("", { isEmpty: true });
 
     // Order info
-    const orderType = useSelect({ defaultValue: "Ремонт", options: ["Ремонт", "Відновлення данних"] });
+    const orderType = useSelect({ defaultValue: "Naprawy", options: ["Naprawy", "Odzyskiwanie danych"] });
     const orderExecutor = useInput("");
     const [orderDeadline, setOrderDeadline] = useState("");
 
@@ -70,7 +70,7 @@ const CreateOrder = () => {
                 {
                     techDate: Date.now(),
                     date: format(new Date(), " H:mm dd.MM.yy"),
-                    message: "Замовлення створене",
+                    message: "Zlecenie створене",
                     author: auth.currentUser.displayName,
                 },
             ],
@@ -94,7 +94,7 @@ const CreateOrder = () => {
 
             orderInfo: {
                 orderDate: format(new Date(), "H:mm dd.MM.yy"),
-                orderStatus: "До діагностики",
+                orderStatus: "Do diagnozy",
                 orderType: orderType.value || "-",
                 orderAccepted: auth.currentUser.displayName,
                 orderExecutor: orderExecutor.value || "-",
@@ -226,7 +226,7 @@ const CreateOrder = () => {
                 <div className={classes.createOrder__content}>
                     <div className={classes.createOrder__header}>
                         <div className={classes.header__info}>
-                            <h1 className={classes.title}>Створити замовлення</h1>
+                            <h1 className={classes.title}>Створити Zlecenie</h1>
                         </div>
                         <div className={classes.header__actions}>
                             <Link to="/orders">
@@ -240,10 +240,10 @@ const CreateOrder = () => {
                         <form className={classes.form}>
                             <div className={classes.row}>
                                 <div className={classes.form__content}>
-                                    <h2 className={classes.content__title}>Клієнт</h2>
+                                    <h2 className={classes.content__title}>Klient</h2>
                                     <div className={classes.clientInfo}>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Ім'я*</h3>
+                                            <h3 className={classes.title}>Imię*</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientName.value}
@@ -265,7 +265,7 @@ const CreateOrder = () => {
                                             </p>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Телефон*</h3>
+                                            <h3 className={classes.title}>Telefon*</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientPhone.value}
@@ -314,7 +314,7 @@ const CreateOrder = () => {
                                             </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Address</h3>
+                                            <h3 className={classes.title}>Adres</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={clientAddress.value}
@@ -327,23 +327,23 @@ const CreateOrder = () => {
                                     </div>
                                 </div>
                                 <div className={classes.form__content}>
-                                    <h2 className={classes.content__title}>Додаткова інформація</h2>
+                                    <h2 className={classes.content__title}>Szczegółowa informacja</h2>
                                     <div className={classes.additionalInfo}>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Тип замовлення</h3>
+                                            <h3 className={classes.title}>Rodzaj zamówienia</h3>
                                             <div className={classes.input}>
                                                 <Select {...orderType} />
                                             </div>
                                         </div>
 
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Виконавець замовлення</h3>
+                                            <h3 className={classes.title}>Manager</h3>
                                             <div className={classes.input}>
                                                 <Input value={orderExecutor.value} onChange={(e) => orderExecutor.onChange(e)} />
                                             </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Термін виконання</h3>
+                                            <h3 className={classes.title}>Termin realizacji</h3>
                                             <DatePicker
                                                 format="dd.MM.y"
                                                 className={classes.input}
@@ -356,11 +356,11 @@ const CreateOrder = () => {
                             </div>
 
                             <div className={classes.form__content}>
-                                <h2 className={classes.content__title}>Технічна інформація</h2>
+                                <h2 className={classes.content__title}>Informacja</h2>
                                 <div className={classes.techInfo}>
                                     <div className={classes.techInfo__column}>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Тип девайса</h3>
+                                            <h3 className={classes.title}>Rodzaj urządzenia</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={deviceType.value}
@@ -392,7 +392,7 @@ const CreateOrder = () => {
                                             ) : null}
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Виробник</h3>
+                                            <h3 className={classes.title}>Producent</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={deviceProducer.value}
@@ -424,13 +424,13 @@ const CreateOrder = () => {
                                             ) : null}
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Модель</h3>
+                                            <h3 className={classes.title}>Model</h3>
                                             <div className={classes.input}>
                                                 <Input value={deviceModel.value} onChange={(e) => deviceModel.onChange(e)} />
                                             </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Стан пристрою</h3>
+                                            <h3 className={classes.title}>Stan urządzenia</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={deviceState.value}
@@ -464,7 +464,7 @@ const CreateOrder = () => {
                                     </div>
                                     <div className={classes.techInfo__column}>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Несправність</h3>
+                                            <h3 className={classes.title}>Usterka</h3>
                                             <div className={classes.input}>
                                                 <Input value={deviceBreakage.value} onChange={(e) => deviceBreakage.onChange(e)} />
                                             </div>
@@ -476,7 +476,7 @@ const CreateOrder = () => {
                                             </div>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Аксесуари*</h3>
+                                            <h3 className={classes.title}>Akcesoria*</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={deviceAccessories.value}
@@ -489,7 +489,7 @@ const CreateOrder = () => {
                                             </p>
                                         </div>
                                         <div className={classes.input__section}>
-                                            <h3 className={classes.title}>Пароль*</h3>
+                                            <h3 className={classes.title}>Hasło*</h3>
                                             <div className={classes.input}>
                                                 <Input
                                                     value={devicePassword.value}

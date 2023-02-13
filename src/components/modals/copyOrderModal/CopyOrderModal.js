@@ -10,7 +10,7 @@ import Button from "../../UI/button/Button";
 import Input from "../../UI/input/Input";
 import classes from "./CopyOrderModal.module.scss";
 
-const CopyOrderModal = ({ onClose, order }) => {
+const CopyOrderModal = ({ order }) => {
     const [orderDeadline, setOrderDeadline] = useState("");
     const orderExecutor = useInput("");
     const deviceBreakage = useInput("");

@@ -31,7 +31,7 @@ const StatusDropDown = ({ order, firebaseId }) => {
         e.stopPropagation();
         setActive(false);
         const startStatus = chosenOption;
-        if (startStatus !== "Завершено" && status === "Завершено" && order.payments.length) {
+        if (startStatus !== "Zakończone" && status === "Zakończone" && order.payments.length) {
             setPaymentTypeModalActive(true);
         }
 
@@ -62,25 +62,27 @@ const StatusDropDown = ({ order, firebaseId }) => {
                 <p
                     onClick={handleClick}
                     className={`${classes.item} ${
-                        chosenOption === "До діагностики"
+                        chosenOption === "Do diagnozy"
                             ? classes.blue
-                            : chosenOption === "Чекаєм на згоду"
+                            : chosenOption === "Czekamy na zgodę"
                             ? classes.yellow
-                            : chosenOption === "Відставка"
+                            : chosenOption === "Zgoda na naprawę"
+                            ? classes.cyan
+                            : chosenOption === "Rezygnacja"
                             ? classes.red
-                            : chosenOption === "В ремонті"
+                            : chosenOption === "W trakcie naprawy"
+                            ? classes.blackGreen
+                            : chosenOption === "Czekamy na części"
                             ? classes.orange
-                            : chosenOption === "Чекаємо на запчастини"
-                            ? classes.yellow
-                            : chosenOption === "Післяремонтні випробування"
-                            ? classes.orange
-                            : chosenOption === "До видання"
+                            : chosenOption === "Testy po naprawie"
+                            ? classes.blue
+                            : chosenOption === "Do odbioru"
                             ? classes.green
-                            : chosenOption === "Отримано без оплати"
+                            : chosenOption === "Odebrane niezapłacone"
                             ? classes.violet
-                            : chosenOption === "Завершено"
+                            : chosenOption === "Zakończone"
                             ? classes.black
-                            : chosenOption === "Відпущено без ремонту"
+                            : chosenOption === "Wydane bez naprawy"
                             ? classes.red
                             : ""
                     }`}>
@@ -89,35 +91,38 @@ const StatusDropDown = ({ order, firebaseId }) => {
             </div>
             {active ? (
                 <div className={classes.body} onClick={(e) => e.stopPropagation()}>
-                    <p className={classes.item + " " + classes.blue} onClick={(e) => updateOrder(e, "До діагностики")}>
-                        До діагностики
+                    <p className={classes.item + " " + classes.blue} onClick={(e) => updateOrder(e, "Do diagnozy")}>
+                        Do diagnozy
                     </p>
-                    <p className={classes.item + " " + classes.yellow} onClick={(e) => updateOrder(e, "Чекаєм на згоду")}>
-                        Чекаєм на згоду
+                    <p className={classes.item + " " + classes.yellow} onClick={(e) => updateOrder(e, "Czekamy na zgodę")}>
+                        Czekamy na zgodę
                     </p>
-                    <p className={classes.item + " " + classes.red} onClick={(e) => updateOrder(e, "Відставка")}>
-                        Відставка
+                    <p className={classes.item + " " + classes.cyan} onClick={(e) => updateOrder(e, "Zgoda na naprawę")}>
+                        Zgoda na naprawę
                     </p>
-                    <p className={classes.item + " " + classes.orange} onClick={(e) => updateOrder(e, "В ремонті")}>
-                        В ремонті
+                    <p className={classes.item + " " + classes.red} onClick={(e) => updateOrder(e, "Rezygnacja")}>
+                        Rezygnacja
                     </p>
-                    <p className={classes.item + " " + classes.yellow} onClick={(e) => updateOrder(e, "Чекаємо на запчастини")}>
-                        Чекаємо на запчастини
+                    <p className={classes.item + " " + classes.blackGreen} onClick={(e) => updateOrder(e, "W trakcie naprawy")}>
+                        W trakcie naprawy
                     </p>
-                    <p className={classes.item + " " + classes.orange} onClick={(e) => updateOrder(e, "Післяремонтні випробування")}>
-                        Післяремонтні випробування
+                    <p className={classes.item + " " + classes.orange} onClick={(e) => updateOrder(e, "Czekamy na części")}>
+                        Czekamy na części
                     </p>
-                    <p className={classes.item + " " + classes.green} onClick={(e) => updateOrder(e, "До видання")}>
-                        До видання
+                    <p className={classes.item + " " + classes.blue} onClick={(e) => updateOrder(e, "Testy po naprawie")}>
+                        Testy po naprawie
                     </p>
-                    <p className={classes.item + " " + classes.violet} onClick={(e) => updateOrder(e, "Отримано без оплати")}>
-                        Отримано без оплати
+                    <p className={classes.item + " " + classes.green} onClick={(e) => updateOrder(e, "Do odbioru")}>
+                        Do odbioru
                     </p>
-                    <p className={classes.item + " " + classes.black} onClick={(e) => updateOrder(e, "Завершено")}>
-                        Завершено
+                    <p className={classes.item + " " + classes.violet} onClick={(e) => updateOrder(e, "Odebrane niezapłacone")}>
+                        Odebrane niezapłacone
                     </p>
-                    <p className={classes.item + " " + classes.red} onClick={(e) => updateOrder(e, "Відпущено без ремонту")}>
-                        Відпущено без ремонту
+                    <p className={classes.item + " " + classes.black} onClick={(e) => updateOrder(e, "Zakończone")}>
+                        Zakończone
+                    </p>
+                    <p className={classes.item + " " + classes.red} onClick={(e) => updateOrder(e, "Wydane bez naprawy")}>
+                        Wydane bez naprawy
                     </p>
                 </div>
             ) : (

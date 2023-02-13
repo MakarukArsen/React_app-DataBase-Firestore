@@ -10,6 +10,7 @@ import Loader from "../../components/loader/Loader";
 
 const Finances = () => {
     const [orders, setOrders] = useState([]);
+    const [lastVisibleOrder, setLastVisibleOrder] = useState("");
     const [payments, setPayments] = useState([]);
 
     const [ordersError, setOrdersError] = useState("");

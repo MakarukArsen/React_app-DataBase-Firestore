@@ -60,8 +60,16 @@
     color: black;
 }
 
+.cyan {
+    background-color: rgb(52, 187, 187);
+}
+
 .red {
     background-color: constants.$warning;
+}
+
+.blackGreen {
+    background-color: rgb(3, 88, 3);
 }
 
 .orange {
@@ -69,7 +77,7 @@
 }
 
 .green {
-    background-color: green;
+    background-color: rgb(16, 173, 16);
 }
 
 .violet {
@@ -78,4 +86,8 @@
 
 .black {
     background-color: black;
+}
+
+.grey {
+    background-color: rgb(143, 46, 46);
 }

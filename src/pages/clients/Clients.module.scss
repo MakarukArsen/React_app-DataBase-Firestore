@@ -59,6 +59,25 @@
                     padding: 10px 16px;
                 }
 
+                .item__name {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+
+                    .icon {
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        width: 35px;
+                        height: 35px;
+                        border-radius: 50%;
+                        background-color: blue;
+                        color: white;
+                        font-size: 14px;
+                        font-weight: 600;
+                    }
+                }
+
                 span {
                     font-weight: 600;
                 }

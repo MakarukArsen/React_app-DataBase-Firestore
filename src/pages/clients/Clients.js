@@ -55,10 +55,10 @@ const Clients = () => {
                     <table className={classes.table}>
                         <thead className={classes.table__header}>
                             <tr className={classes.table__row}>
-                                <th className={classes.table__item}>Ім'я</th>
-                                <th className={classes.table__item}>Телефон</th>
+                                <th className={classes.table__item}>Imię</th>
+                                <th className={classes.table__item}>Telefon</th>
                                 <th className={classes.table__item}>Email</th>
-                                <th className={classes.table__item}>Address</th>
+                                <th className={classes.table__item}>Adres</th>
                             </tr>
                         </thead>
                         <tbody className={classes.table__body}>

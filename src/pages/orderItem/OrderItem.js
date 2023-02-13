@@ -151,7 +151,7 @@ const OrderItem = () => {
             history: arrayUnion({
                 techDate: Date.now(),
                 date: format(new Date(), " H:mm dd.MM.yy"),
-                message: "Замовлення відредаговано",
+                message: "Zlecenie відредаговано",
                 author: auth.currentUser.displayName,
             }),
         });
@@ -306,7 +306,7 @@ const OrderItem = () => {
                             <div className={classes.header__info}>
                                 <div className={classes.header__row}>
                                     <div className={classes.header__column}>
-                                        <p className={classes.orderId}>Замовлення #{order.id}</p>
+                                        <p className={classes.orderId}>Zlecenie #{order.id}</p>
                                         <p className={classes.orderDate}>{order.orderInfo.orderDate}</p>
                                     </div>
                                     <p className={classes.orderPrice}>
@@ -451,10 +451,10 @@ const OrderItem = () => {
                                 <div className={classes.order__info}>
                                     <div className={classes.order__column}>
                                         <div className={classes.orderColumn__block}>
-                                            <h2 className={classes.order__title}>Інформація</h2>
+                                            <h2 className={classes.order__title}>Informacja</h2>
                                             <div className={classes.orderInfo__content}>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Тип пристрою</h3>
+                                                    <h3 className={classes.orderInfo__title}> Rodzaj urządzenia</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -492,7 +492,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Виробник</h3>
+                                                    <h3 className={classes.orderInfo__title}>Producent</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -530,7 +530,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Модель</h3>
+                                                    <h3 className={classes.orderInfo__title}>Model</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -542,7 +542,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Технічний стан</h3>
+                                                    <h3 className={classes.orderInfo__title}>Stan urządzenia</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -580,7 +580,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Несправність</h3>
+                                                    <h3 className={classes.orderInfo__title}>Usterka</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -604,7 +604,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Аксесуари</h3>
+                                                    <h3 className={classes.orderInfo__title}>Akcesoria</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -625,7 +625,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Пароль</h3>
+                                                    <h3 className={classes.orderInfo__title}>Hasło</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -652,10 +652,10 @@ const OrderItem = () => {
                                     </div>
                                     <div className={classes.order__column}>
                                         <div className={classes.orderColumn__block}>
-                                            <h2 className={classes.order__title}>Клієнт</h2>
+                                            <h2 className={classes.order__title}>Klient</h2>
                                             <div className={classes.orderInfo__content}>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Ім'я</h3>
+                                                    <h3 className={classes.orderInfo__title}>Imię</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -678,7 +678,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Телефон</h3>
+                                                    <h3 className={classes.orderInfo__title}>Telefon</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -736,7 +736,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Address</h3>
+                                                    <h3 className={classes.orderInfo__title}>Adres</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -751,18 +751,18 @@ const OrderItem = () => {
                                         </div>
 
                                         <div className={classes.orderColumn__block}>
-                                            <h2 className={classes.order__title}>Додаткова інформація</h2>
+                                            <h2 className={classes.order__title}>Szczegółowa informacja</h2>
                                             <div className={classes.orderInfo__content}>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Тип замовлення</h3>
+                                                    <h3 className={classes.orderInfo__title}>Rodzaj zamówienia</h3>
                                                     <p className={classes.orderInfo__text}>{orderInfo.orderType}</p>
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Прийняв замовлення</h3>
+                                                    <h3 className={classes.orderInfo__title}>Przyjęty przez</h3>
                                                     <p className={classes.orderInfo__text}>{orderInfo.orderAccepted}</p>
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Виконавець замовлення</h3>
+                                                    <h3 className={classes.orderInfo__title}>Manager</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
@@ -774,7 +774,7 @@ const OrderItem = () => {
                                                     )}
                                                 </div>
                                                 <div className={classes.order__row}>
-                                                    <h3 className={classes.orderInfo__title}>Термін виконання</h3>
+                                                    <h3 className={classes.orderInfo__title}>Termin realizacji</h3>
                                                     {editMode ? (
                                                         <div className={classes.input__section}>
                                                             <div className={classes.input}>
